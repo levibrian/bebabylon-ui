@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 188 36" fill="none">
+  <defs>
+    <linearGradient id="logo-grad" x1="18" y1="2" x2="18" y2="34" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#C084FC"/>
+      <stop offset="100%" stop-color="#6D28D9"/>
+    </linearGradient>
+  </defs>
+  <!-- Gradient triangle outline — apex top-center, base full-width -->
+  <path d="M18 2L2 34h32L18 2z" stroke="url(#logo-grad)" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Wordmark -->
+  <text x="50" y="26" font-family="'JetBrains Mono', monospace" font-size="18" font-weight="500" fill="#FFFFFF" letter-spacing="0.5">babylon</text>
+</svg>
