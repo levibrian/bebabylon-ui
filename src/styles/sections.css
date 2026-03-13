@@ -27,10 +27,19 @@
   z-index: 1;
 }
 
+.hero__grid > * {
+  min-width: 0;
+}
+
 @media (max-width: 900px) {
+  #hero {
+    padding-top: max(72px, calc(56px + env(safe-area-inset-top, 0px)));
+  }
+
   .hero__grid {
     grid-template-columns: 1fr;
     text-align: center;
+    gap: var(--space-10);
   }
 
   .hero__copy .section-label {
@@ -41,8 +50,45 @@
     justify-content: center;
   }
 
+  /* Show the visualization on mobile — product card is critical for conversion */
   .hero__viz {
+    display: flex;
+  }
+
+  .hero__chart-wrap {
+    width: 100%;
+    max-width: 380px;
+    height: auto;
+    animation: none; /* disable float animation — saves battery, reduces motion */
+  }
+
+  /* Hide the absolute-positioned floating chips on mobile (they overflow) */
+  .hero__stat-chip {
     display: none;
+  }
+
+  /* No glow ring on mobile — cleaner */
+  .hero__ring-bg {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero__chart-wrap {
+    max-width: 100%;
+  }
+
+  /* Stack CTA buttons full-width on small screens */
+  .hero__cta {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-4);
+  }
+
+  .hero__cta .neon-btn,
+  .hero__cta .ghost-btn {
+    width: 100%;
+    justify-content: center;
   }
 }
 
@@ -291,6 +337,11 @@
     justify-self: center;
     margin: var(--space-2) 0;
   }
+
+  /* Remove the large fixed min-height — let content breathe naturally */
+  .why__panel {
+    min-height: auto;
+  }
 }
 
 .why__panel {
@@ -299,6 +350,8 @@
   flex-direction: column;
   gap: var(--space-4);
   min-height: 380px;
+  min-width: 0; /* prevent 1fr grid track from growing to min-content size */
+  overflow: hidden;
 }
 
 .why__panel--before {
@@ -523,6 +576,10 @@
   z-index: 1;
 }
 
+.ai__grid > * {
+  min-width: 0;
+}
+
 @media (max-width: 900px) {
   .ai__grid {
     grid-template-columns: 1fr;
@@ -531,6 +588,31 @@
   .ai__orb-wrap {
     order: -1;
     height: 380px;
+  }
+}
+
+@media (max-width: 640px) {
+  .ai__orb-wrap {
+    height: 300px;
+  }
+
+  .ai__orb {
+    width: 120px;
+    height: 120px;
+  }
+
+  .orbit-node {
+    --orbit-radius: 100px;
+  }
+}
+
+@media (max-width: 400px) {
+  .ai__orb-wrap {
+    height: 260px;
+  }
+
+  .orbit-node {
+    --orbit-radius: 80px;
   }
 }
 
@@ -589,6 +671,7 @@
   justify-content: center;
   animation: orbit var(--orbit-duration, 12s) linear infinite;
   animation-delay: var(--orbit-delay, 0s);
+  will-change: transform;
 }
 
 .orbit-node__label {
@@ -641,6 +724,13 @@
   flex-wrap: wrap;
   justify-content: center;
   margin-top: var(--space-4);
+}
+
+@media (max-width: 480px) {
+  .cta__trust-row {
+    gap: var(--space-4);
+    flex-direction: column;
+  }
 }
 
 .cta__subtext {
