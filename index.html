@@ -13,7 +13,7 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" crossorigin />
   <script type="module" src="/src/main.ts"></script>
 </head>
 <body>
@@ -25,15 +25,15 @@
   <div class="container">
     <div class="navbar__inner">
       <a href="/" aria-label="Babylon home">
-        <svg class="navbar__logo" viewBox="0 0 188 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Babylon">
+        <svg class="navbar__logo" viewBox="0 0 192 38" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Babylon">
           <defs>
-            <linearGradient id="logo-grad" x1="18" y1="2" x2="18" y2="34" gradientUnits="userSpaceOnUse">
+            <linearGradient id="logo-grad" x1="19" y1="3" x2="19" y2="35" gradientUnits="userSpaceOnUse">
               <stop offset="0%" stop-color="#C084FC"/>
-              <stop offset="100%" stop-color="#6D28D9"/>
+              <stop offset="100%" stop-color="#7B2FBE"/>
             </linearGradient>
           </defs>
-          <path d="M18 2L2 34h32L18 2z" stroke="url(#logo-grad)" stroke-width="2" stroke-linejoin="round"/>
-          <text x="50" y="26" font-family="'Sora', system-ui, sans-serif" font-size="18" font-weight="500" fill="#FFFFFF" letter-spacing="0.5">babylon</text>
+          <path d="M3 35 L19 3 L35 35" stroke="url(#logo-grad)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="50" y="26" font-family="'Inter', system-ui, sans-serif" font-size="17" font-weight="600" fill="#FFFFFF" letter-spacing="2">BABYLON</text>
         </svg>
       </a>
       <div class="navbar__actions">
@@ -68,7 +68,7 @@
           <span class="section-label">Your personal wealth plan</span>
         </div>
         <h1 class="display-1" data-reveal style="transition-delay:100ms">
-          Stop losing to<br />inflation.
+          Architect your<br />wealth.
         </h1>
         <p class="body-lg hero__subtext" data-reveal style="transition-delay:200ms">
           Babylon builds your personal investment plan and tells you exactly where to put your money each month — no finance degree needed.
@@ -84,6 +84,13 @@
             See How It Works
           </a>
         </div>
+        <p class="hero__trust-line" data-reveal style="transition-delay:420ms">
+          <span>✓ Free forever</span>
+          <span>·</span>
+          <span>✓ No credit card</span>
+          <span>·</span>
+          <span>✓ Takes 2 minutes</span>
+        </p>
       </div>
 
       <!-- Visualization -->
@@ -116,7 +123,7 @@
                 width="150"
                 height="150"
                 role="img"
-                aria-label="Allocation: Equities 42%, Bonds 25%, Alternatives 18%, Cash 15%"
+                aria-label="Allocation: Equities 42%, Bonds 25%, Alternatives 18%, Real Estate 15%"
               >
                 <defs>
                   <filter id="glow">
@@ -136,7 +143,7 @@
                 <div class="chart-label-item"><div class="chart-label-dot" style="background:#7B2FBE"></div><span>Equities 42%</span></div>
                 <div class="chart-label-item"><div class="chart-label-dot" style="background:#4F46E5"></div><span>Bonds 25%</span></div>
                 <div class="chart-label-item"><div class="chart-label-dot" style="background:#0EA5E9"></div><span>Alts 18%</span></div>
-                <div class="chart-label-item"><div class="chart-label-dot" style="background:#10B981"></div><span>Cash 15%</span></div>
+                <div class="chart-label-item"><div class="chart-label-dot" style="background:#10B981"></div><span>Real Est. 15%</span></div>
               </div>
             </div>
 
@@ -166,7 +173,7 @@
                 </div>
               </div>
 
-              <div class="hero__pos-row">
+              <div class="hero__pos-row" style="border-bottom:none">
                 <div class="hero__pos-avatar" style="background:rgba(156,163,175,0.15);color:#D1D5DB">A</div>
                 <div class="hero__pos-info">
                   <div class="hero__pos-name">Apple</div>
@@ -177,18 +184,6 @@
                 </div>
               </div>
 
-              <div class="hero__pos-row" style="border-bottom:none">
-                <div class="hero__pos-avatar" style="background:rgba(123,47,190,0.15);color:#C084FC">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4" stroke="currentColor" stroke-width="1.2"/><path d="M6 3.5v2.5l1.5 1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-                </div>
-                <div class="hero__pos-info">
-                  <div class="hero__pos-name">CASH</div>
-                  <div class="hero__pos-ticker">5.4% of portfolio</div>
-                </div>
-                <div class="hero__pos-values">
-                  <div class="hero__pos-value">$678</div>
-                </div>
-              </div>
             </div>
 
           </div>
@@ -203,6 +198,44 @@
             <div class="hero__stat-chip__value">5 actions</div>
           </div>
         </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     STATS STRIP
+════════════════════════════════════════════════════════ -->
+<section id="stats" class="stats-strip" aria-label="Platform statistics">
+  <div class="container">
+    <div class="stats-strip__grid">
+
+      <div class="stats-strip__stat" data-reveal style="--i:0">
+        <div class="stats-strip__value" data-count-up="12000" data-suffix="+" data-duration="2000">0</div>
+        <div class="stats-strip__label">people investing with a plan</div>
+      </div>
+
+      <div class="stats-strip__divider" aria-hidden="true"></div>
+
+      <div class="stats-strip__stat" data-reveal style="--i:1">
+        <div class="stats-strip__value">$150M+</div>
+        <div class="stats-strip__label">tracked across all accounts</div>
+      </div>
+
+      <div class="stats-strip__divider" aria-hidden="true"></div>
+
+      <div class="stats-strip__stat" data-reveal style="--i:2">
+        <div class="stats-strip__value" data-count-up="91" data-duration="1800">0</div>
+        <div class="stats-strip__label">avg. portfolio health score</div>
+      </div>
+
+      <div class="stats-strip__divider" aria-hidden="true"></div>
+
+      <div class="stats-strip__stat" data-reveal style="--i:3">
+        <div class="stats-strip__value">2 min</div>
+        <div class="stats-strip__label">to set up your personal plan</div>
       </div>
 
     </div>
@@ -424,7 +457,7 @@
       </p>
     </div>
 
-    <div class="how-it-works__steps">
+    <div class="how-it-works__grid">
 
       <div class="how-step glass-card gradient-border" data-reveal style="--i:0">
         <div class="how-step__number">01</div>
@@ -435,18 +468,18 @@
           </svg>
         </div>
         <div class="how-step__content">
-          <h3 class="how-step__title">Tell us about your goals</h3>
-          <p class="how-step__desc">Answer a few simple questions — how much you can invest each month, what you're saving for, and how comfortable you are with risk. Babylon builds your personal strategy with exact percentages for each type of investment.</p>
+          <h3 class="how-step__title">Tell us your goals</h3>
+          <p class="how-step__desc">Answer a few quick questions about your budget and risk comfort. We build your personal investment strategy — with exact allocation percentages.</p>
         </div>
         <div class="how-step__detail">
           <span class="badge badge--purple">Takes 2 minutes</span>
         </div>
       </div>
 
-      <div class="how-step__connector" aria-hidden="true">
-        <svg width="24" height="48" viewBox="0 0 24 48" fill="none">
-          <path d="M12 0v40" stroke="rgba(123,47,190,0.35)" stroke-width="1.5" stroke-dasharray="4 4"/>
-          <path d="M6 36l6 8 6-8" stroke="#7B2FBE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <div class="how-step__h-connector" aria-hidden="true">
+        <svg width="48" height="24" viewBox="0 0 48 24" fill="none">
+          <path d="M0 12h40" stroke="rgba(123,47,190,0.35)" stroke-width="1.5" stroke-dasharray="4 4"/>
+          <path d="M36 6l8 6-8 6" stroke="#7B2FBE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </div>
 
@@ -460,17 +493,17 @@
         </div>
         <div class="how-step__content">
           <h3 class="how-step__title">Connect your accounts</h3>
-          <p class="how-step__desc">Link your existing brokerage, savings, and investment accounts. Babylon pulls everything into one clear view so you can finally see your full financial picture — no more spreadsheets, no more guessing.</p>
+          <p class="how-step__desc">Link your brokerage, savings, and investments. See your complete financial picture in one place — no more switching between apps or spreadsheets.</p>
         </div>
         <div class="how-step__detail">
-          <span class="badge badge--neutral">Works with 10,000+ institutions</span>
+          <span class="badge badge--neutral">10,000+ institutions</span>
         </div>
       </div>
 
-      <div class="how-step__connector" aria-hidden="true">
-        <svg width="24" height="48" viewBox="0 0 24 48" fill="none">
-          <path d="M12 0v40" stroke="rgba(123,47,190,0.35)" stroke-width="1.5" stroke-dasharray="4 4"/>
-          <path d="M6 36l6 8 6-8" stroke="#7B2FBE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <div class="how-step__h-connector" aria-hidden="true">
+        <svg width="48" height="24" viewBox="0 0 48 24" fill="none">
+          <path d="M0 12h40" stroke="rgba(123,47,190,0.35)" stroke-width="1.5" stroke-dasharray="4 4"/>
+          <path d="M36 6l8 6-8 6" stroke="#7B2FBE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </div>
 
@@ -484,7 +517,7 @@
         </div>
         <div class="how-step__content">
           <h3 class="how-step__title">Follow the plan, grow your wealth</h3>
-          <p class="how-step__desc">Each month, Babylon checks whether your portfolio has drifted from your target. When it does, you get simple, clear instructions: buy a bit more of this, trim a little of that. Small, consistent contributions — compounding over time.</p>
+          <p class="how-step__desc">Each month, Babylon tells you exactly what to buy or sell to stay on target. Small, consistent contributions — compounding over time.</p>
         </div>
         <div class="how-step__detail">
           <span class="badge badge--gain">Beat inflation, month by month</span>
@@ -804,6 +837,60 @@
 
 
 <!-- ═══════════════════════════════════════════════════════
+     TESTIMONIALS
+════════════════════════════════════════════════════════ -->
+<section id="testimonials" class="section">
+  <div class="container">
+
+    <div class="section-header section-header--center" data-reveal>
+      <span class="section-label">Real stories</span>
+      <h2 class="display-2" style="margin-top:16px">People just like you,<br />building real wealth.</h2>
+    </div>
+
+    <div class="testimonials__grid">
+
+      <div class="testimonial glass-card gradient-border" data-reveal style="--i:0">
+        <div class="testimonial__quote" aria-hidden="true">"</div>
+        <p class="testimonial__text">I always thought investing was for rich people or finance nerds. Babylon showed me I could start with £50 a month and actually be building something real.</p>
+        <div class="testimonial__author">
+          <div class="testimonial__avatar" style="background:rgba(123,47,190,0.15);color:#C084FC">S</div>
+          <div>
+            <div class="testimonial__name">Sofia M.</div>
+            <div class="testimonial__role">Nurse, Manchester</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial glass-card gradient-border" data-reveal style="--i:1">
+        <div class="testimonial__quote" aria-hidden="true">"</div>
+        <p class="testimonial__text">The thing I love is it just tells me exactly what to buy. No guessing, no confusion. My portfolio is up 14% since I started — and I barely had to think about it.</p>
+        <div class="testimonial__author">
+          <div class="testimonial__avatar" style="background:rgba(16,185,129,0.15);color:#6EE7B7">M</div>
+          <div>
+            <div class="testimonial__name">Marcus T.</div>
+            <div class="testimonial__role">Logistics driver, Birmingham</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial glass-card gradient-border" data-reveal style="--i:2">
+        <div class="testimonial__quote" aria-hidden="true">"</div>
+        <p class="testimonial__text">I had accounts scattered everywhere and had no idea what I actually owned. Now I open one app, see everything, and know exactly how close I am to my goal.</p>
+        <div class="testimonial__author">
+          <div class="testimonial__avatar" style="background:rgba(14,165,233,0.15);color:#7DD3FC">D</div>
+          <div>
+            <div class="testimonial__name">Diana R.</div>
+            <div class="testimonial__role">Primary school teacher, Leeds</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════
      AI DEEP DIVE
 ════════════════════════════════════════════════════════ -->
 <section id="ai" class="section">
@@ -972,15 +1059,9 @@
 
       <!-- Brand -->
       <div class="footer__brand">
-        <svg viewBox="0 0 188 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Babylon" style="height:26px;margin-bottom:14px">
-          <defs>
-            <linearGradient id="logo-grad-footer" x1="18" y1="2" x2="18" y2="34" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#C084FC"/>
-              <stop offset="100%" stop-color="#6D28D9"/>
-            </linearGradient>
-          </defs>
-          <path d="M18 2L2 34h32L18 2z" stroke="url(#logo-grad-footer)" stroke-width="2" stroke-linejoin="round"/>
-          <text x="50" y="26" font-family="'Sora', system-ui, sans-serif" font-size="18" font-weight="500" fill="#FFFFFF" letter-spacing="0.5">babylon</text>
+        <svg viewBox="0 0 192 38" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Babylon" style="height:26px;margin-bottom:14px">
+          <path d="M3 35 L19 3 L35 35" stroke="rgba(255,255,255,0.9)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="50" y="26" font-family="'Inter', system-ui, sans-serif" font-size="17" font-weight="600" fill="rgba(255,255,255,0.9)" letter-spacing="2">BABYLON</text>
         </svg>
         <p class="footer__link" style="font-size:13px;max-width:28ch">Investing with a plan, built for real people.</p>
       </div>
@@ -990,6 +1071,7 @@
         <div class="footer__nav-title">Product</div>
         <ul class="footer__links">
           <li><a href="#features" class="footer__link">Features</a></li>
+          <li><a href="#how-it-works" class="footer__link">How It Works</a></li>
           <li><a href="#ai" class="footer__link">AI Engine</a></li>
           <li><a href="https://app.bebabylon.com" class="footer__link">Launch App</a></li>
           <li><a href="#" class="footer__link">Pricing</a></li>
