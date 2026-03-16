@@ -621,8 +621,8 @@
   }
 
   .ai__orb {
-    width: 120px;
-    height: 120px;
+    width: 90px;
+    height: 90px;
   }
 
   .orbit-node {
@@ -660,8 +660,8 @@
 }
 
 .ai__orb {
-  width: 160px;
-  height: 160px;
+  width: 110px;
+  height: 110px;
   border-radius: 50%;
   background: radial-gradient(circle at 40% 35%, rgba(157, 78, 221, 0.9), rgba(79, 0, 150, 0.8));
   animation: glowPulse 3.5s ease-in-out infinite;
@@ -681,10 +681,10 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  margin-top: -20px;
-  margin-left: -20px;
-  width: 40px;
-  height: 40px;
+  margin-top: -28px;
+  margin-left: -28px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   background: rgba(22, 22, 50, 0.9);
   border: 1px solid var(--color-border-accent);
@@ -700,15 +700,15 @@
 
 .orbit-node__label {
   font-family: var(--font-mono);
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 700;
   color: var(--color-accent-bright);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
 }
 
 .orbit-node__price {
   font-family: var(--font-mono);
-  font-size: 8px;
+  font-size: 9px;
   color: var(--color-text-muted);
   letter-spacing: 0.02em;
 }
@@ -835,31 +835,42 @@
 .how-it-works__grid {
   display: grid;
   grid-template-columns: 1fr 48px 1fr 48px 1fr;
-  align-items: start;
+  align-items: stretch;
   gap: var(--space-4);
   margin-top: var(--space-12);
 }
 
 .how-step {
   padding: var(--space-7);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
+  display: grid;
+  grid-template-areas:
+    "icon num"
+    "content content"
+    "detail  detail";
+  grid-template-columns: 52px 1fr;
+  grid-template-rows: 52px 1fr auto;
+  gap: var(--space-5) var(--space-3);
   height: 100%;
 }
 
 .how-step__number {
+  grid-area: num;
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.15em;
   color: var(--color-accent-glow);
-  opacity: 0.65;
+  opacity: 0.5;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding-top: 3px;
 }
 
 .how-step__icon {
-  width: 48px;
-  height: 48px;
+  grid-area: icon;
+  width: 52px;
+  height: 52px;
   border-radius: var(--radius-sm);
   background: rgba(123, 47, 190, 0.1);
   border: 1px solid rgba(123, 47, 190, 0.2);
@@ -867,17 +878,17 @@
   align-items: center;
   justify-content: center;
   color: var(--color-accent-glow);
-  flex-shrink: 0;
 }
 
 .how-step__content {
+  grid-area: content;
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-  flex: 1;
 }
 
 .how-step__title {
+  font-family: var(--font-sans);
   font-size: 18px;
   font-weight: 600;
   letter-spacing: -0.012em;
@@ -886,21 +897,25 @@
 }
 
 .how-step__desc {
+  font-family: var(--font-sans);
   font-size: 14px;
   line-height: 1.65;
   color: var(--color-text-muted);
 }
 
 .how-step__detail {
-  margin-top: auto;
+  grid-area: detail;
   padding-top: var(--space-4);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .how-step__h-connector {
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding-top: 72px; /* visually align with icon level */
+  /* icon row = padding-top(28px) + half-icon(26px) = 54px */
+  padding-top: 54px;
+  align-self: start;
 }
 
 @media (max-width: 900px) {
@@ -919,6 +934,13 @@
 @media (max-width: 640px) {
   .how-step {
     padding: var(--space-6);
+    grid-template-columns: 44px 1fr;
+    grid-template-rows: 44px 1fr auto;
+  }
+
+  .how-step__icon {
+    width: 44px;
+    height: 44px;
   }
 }
 
