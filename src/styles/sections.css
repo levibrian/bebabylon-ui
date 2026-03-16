@@ -842,33 +842,26 @@
 
 .how-step {
   padding: var(--space-7);
-  display: grid;
-  grid-template-areas:
-    "icon num"
-    "content content"
-    "detail  detail";
-  grid-template-columns: 52px 1fr;
-  grid-template-rows: 52px 1fr auto;
-  gap: var(--space-5) var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
   height: 100%;
+  position: relative;
 }
 
 .how-step__number {
-  grid-area: num;
+  position: absolute;
+  top: var(--space-6);
+  right: var(--space-6);
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.15em;
   color: var(--color-accent-glow);
-  opacity: 0.5;
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-end;
-  padding-top: 3px;
+  opacity: 0.45;
 }
 
 .how-step__icon {
-  grid-area: icon;
   width: 52px;
   height: 52px;
   border-radius: var(--radius-sm);
@@ -878,13 +871,14 @@
   align-items: center;
   justify-content: center;
   color: var(--color-accent-glow);
+  flex-shrink: 0;
 }
 
 .how-step__content {
-  grid-area: content;
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
+  flex: 1;
 }
 
 .how-step__title {
@@ -904,7 +898,7 @@
 }
 
 .how-step__detail {
-  grid-area: detail;
+  margin-top: auto;
   padding-top: var(--space-4);
   border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
@@ -934,13 +928,6 @@
 @media (max-width: 640px) {
   .how-step {
     padding: var(--space-6);
-    grid-template-columns: 44px 1fr;
-    grid-template-rows: 44px 1fr auto;
-  }
-
-  .how-step__icon {
-    width: 44px;
-    height: 44px;
   }
 }
 
