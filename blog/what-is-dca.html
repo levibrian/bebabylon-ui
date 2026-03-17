@@ -14,10 +14,8 @@
 </head>
 <body>
 
-<!-- Reading progress -->
 <div id="reading-progress" aria-hidden="true"></div>
 
-<!-- ═══ NAVBAR ══════════════════════════════════════════════ -->
 <nav class="navbar">
   <div class="container">
     <div class="navbar__inner">
@@ -50,11 +48,9 @@
 </div>
 
 
-<!-- ═══ ARTICLE ═════════════════════════════════════════════ -->
 <main>
 <article class="article">
 
-  <!-- Back link -->
   <a href="/#blog" class="article__back" data-reveal>
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
       <path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -62,7 +58,6 @@
     Back to articles
   </a>
 
-  <!-- Meta -->
   <div class="article__meta" data-reveal style="--i:1">
     <span class="badge badge--gain">Investing Basics</span>
     <span class="article__read-time">
@@ -74,269 +69,280 @@
     </span>
   </div>
 
-  <!-- Title -->
   <h1 class="article__title" data-reveal style="--i:2">
-    What is DCA and why it's the smartest thing a regular person can do with their money
+    What is DCA<br />and why it works
   </h1>
 
-  <!-- Lead -->
   <p class="article__lead" data-reveal style="--i:3">
-    You don't need to be a financial expert, watch the news every day, or have a lot of money saved up. Dollar-cost averaging is a simple, proven method that turns small, regular investments into real long-term wealth — and the best part is, you don't even have to think about it.
+    You don't need to watch the markets, pick the right moment, or have loads of money. Dollar-cost averaging (DCA) is the one investing habit that works for ordinary people — and the math is surprisingly simple.
   </p>
 
 
-  <!-- Body -->
   <div class="article__body">
 
-    <h2 data-reveal>Let's start with a question</h2>
+    <!-- ── How it works ── -->
+    <h2 data-reveal>The idea in one sentence</h2>
+
+    <p data-reveal>Invest the same fixed amount every month, no matter what the market is doing. That's it.</p>
+
+    <!-- 3-step flow visual -->
+    <div class="article__steps" data-reveal>
+
+      <div class="article__step">
+        <div class="article__step-icon">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+            <rect x="3" y="5" width="16" height="14" rx="2" stroke="white" stroke-width="1.5"/>
+            <path d="M3 9h16M7 3v4M15 3v4" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="article__step-num">01</div>
+        <div class="article__step-title">Pick a date</div>
+        <div class="article__step-desc">Choose a day each month — payday works perfectly.</div>
+      </div>
+
+      <div class="article__step-arrow" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M4 10h12M12 6l4 4-4 4" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <div class="article__step">
+        <div class="article__step-icon">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+            <circle cx="11" cy="11" r="8" stroke="white" stroke-width="1.5"/>
+            <path d="M11 7v4l3 2" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="article__step-num">02</div>
+        <div class="article__step-title">Set a fixed amount</div>
+        <div class="article__step-desc">€50, €100, whatever fits your budget. Same every month.</div>
+      </div>
+
+      <div class="article__step-arrow" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M4 10h12M12 6l4 4-4 4" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <div class="article__step">
+        <div class="article__step-icon" style="background:rgba(16,185,129,0.15);border-color:rgba(16,185,129,0.3)">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+            <path d="M3 16l5-5 4 4 7-9" stroke="#10B981" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="article__step-num" style="color:var(--color-gain)">03</div>
+        <div class="article__step-title">Forget about it</div>
+        <div class="article__step-desc">Let time and compounding do the work. Don't touch it.</div>
+      </div>
+
+    </div>
+
+
+    <!-- ── The numbers ── -->
+    <h2 data-reveal>What actually happens to your money</h2>
 
     <p data-reveal>
-      Imagine you want to invest in something — say, a fund that tracks the global stock market. You have two choices:
+      Here's a real example. You invest €50 every month for 6 months. The market moves up and down — completely normal. Watch what happens:
     </p>
+
+    <!-- Bar chart: shares per month -->
+    <div class="article__chart-card glass-card gradient-border" data-reveal aria-label="Bar chart showing shares bought each month">
+      <div class="article__chart-header">
+        <span class="article__chart-label">Shares bought per month with €50</span>
+        <span class="badge badge--gain">More dip = more shares</span>
+      </div>
+      <div class="article__bar-chart">
+        <div class="article__bar-col">
+          <div class="article__bar-value">5.0</div>
+          <div class="article__bar-wrap">
+            <div class="article__bar" style="height:43%"></div>
+          </div>
+          <div class="article__bar-month">Jan</div>
+          <div class="article__bar-price">€10</div>
+        </div>
+        <div class="article__bar-col">
+          <div class="article__bar-value" style="color:var(--color-gain)">6.25</div>
+          <div class="article__bar-wrap">
+            <div class="article__bar article__bar--gain" style="height:54%"></div>
+          </div>
+          <div class="article__bar-month">Feb</div>
+          <div class="article__bar-price" style="color:var(--color-loss)">€8 ↓</div>
+        </div>
+        <div class="article__bar-col">
+          <div class="article__bar-value" style="color:var(--color-gain);font-weight:800">8.33</div>
+          <div class="article__bar-wrap">
+            <div class="article__bar article__bar--gain" style="height:72%"></div>
+          </div>
+          <div class="article__bar-month">Mar</div>
+          <div class="article__bar-price" style="color:var(--color-loss)">€6 ↓↓</div>
+        </div>
+        <div class="article__bar-col">
+          <div class="article__bar-value">7.14</div>
+          <div class="article__bar-wrap">
+            <div class="article__bar article__bar--gain" style="height:61%"></div>
+          </div>
+          <div class="article__bar-month">Apr</div>
+          <div class="article__bar-price">€7 ↑</div>
+        </div>
+        <div class="article__bar-col">
+          <div class="article__bar-value">5.56</div>
+          <div class="article__bar-wrap">
+            <div class="article__bar" style="height:48%"></div>
+          </div>
+          <div class="article__bar-month">May</div>
+          <div class="article__bar-price">€9 ↑</div>
+        </div>
+        <div class="article__bar-col">
+          <div class="article__bar-value">4.17</div>
+          <div class="article__bar-wrap">
+            <div class="article__bar" style="height:36%"></div>
+          </div>
+          <div class="article__bar-month">Jun</div>
+          <div class="article__bar-price" style="color:var(--color-gain)">€12 ↑↑</div>
+        </div>
+      </div>
+      <p class="article__chart-note">When the price dropped in Feb–Mar, your €50 bought more shares automatically. Those extra shares are the ones that paid off when the market recovered.</p>
+    </div>
+
+    <!-- Result stats -->
+    <div class="article__result-row" data-reveal>
+      <div class="article__result-stat">
+        <div class="article__result-label">You invested</div>
+        <div class="article__result-value">€300</div>
+      </div>
+      <div class="article__result-arrow" aria-hidden="true">→</div>
+      <div class="article__result-stat">
+        <div class="article__result-label">Total shares</div>
+        <div class="article__result-value">36.45</div>
+      </div>
+      <div class="article__result-arrow" aria-hidden="true">→</div>
+      <div class="article__result-stat article__result-stat--gain">
+        <div class="article__result-label">Worth in June (€12)</div>
+        <div class="article__result-value" style="color:var(--color-gain)">€437</div>
+        <div class="article__result-sub">+45.8% return</div>
+      </div>
+    </div>
+
+    <div class="article__callout" data-reveal>
+      <p>The market only went from €10 → €12 — that's 20%. But you made <strong>45.8%</strong>. Why? Because the months when the price crashed, you were quietly accumulating extra shares at a discount.</p>
+    </div>
+
+
+    <!-- ── Comparison ── -->
+    <h2 data-reveal>DCA vs trying to time the market</h2>
 
     <div class="article__compare" data-reveal>
       <div class="article__compare-card">
-        <div class="article__compare-label">Option A</div>
-        <h4>Try to pick the right moment</h4>
-        <p>Wait until you think the market is cheap, then put in a big chunk of money all at once. Hope you timed it right.</p>
+        <div class="article__compare-label">Timing the market</div>
+        <h4>"I'll wait for the right moment"</h4>
+        <div class="article__compare-outcome">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.5" stroke="#F43F5E" stroke-width="1.3"/><path d="M5.5 5.5l5 5M10.5 5.5l-5 5" stroke="#F43F5E" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Most people buy high (when news is good) and sell low (when news is scary).
+        </div>
       </div>
       <div class="article__compare-card article__compare-card--gain">
-        <div class="article__compare-label">Option B — DCA</div>
-        <h4>Invest a fixed amount every month, no matter what</h4>
-        <p>Put in €50, €100, or whatever you can afford — automatically — and completely ignore what the market is doing.</p>
+        <div class="article__compare-label">DCA</div>
+        <h4>"I invest €100 on the 1st, always"</h4>
+        <div class="article__compare-outcome" style="color:var(--color-gain)">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.5" stroke="#10B981" stroke-width="1.3"/><path d="M5 8l2.5 2.5 4-4" stroke="#10B981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Crashes become buying opportunities. No decisions needed. No stress.
+        </div>
       </div>
     </div>
 
-    <p data-reveal>
-      Research consistently shows that <strong>Option B wins</strong> — not just for average people, but even for professional investors. Here's why.
-    </p>
+    <p data-reveal>Studies consistently show that even professional fund managers fail to beat a simple monthly DCA strategy over the long term. The market rewards patience, not cleverness.</p>
 
 
-    <h2 data-reveal>What "dollar-cost averaging" actually means</h2>
+    <!-- ── What DCA won't do ── -->
+    <h2 data-reveal>One important thing to know</h2>
 
-    <p data-reveal>
-      Dollar-cost averaging (DCA) just means: <strong>invest the same amount of money at regular intervals, no matter the price.</strong>
-    </p>
+    <p data-reveal>DCA works best with <strong>diversified funds</strong> — ones that own hundreds of companies at once (like a global index fund). If you DCA into a single company and it goes bust, you still lose everything. Diversification is what makes DCA safe.</p>
 
-    <p data-reveal>
-      That's it. No charts. No news headlines. No guessing. You pick a number — say €100 per month — and you invest it on the same day every month, automatically.
-    </p>
+    <p data-reveal>It's also a long game. DCA over 2 years is fine. Over 20 years, it's life-changing.</p>
 
-    <div class="article__callout" data-reveal>
-      <p><strong>Think of it like a gym membership.</strong> You pay the same amount every month whether you had a great workout or a terrible one. You don't cancel when it's raining and go twice when the sun is out. You just show up. DCA is the same — you just show up with your €100, rain or shine.</p>
+    <!-- Long-term growth visual -->
+    <div class="article__growth-card glass-card gradient-border" data-reveal aria-label="Illustration of €100/month growing over 20 years">
+      <div class="article__chart-header">
+        <span class="article__chart-label">€100/month — 7% average annual return</span>
+      </div>
+      <div class="article__growth-bars">
+        <div class="article__growth-col">
+          <div class="article__growth-bar-wrap">
+            <div class="article__growth-bar" style="height:12%">
+              <div class="article__growth-bar__inner article__growth-bar__invest" style="height:100%"></div>
+            </div>
+          </div>
+          <div class="article__growth-year">5 yrs</div>
+          <div class="article__growth-total">€7,159</div>
+        </div>
+        <div class="article__growth-col">
+          <div class="article__growth-bar-wrap">
+            <div class="article__growth-bar" style="height:32%">
+              <div class="article__growth-bar__inner article__growth-bar__invest" style="height:67%"></div>
+              <div class="article__growth-bar__inner article__growth-bar__gains" style="height:33%"></div>
+            </div>
+          </div>
+          <div class="article__growth-year">10 yrs</div>
+          <div class="article__growth-total">€17,309</div>
+        </div>
+        <div class="article__growth-col">
+          <div class="article__growth-bar-wrap">
+            <div class="article__growth-bar" style="height:60%">
+              <div class="article__growth-bar__inner article__growth-bar__invest" style="height:46%"></div>
+              <div class="article__growth-bar__inner article__growth-bar__gains" style="height:54%"></div>
+            </div>
+          </div>
+          <div class="article__growth-year">15 yrs</div>
+          <div class="article__growth-total">€32,938</div>
+        </div>
+        <div class="article__growth-col">
+          <div class="article__growth-bar-wrap">
+            <div class="article__growth-bar" style="height:100%">
+              <div class="article__growth-bar__inner article__growth-bar__invest" style="height:28%"></div>
+              <div class="article__growth-bar__inner article__growth-bar__gains" style="height:72%"></div>
+            </div>
+          </div>
+          <div class="article__growth-year">20 yrs</div>
+          <div class="article__growth-total">€52,093</div>
+        </div>
+      </div>
+      <div class="article__growth-legend">
+        <span class="article__growth-legend-item">
+          <span class="article__growth-dot" style="background:rgba(255,255,255,0.15)"></span>
+          Your contributions (€24,000 total)
+        </span>
+        <span class="article__growth-legend-item">
+          <span class="article__growth-dot" style="background:var(--color-gain)"></span>
+          Market returns
+        </span>
+      </div>
     </div>
 
-    <p data-reveal>
-      The magic is what happens automatically when you do this. When prices are <strong>high</strong>, your €100 buys fewer shares. When prices are <strong>low</strong>, your €100 buys more shares. You end up naturally buying more of something when it's on sale, and less when it's expensive — without having to think about it at all.
-    </p>
-
-
-    <h2 data-reveal>A simple example with real numbers</h2>
-
-    <p data-reveal>
-      Let's say you invest €50 every month into a stock market fund. Here's what might happen over 6 months:
-    </p>
-
-    <div class="article__table-wrap" data-reveal>
-      <table class="article__table" aria-label="DCA example over 6 months">
-        <thead>
-          <tr>
-            <th>Month</th>
-            <th>Price per share</th>
-            <th>You invest</th>
-            <th>Shares you get</th>
-            <th>Market mood</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="td--highlight">January</td>
-            <td>€10.00</td>
-            <td>€50</td>
-            <td class="td--highlight">5.0</td>
-            <td>Neutral</td>
-          </tr>
-          <tr>
-            <td class="td--highlight">February</td>
-            <td>€8.00</td>
-            <td>€50</td>
-            <td class="td--gain td--highlight">6.25</td>
-            <td>📉 Everyone panicking</td>
-          </tr>
-          <tr>
-            <td class="td--highlight">March</td>
-            <td>€6.00</td>
-            <td>€50</td>
-            <td class="td--gain td--highlight">8.33</td>
-            <td>📉 Market still falling</td>
-          </tr>
-          <tr>
-            <td class="td--highlight">April</td>
-            <td>€7.00</td>
-            <td>€50</td>
-            <td class="td--highlight">7.14</td>
-            <td>Recovering</td>
-          </tr>
-          <tr>
-            <td class="td--highlight">May</td>
-            <td>€9.00</td>
-            <td>€50</td>
-            <td class="td--highlight">5.56</td>
-            <td>📈 Going up</td>
-          </tr>
-          <tr>
-            <td class="td--highlight">June</td>
-            <td>€12.00</td>
-            <td>€50</td>
-            <td class="td--highlight">4.17</td>
-            <td>📈 Back above start</td>
-          </tr>
-          <tr>
-            <td class="td--total">Total</td>
-            <td class="td--total">—</td>
-            <td class="td--total">€300</td>
-            <td class="td--total">36.45 shares</td>
-            <td class="td--total">—</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <p data-reveal>
-      You invested <strong>€300 total</strong> and ended up with <strong>36.45 shares</strong>. At the June price of €12 each, your investment is now worth <strong>€437.40</strong>.
-    </p>
-
-    <p data-reveal>
-      That's a <strong style="color: var(--color-gain)">€137.40 gain (45.8%)</strong> — even though the price only went from €10 to €12 (just 20% up from where you started).
-    </p>
-
-    <div class="article__callout" data-reveal>
-      <p>Why did you do better than 20%? Because you bought extra shares when the price dropped to €6 and €8. Those cheap shares are the ones that paid off the most when the market recovered. <strong>The dip worked in your favour.</strong></p>
-    </div>
-
-
-    <h2 data-reveal>What if you had tried to "time the market" instead?</h2>
-
-    <p data-reveal>
-      Say you had waited to invest all €300 in one go. If you managed to buy at the January price of €10, you'd have 30 shares — worth €360 at June's price. That's still a gain, but <strong>less than the €437 you made with DCA</strong>.
-    </p>
-
-    <p data-reveal>
-      And here's the painful part: most people don't invest at the low. They <em>wait</em>, get nervous, and end up buying when the price is already high — or never buy at all. DCA removes that mistake from the equation entirely.
-    </p>
-
-
-    <h2 data-reveal>Why market crashes become your friend</h2>
-
-    <p data-reveal>
-      This is the part most people find hard to believe — but it's one of the most important ideas in investing.
-    </p>
-
-    <p data-reveal>
-      When the market drops 20% and the news is full of doom, most people panic and stop investing. But if you're doing DCA, a crash just means <strong>your next €100 buys a lot more shares than usual.</strong> You're buying things on sale.
-    </p>
-
-    <div class="article__callout" data-reveal>
-      <p>Imagine your favourite coffee shop drops their price from €5 to €3 a cup. You'd buy more, right? That's exactly what happens when the stock market drops — except most people do the opposite and run away. <strong>DCA keeps you buying when others are running scared.</strong></p>
-    </div>
-
-    <p data-reveal>
-      Over the long term, markets have historically always recovered and gone higher. Every crash in history — 2001, 2008, 2020 — eventually became a recovery. The people who kept investing through those crashes came out ahead.
-    </p>
-
-
-    <h2 data-reveal>Why this is perfect for people with a regular salary</h2>
-
-    <p data-reveal>
-      DCA was basically designed for how most people actually live. You get paid every month. You set aside a portion — whatever you can afford, even €50. It goes in automatically. You forget about it. You get on with your life.
-    </p>
-
-    <div class="article__key" data-reveal>
-      <div class="article__key-title">Why DCA fits your life</div>
-      <ul>
-        <li>You don't need a lot to start — €25 or €50 a month makes a real difference over time</li>
-        <li>You don't need to follow the news or watch markets — in fact, it's better if you don't</li>
-        <li>You don't need to make any decisions once you've set it up</li>
-        <li>A market crash isn't a disaster — it's just more shares for your money</li>
-        <li>You get the benefit of compound growth — your gains start generating their own gains</li>
-      </ul>
-    </div>
-
-
-    <h2 data-reveal>What DCA can't do</h2>
-
-    <p data-reveal>
-      It's important to be honest. DCA is powerful, but it's not magic.
-    </p>
-
-    <p data-reveal>
-      <strong>It doesn't protect you from a bad investment.</strong> If you DCA into one single company and that company goes bankrupt, you still lose. That's why DCA works best with diversified funds — things that own hundreds of companies at once, like an index fund. When one company fails, the others carry on.
-    </p>
-
-    <p data-reveal>
-      <strong>It doesn't guarantee profits.</strong> No strategy does. But over long periods — 10, 20, 30 years — the odds are strongly in your favour if you're investing in a broad market fund and staying consistent.
-    </p>
-
-    <p data-reveal>
-      <strong>You need patience.</strong> DCA is a long game. It's not for people hoping to get rich in six months. It's for people who want to be noticeably better off in 10 years than if they'd never started.
-    </p>
-
-
-    <h2 data-reveal>How much should you invest?</h2>
-
-    <p data-reveal>
-      The honest answer is: <strong>whatever you can afford to leave alone.</strong> Don't invest money you might need next month for rent or groceries. But anything beyond your emergency fund is fair game.
-    </p>
-
-    <p data-reveal>
-      Even €50 a month adds up. At an average annual return of 7% (roughly what diversified global funds have historically returned), €50 a month turns into roughly <strong>€25,000 after 20 years</strong>. You'd have put in €12,000 yourself — the market would have added another €13,000.
-    </p>
-
-    <p data-reveal>
-      Start small. Increase the amount as you earn more. The key is to start.
-    </p>
-
-
-    <h2 data-reveal>The one thing you have to do</h2>
-
-    <p data-reveal>
-      Set it up and don't stop. That's it. The single biggest mistake people make with DCA is panic-stopping when the market drops. That's exactly when you should keep going — because that's when your money buys the most.
-    </p>
-
-    <div class="article__callout" data-reveal>
-      <p><strong>The goal is to be boring.</strong> Boring investors who invest a fixed amount every month, never check their portfolio during crashes, and just wait — they consistently outperform people who try to be clever about it.</p>
-    </div>
-
-    <p data-reveal>
-      Set up an automatic investment. Pick a date — the 1st of every month. Pick an amount. Pick a diversified fund. Then go live your life and let the math work for you.
-    </p>
+    <p data-reveal style="text-align:center;font-size:14px;color:var(--color-text-muted)">You put in €24,000 over 20 years. The market added another €28,000 on top.</p>
 
   </div>
 
 
-  <!-- Key takeaways summary -->
+  <!-- Key takeaways -->
   <div class="article__key" data-reveal>
     <div class="article__key-title">The short version</div>
     <ul>
-      <li>DCA means investing the same amount regularly, no matter what the market does</li>
-      <li>When prices fall, you automatically buy more shares — turning crashes into opportunities</li>
-      <li>You don't need to time the market, watch the news, or make any decisions</li>
-      <li>It works best with diversified funds — not single stocks</li>
-      <li>Start with whatever you can afford. Even €50/month compounds into real wealth over time</li>
-      <li>The hardest part is staying consistent. The reward for doing so is enormous</li>
+      <li>Same amount, every month, automatically — no decisions needed</li>
+      <li>Dips are opportunities: lower prices = more shares for your money</li>
+      <li>Use diversified index funds, not individual stocks</li>
+      <li>Start small. €50/month today beats €500/month "when the time is right"</li>
+      <li>The longer you stay in, the more the market works for you</li>
     </ul>
   </div>
 
 
-  <!-- Article CTA -->
+  <!-- CTA -->
   <div class="article__cta" data-reveal>
     <span class="section-label">Ready to start?</span>
     <h2 class="display-2" style="text-align:center;max-width:18ch">
       Put DCA to work for you — automatically.
     </h2>
-    <p>
-      Babylon builds your personal investment strategy, sets up your DCA plan, and tells you exactly what to invest in — in plain English, no jargon.
-    </p>
+    <p>Babylon builds your personal DCA plan, picks the right funds for your goals, and invests automatically — every month, without you having to think about it.</p>
     <a href="https://app.bebabylon.com" class="neon-btn neon-btn--lg">
       Build my plan — It's Free
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -350,11 +356,9 @@
 </main>
 
 
-<!-- ═══ FOOTER ═══════════════════════════════════════════════ -->
 <footer class="footer">
   <div class="container">
     <div class="footer__grid">
-
       <div class="footer__brand">
         <svg viewBox="0 0 192 38" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Babylon" style="height:26px;margin-bottom:14px">
           <path d="M3 35 L19 3 L35 35" stroke="rgba(255,255,255,0.9)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -362,7 +366,6 @@
         </svg>
         <p class="footer__link" style="font-size:13px;max-width:28ch">Investing with a plan, built for real people.</p>
       </div>
-
       <div>
         <div class="footer__nav-title">Product</div>
         <ul class="footer__links">
@@ -374,7 +377,6 @@
           <li><a href="#" class="footer__link">Changelog</a></li>
         </ul>
       </div>
-
       <div>
         <div class="footer__nav-title">Company</div>
         <ul class="footer__links">
@@ -385,22 +387,15 @@
           <li><a href="#" class="footer__link">Terms</a></li>
         </ul>
       </div>
-
     </div>
-
     <div class="footer__bottom">
       <p class="footer__copy">© 2026 Babylon Technologies, Inc. All rights reserved.</p>
       <div style="display:flex;gap:16px">
         <a href="#" class="footer__link" aria-label="Twitter / X">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-            <path d="M2 2l5.5 7.5L2 16h2l4-5 3.5 5H16L10 8l5.5-6h-2l-3.7 4.3L6 2H2z" fill="currentColor"/>
-          </svg>
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M2 2l5.5 7.5L2 16h2l4-5 3.5 5H16L10 8l5.5-6h-2l-3.7 4.3L6 2H2z" fill="currentColor"/></svg>
         </a>
         <a href="#" class="footer__link" aria-label="LinkedIn">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-            <rect x="2" y="2" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.3"/>
-            <path d="M5 7.5V13M5 5.5v.01M8.5 13v-3a1.5 1.5 0 013 0v3M8.5 9.5V13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
-          </svg>
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><rect x="2" y="2" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M5 7.5V13M5 5.5v.01M8.5 13v-3a1.5 1.5 0 013 0v3M8.5 9.5V13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
         </a>
       </div>
     </div>
