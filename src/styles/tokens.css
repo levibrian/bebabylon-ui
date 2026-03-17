@@ -1,23 +1,23 @@
 :root {
   /* Backgrounds */
-  --color-bg-base:       #0A0A1F;
-  --color-bg-surface:    #161632;
-  --color-bg-elevated:   #1E1E42;
-  --color-bg-ai:         #0D0D22;
+  --color-bg-base:       #080808;
+  --color-bg-surface:    #101010;
+  --color-bg-elevated:   #1A1A1A;
+  --color-bg-ai:         #080808;
 
-  /* Brand */
+  /* Brand — purple stays for CTA buttons only */
   --color-accent:        #7B2FBE;
   --color-accent-glow:   #9D4EDD;
   --color-accent-bright: #B06EE8;
 
   /* Text */
   --color-text-primary:   #FFFFFF;
-  --color-text-secondary: #E8E8F0;
-  --color-text-muted:     #8888AA;
+  --color-text-secondary: #D4D4D4;
+  --color-text-muted:     #666666;
 
   /* Borders */
   --color-border:         rgba(255, 255, 255, 0.08);
-  --color-border-accent:  rgba(123, 47, 190, 0.35);
+  --color-border-accent:  rgba(255, 255, 255, 0.14);
 
   /* Chart */
   --color-chart-1: #7B2FBE;

@@ -12,8 +12,7 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 80% 60% at 70% 40%, rgba(123, 47, 190, 0.14), transparent 70%),
-    radial-gradient(ellipse 50% 40% at 20% 70%, rgba(79, 70, 229, 0.08), transparent 60%);
+    radial-gradient(ellipse 60% 50% at 70% 30%, rgba(255, 255, 255, 0.03), transparent 70%);
   pointer-events: none;
   z-index: 0;
 }
@@ -249,7 +248,7 @@
   position: absolute;
   inset: -40px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(123, 47, 190, 0.08), transparent 70%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.03), transparent 70%);
   pointer-events: none;
   z-index: -1;
 }
@@ -305,7 +304,7 @@
 /* Floating stat chips */
 .hero__stat-chip {
   position: absolute;
-  background: rgba(22, 22, 50, 0.9);
+  background: rgba(18, 18, 18, 0.95);
   border: 1px solid var(--color-border-accent);
   border-radius: var(--radius-sm);
   padding: var(--space-2) var(--space-3);
@@ -352,8 +351,8 @@
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(123, 47, 190, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(123, 47, 190, 0.04) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
   background-size: 48px 48px;
   pointer-events: none;
 }
@@ -453,7 +452,7 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: rgba(22, 22, 50, 0.9);
+  background: rgba(18, 18, 18, 0.95);
   border: 1px solid var(--color-border-accent);
   backdrop-filter: blur(8px);
   display: flex;
@@ -469,7 +468,7 @@
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 700;
-  color: var(--color-accent-bright);
+  color: var(--color-text-secondary);
   letter-spacing: 0.04em;
 }
 
@@ -621,56 +620,41 @@
 }
 
 .strategy__row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-16);
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  text-align: center;
+  gap: var(--space-10);
   margin-top: var(--space-16);
 }
 
+/* reverse row is same as normal in centered layout */
 .strategy__row--reverse {
-  direction: rtl;
-}
-
-.strategy__row--reverse > * {
   direction: ltr;
-}
-
-@media (max-width: 900px) {
-  .strategy__row {
-    grid-template-columns: 1fr;
-    gap: var(--space-10);
-  }
-
-  .strategy__row--reverse {
-    direction: ltr;
-  }
 }
 
 .strategy__copy {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: var(--space-2);
+  max-width: 640px;
+  width: 100%;
 }
 
 .strategy__viz {
   display: flex;
   justify-content: center;
+  width: 100%;
 }
 
 .strategy__feature-card {
   padding: var(--space-6);
   width: 100%;
-  max-width: 440px;
+  max-width: 520px;
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-}
-
-@media (max-width: 900px) {
-  .strategy__feature-card {
-    max-width: 100%;
-  }
 }
 
 /* Step progress indicator */
@@ -691,9 +675,9 @@
 }
 
 .strategy__step-dot--active {
-  background: var(--color-accent);
-  border-color: var(--color-accent-glow);
-  box-shadow: 0 0 8px rgba(123, 47, 190, 0.5);
+  background: var(--color-gain);
+  border-color: var(--color-gain);
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
 }
 
 .strategy__step-line {
@@ -745,9 +729,9 @@
 }
 
 .strategy__q-option--selected {
-  background: rgba(123, 47, 190, 0.1);
-  border-color: var(--color-border-accent);
-  color: var(--color-accent-bright);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: var(--color-text-primary);
 }
 
 /* Allocation result */
@@ -793,6 +777,8 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
+  align-items: flex-start;
+  text-align: left;
 }
 
 .strategy__checklist li {
@@ -867,15 +853,15 @@
 
 .blog-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 0 24px rgba(123, 47, 190, 0.2), var(--shadow-card);
+  box-shadow: 0 0 24px rgba(255, 255, 255, 0.06), var(--shadow-card);
 }
 
 .blog-card:hover::before {
   background: linear-gradient(
     135deg,
-    rgba(123, 47, 190, 0.9) 0%,
-    rgba(255, 255, 255, 0.06) 50%,
-    rgba(123, 47, 190, 0.6) 100%
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0.04) 50%,
+    rgba(255, 255, 255, 0.10) 100%
   );
 }
 
@@ -918,7 +904,7 @@
   gap: var(--space-1);
   font-size: 13px;
   font-weight: 600;
-  color: var(--color-accent-bright);
+  color: var(--color-text-secondary);
   transition: color var(--duration-fast) ease, gap var(--duration-fast) ease;
 }
 

@@ -30,7 +30,7 @@
 }
 
 .navbar.scrolled {
-  background: rgba(10, 10, 31, 0.88);
+  background: rgba(8, 8, 8, 0.92);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--color-border);
@@ -119,7 +119,7 @@
   right: 0;
   z-index: 99;
   padding: calc(var(--space-4) + env(safe-area-inset-top, 0px) + 60px) var(--space-5) var(--space-5);
-  background: rgba(10, 10, 31, 0.97);
+  background: rgba(8, 8, 8, 0.97);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--color-border);
@@ -199,7 +199,7 @@
 
 .bento-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 20px 60px rgba(123, 47, 190, 0.18), var(--shadow-card);
+  box-shadow: 0 20px 60px rgba(255, 255, 255, 0.05), var(--shadow-card);
 }
 
 .bento-card--wide { grid-column: span 2; }
