@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 220" fill="none">
+  <rect width="520" height="220" rx="12" fill="#0D0D28"/>
+
+  <!-- Glow behind sword -->
+  <ellipse cx="200" cy="100" rx="60" ry="90" fill="rgba(157,78,221,0.07)" transform="rotate(-40 200 100)"/>
+
+  <!-- Person (stick figure) -->
+  <!-- Head -->
+  <circle cx="148" cy="64" r="18" stroke="rgba(255,255,255,0.55)" stroke-width="2" fill="rgba(255,255,255,0.04)"/>
+  <!-- Body -->
+  <line x1="148" y1="82" x2="148" y2="148" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
+  <!-- Legs -->
+  <path d="M148 148 L128 188" stroke="rgba(255,255,255,0.5)" stroke-width="2" stroke-linecap="round"/>
+  <path d="M148 148 L168 188" stroke="rgba(255,255,255,0.5)" stroke-width="2" stroke-linecap="round"/>
+  <!-- Arm holding sword (right arm, raised) -->
+  <path d="M148 100 L192 70" stroke="rgba(255,255,255,0.5)" stroke-width="2" stroke-linecap="round"/>
+  <!-- Other arm -->
+  <path d="M148 108 L114 128" stroke="rgba(255,255,255,0.45)" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- SWORD -->
+  <!-- Blade glow -->
+  <path d="M192 70 L268 22" stroke="#9D4EDD" stroke-width="10" stroke-linecap="round" opacity="0.2"/>
+  <!-- Blade -->
+  <path d="M192 70 L268 22" stroke="rgba(255,255,255,0.9)" stroke-width="3" stroke-linecap="round"/>
+  <!-- Guard (crossguard) -->
+  <line x1="180" y1="82" x2="206" y2="60" stroke="rgba(255,255,255,0.6)" stroke-width="4" stroke-linecap="round" transform="rotate(90 193 71)"/>
+  <!-- Handle -->
+  <path d="M192 70 L180 82" stroke="#9D4EDD" stroke-width="5" stroke-linecap="round"/>
+  <!-- Tip glow -->
+  <circle cx="268" cy="22" r="4" fill="white" opacity="0.7"/>
+  <circle cx="268" cy="22" r="8" fill="#9D4EDD" opacity="0.25"/>
+
+  <!-- "NEW SKILL" label on blade -->
+  <text x="222" y="40" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="rgba(255,255,255,0.8)" transform="rotate(-34 222 40)" letter-spacing="1">NEW SKILL</text>
+
+  <!-- Sparkles around sword -->
+  <path d="M250 52 L253 44 L256 52 L248 49 L256 49 Z" fill="#C084FC" opacity="0.7"/>
+  <path d="M292 30 L294 24 L296 30 L290 27 L298 27 Z" fill="#C084FC" opacity="0.5"/>
+  <circle cx="276" cy="60" r="2.5" fill="#C084FC" opacity="0.6"/>
+  <circle cx="240" cy="28" r="2" fill="white" opacity="0.5"/>
+
+  <!-- Monster backing away (right side) -->
+  <ellipse cx="426" cy="148" rx="38" ry="32" fill="#F59E0B"/>
+  <!-- Horns -->
+  <polygon points="410,122 404,102 416,118" fill="#D97706"/>
+  <polygon points="442,122 448,102 436,118" fill="#D97706"/>
+  <!-- Scared eyes (wide open) -->
+  <circle cx="415" cy="140" r="8" fill="#1A1205"/>
+  <circle cx="437" cy="140" r="8" fill="#1A1205"/>
+  <circle cx="418" cy="137" r="3" fill="white"/>
+  <circle cx="440" cy="137" r="3" fill="white"/>
+  <!-- Sweat drop -->
+  <path d="M448 118 Q452 112 449 107 Q446 102 443 107 Q440 112 444 118 Z" fill="#38BDF8" opacity="0.6"/>
+  <!-- Open scared mouth -->
+  <ellipse cx="426" cy="158" rx="9" ry="7" fill="#92400E" opacity="0.8"/>
+  <!-- Arms up (waving, backing away) -->
+  <path d="M390 148 Q378 132 382 120" stroke="#F59E0B" stroke-width="10" stroke-linecap="round"/>
+  <path d="M390 148 Q378 132 382 120" stroke="#D97706" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M462 148 Q474 132 470 120" stroke="#F59E0B" stroke-width="10" stroke-linecap="round"/>
+  <path d="M462 148 Q474 132 470 120" stroke="#D97706" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Motion lines (monster moving back) -->
+  <line x1="476" y1="100" x2="510" y2="100" stroke="rgba(244,63,94,0.25)" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="480" y1="114" x2="514" y2="114" stroke="rgba(244,63,94,0.18)" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="474" y1="86" x2="506" y2="86" stroke="rgba(244,63,94,0.15)" stroke-width="1" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 210" fill="none">
+  <rect width="600" height="210" rx="12" fill="#0D0D28"/>
+
+  <!-- Ground line -->
+  <line x1="30" y1="178" x2="570" y2="178" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+
+  <!-- ══════ YEAR 1: Sprout ══════ -->
+  <!-- Stem -->
+  <line x1="75" y1="178" x2="75" y2="148" stroke="#10B981" stroke-width="2" stroke-linecap="round"/>
+  <!-- Two tiny leaves -->
+  <path d="M75 158 Q60 152 58 140 Q70 140 75 152 Z" fill="#10B981" opacity="0.7"/>
+  <path d="M75 158 Q90 152 92 140 Q80 140 75 152 Z" fill="#10B981" opacity="0.7"/>
+  <!-- Single coin bud -->
+  <circle cx="75" cy="144" r="7" fill="#F59E0B" opacity="0.6" stroke="#D97706" stroke-width="1"/>
+  <text x="75" y="148" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" font-weight="700" fill="#451A00">£</text>
+
+  <!-- Year label -->
+  <text x="75" y="196" text-anchor="middle" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.4)">Year 1</text>
+  <text x="75" y="208" text-anchor="middle" font-family="monospace" font-size="10" font-weight="600" fill="#10B981">£240</text>
+
+  <!-- ══════ YEAR 5: Small tree ══════ -->
+  <!-- Trunk -->
+  <rect x="184" y="148" width="8" height="30" rx="3" fill="rgba(255,255,255,0.2)"/>
+  <!-- Canopy layers -->
+  <polygon points="188,88 158,148 218,148" fill="#10B981" opacity="0.5"/>
+  <polygon points="188,72 162,126 214,126" fill="#10B981" opacity="0.65"/>
+  <polygon points="188,58 167,108 209,108" fill="#10B981" opacity="0.8"/>
+  <!-- Coins hanging -->
+  <circle cx="168" cy="120" r="8" fill="#F59E0B" opacity="0.75" stroke="#D97706" stroke-width="1"/>
+  <text x="168" y="124" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" font-weight="700" fill="#451A00">£</text>
+  <line x1="168" y1="112" x2="168" y2="108" stroke="#D97706" stroke-width="1" opacity="0.6"/>
+  <circle cx="208" cy="128" r="8" fill="#F59E0B" opacity="0.7" stroke="#D97706" stroke-width="1"/>
+  <text x="208" y="132" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" font-weight="700" fill="#451A00">£</text>
+  <line x1="208" y1="120" x2="208" y2="116" stroke="#D97706" stroke-width="1" opacity="0.6"/>
+
+  <text x="188" y="196" text-anchor="middle" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.4)">Year 5</text>
+  <text x="188" y="208" text-anchor="middle" font-family="monospace" font-size="10" font-weight="600" fill="#10B981">£1,432</text>
+
+  <!-- ══════ YEAR 10: Medium tree ══════ -->
+  <!-- Trunk -->
+  <rect x="334" y="136" width="10" height="42" rx="3" fill="rgba(255,255,255,0.25)"/>
+  <!-- Canopy layers -->
+  <polygon points="339,56 298,136 380,136" fill="#10B981" opacity="0.45"/>
+  <polygon points="339,40 304,116 374,116" fill="#10B981" opacity="0.6"/>
+  <polygon points="339,26 310,98 368,98" fill="#10B981" opacity="0.78"/>
+  <!-- More coins -->
+  <circle cx="306" cy="112" r="8" fill="#F59E0B" opacity="0.8" stroke="#D97706" stroke-width="1"/>
+  <text x="306" y="116" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" font-weight="700" fill="#451A00">£</text>
+  <line x1="306" y1="104" x2="306" y2="100" stroke="#D97706" stroke-width="1" opacity="0.6"/>
+  <circle cx="370" cy="118" r="8" fill="#F59E0B" opacity="0.75" stroke="#D97706" stroke-width="1"/>
+  <text x="370" y="122" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" font-weight="700" fill="#451A00">£</text>
+  <line x1="370" y1="110" x2="370" y2="106" stroke="#D97706" stroke-width="1" opacity="0.6"/>
+  <circle cx="322" cy="86" r="7" fill="#F59E0B" opacity="0.65" stroke="#D97706" stroke-width="1"/>
+  <text x="322" y="90" text-anchor="middle" font-family="Inter,sans-serif" font-size="6" font-weight="700" fill="#451A00">£</text>
+  <circle cx="358" cy="76" r="7" fill="#F59E0B" opacity="0.65" stroke="#D97706" stroke-width="1"/>
+  <text x="358" y="80" text-anchor="middle" font-family="Inter,sans-serif" font-size="6" font-weight="700" fill="#451A00">£</text>
+
+  <text x="339" y="196" text-anchor="middle" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.4)">Year 10</text>
+  <text x="339" y="208" text-anchor="middle" font-family="monospace" font-size="10" font-weight="600" fill="#10B981">£3,461</text>
+
+  <!-- ══════ YEAR 20: Full forest ══════ -->
+  <!-- Trunks (3 trees) -->
+  <rect x="475" y="120" width="12" height="58" rx="3" fill="rgba(255,255,255,0.3)"/>
+  <rect x="450" y="132" width="9" height="46" rx="3" fill="rgba(255,255,255,0.2)"/>
+  <rect x="502" y="128" width="9" height="50" rx="3" fill="rgba(255,255,255,0.2)"/>
+  <!-- Big canopy -->
+  <polygon points="481,28 436,120 526,120" fill="#10B981" opacity="0.4"/>
+  <polygon points="481,16 442,100 520,100" fill="#10B981" opacity="0.55"/>
+  <polygon points="481,6 450,84 512,84" fill="#10B981" opacity="0.72"/>
+  <!-- Side canopies -->
+  <polygon points="455,56 424,120 486,120" fill="#10B981" opacity="0.4"/>
+  <polygon points="455,44 430,104 480,104" fill="#10B981" opacity="0.55"/>
+  <polygon points="507,50 476,120 538,120" fill="#10B981" opacity="0.4"/>
+  <polygon points="507,38 482,104 532,104" fill="#10B981" opacity="0.55"/>
+  <!-- Lots of coins -->
+  <circle cx="446" cy="96" r="7.5" fill="#F59E0B" opacity="0.85" stroke="#D97706" stroke-width="1"/>
+  <text x="446" y="100" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" font-weight="700" fill="#451A00">£</text>
+  <circle cx="466" cy="74" r="7" fill="#F59E0B" opacity="0.8" stroke="#D97706" stroke-width="1"/>
+  <text x="466" y="78" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" font-weight="700" fill="#451A00">£</text>
+  <circle cx="496" cy="66" r="7" fill="#F59E0B" opacity="0.8" stroke="#D97706" stroke-width="1"/>
+  <text x="496" y="70" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" font-weight="700" fill="#451A00">£</text>
+  <circle cx="516" cy="84" r="7.5" fill="#F59E0B" opacity="0.85" stroke="#D97706" stroke-width="1"/>
+  <text x="516" y="88" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" font-weight="700" fill="#451A00">£</text>
+  <circle cx="478" cy="44" r="8" fill="#F59E0B" opacity="0.75" stroke="#D97706" stroke-width="1"/>
+  <text x="478" y="48" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" font-weight="700" fill="#451A00">£</text>
+  <circle cx="432" cy="118" r="7" fill="#F59E0B" opacity="0.7" stroke="#D97706" stroke-width="1"/>
+  <text x="432" y="122" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" font-weight="700" fill="#451A00">£</text>
+
+  <!-- Little person underneath, happy -->
+  <circle cx="481" cy="158" r="8" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" fill="rgba(255,255,255,0.05)"/>
+  <circle cx="478" cy="156" r="1.2" fill="rgba(255,255,255,0.6)"/>
+  <circle cx="484" cy="156" r="1.2" fill="rgba(255,255,255,0.6)"/>
+  <path d="M478 161 Q481 164 484 161" stroke="rgba(255,255,255,0.6)" stroke-width="1.2" stroke-linecap="round"/>
+
+  <!-- Tiny defeated monster in corner -->
+  <ellipse cx="554" cy="172" rx="14" ry="11" fill="#F59E0B" opacity="0.5"/>
+  <polygon points="548,163 545,154 551,161" fill="#D97706" opacity="0.5"/>
+  <polygon points="560,163 563,154 557,161" fill="#D97706" opacity="0.5"/>
+  <line x1="549" y1="170" x2="559" y2="170" stroke="#92400E" stroke-width="1.2" opacity="0.5" stroke-linecap="round"/>
+
+  <text x="481" y="196" text-anchor="middle" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.4)">Year 20</text>
+  <text x="481" y="208" text-anchor="middle" font-family="monospace" font-size="10" font-weight="600" fill="#10B981">£10,424</text>
+</svg>

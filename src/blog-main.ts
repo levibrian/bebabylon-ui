@@ -1,7 +1,10 @@
 import './styles/index.css';
+import { inject } from '@vercel/analytics';
 
 import { initNavbar }       from './scripts/navbar';
 import { initScrollReveal } from './scripts/scrollReveal';
+
+inject();
 
 document.addEventListener('DOMContentLoaded', () => {
   initNavbar();

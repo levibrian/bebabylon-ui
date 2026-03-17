@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 220" fill="none">
+  <rect width="580" height="220" rx="12" fill="#0D0D28"/>
+
+  <!-- DIVIDER -->
+  <line x1="290" y1="16" x2="290" y2="206" stroke="rgba(255,255,255,0.06)" stroke-width="1" stroke-dasharray="4 4"/>
+
+  <!-- LEFT: Broken mattress / idle cash -->
+  <text x="145" y="26" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="rgba(255,255,255,0.35)" letter-spacing="1.5">CASH UNDER MATTRESS</text>
+
+  <!-- Mattress shape -->
+  <rect x="52" y="90" width="186" height="76" rx="10" stroke="rgba(255,255,255,0.25)" stroke-width="2" fill="rgba(255,255,255,0.03)"/>
+  <!-- Mattress tufts -->
+  <circle cx="88" cy="118" r="5" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+  <circle cx="145" cy="118" r="5" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+  <circle cx="202" cy="118" r="5" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+  <circle cx="88" cy="142" r="5" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+  <circle cx="145" cy="142" r="5" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+  <circle cx="202" cy="142" r="5" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+
+  <!-- Coins leaking out bottom with loss colour -->
+  <circle cx="108" cy="180" r="9" fill="#F59E0B" opacity="0.7"/>
+  <text x="108" y="184.5" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" font-weight="700" fill="#451A00">£</text>
+  <circle cx="130" cy="192" r="8" fill="#F59E0B" opacity="0.5"/>
+  <text x="130" y="196" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" font-weight="700" fill="#451A00">£</text>
+  <circle cx="154" cy="184" r="7" fill="#F59E0B" opacity="0.4"/>
+  <text x="154" y="188" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" font-weight="700" fill="#451A00">£</text>
+
+  <!-- Monster hand reaching up from below -->
+  <path d="M170 220 Q175 195 172 182" stroke="#F59E0B" stroke-width="12" stroke-linecap="round"/>
+  <path d="M170 220 Q175 195 172 182" stroke="#D97706" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Claws -->
+  <path d="M172 182 Q168 172 166 178" stroke="#D97706" stroke-width="2" stroke-linecap="round"/>
+  <path d="M172 182 Q174 170 178 176" stroke="#D97706" stroke-width="2" stroke-linecap="round"/>
+  <path d="M172 182 Q179 173 182 180" stroke="#D97706" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Loss label -->
+  <rect x="82" y="50" width="122" height="22" rx="5" fill="rgba(244,63,94,0.1)" stroke="rgba(244,63,94,0.3)" stroke-width="1"/>
+  <text x="143" y="65" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#F43F5E">Monster eats 3% / year</text>
+
+  <!-- RIGHT: High-yield shield -->
+  <text x="435" y="26" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#10B981" letter-spacing="1.5">HIGH-YIELD ACCOUNT</text>
+
+  <!-- Shield glow -->
+  <ellipse cx="435" cy="128" rx="68" ry="72" fill="rgba(16,185,129,0.06)"/>
+  <ellipse cx="435" cy="128" rx="55" ry="58" fill="rgba(16,185,129,0.04)"/>
+
+  <!-- Shield shape -->
+  <path d="M435 56 L492 80 L492 132 Q492 168 435 192 Q378 168 378 132 L378 80 Z"
+    stroke="#10B981" stroke-width="2.5" fill="rgba(16,185,129,0.08)"/>
+
+  <!-- £ inside shield -->
+  <text x="435" y="140" text-anchor="middle" font-family="Inter,sans-serif" font-size="40" font-weight="700" fill="#10B981" opacity="0.5">£</text>
+
+  <!-- Coins bouncing off shield (right side) -->
+  <circle cx="506" cy="98" r="9" fill="#F59E0B" opacity="0.8"/>
+  <text x="506" y="102.5" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" font-weight="700" fill="#451A00">£</text>
+  <path d="M497 102 L506 98 L502 92" stroke="#F59E0B" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.5"/>
+
+  <circle cx="514" cy="128" r="8" fill="#F59E0B" opacity="0.6"/>
+  <text x="514" y="132" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" font-weight="700" fill="#451A00">£</text>
+  <path d="M505 130 L514 128 L511 121" stroke="#F59E0B" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.4"/>
+
+  <!-- Monster frustrated, arms up (right of shield) -->
+  <ellipse cx="544" cy="162" rx="22" ry="18" fill="#F59E0B"/>
+  <polygon points="535,148 531,135 540,145" fill="#D97706"/>
+  <polygon points="553,148 557,135 548,145" fill="#D97706"/>
+  <circle cx="537" cy="158" r="4" fill="#1A1205"/>
+  <circle cx="551" cy="158" r="4" fill="#1A1205"/>
+  <circle cx="538.5" cy="156.5" r="1.2" fill="white"/>
+  <circle cx="552.5" cy="156.5" r="1.2" fill="white"/>
+  <!-- Frustrated squiggle mouth -->
+  <path d="M537 167 Q540 164 544 167 Q548 170 551 167" stroke="#92400E" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+  <!-- Arms raised -->
+  <path d="M524 160 Q518 148 522 142" stroke="#F59E0B" stroke-width="7" stroke-linecap="round"/>
+  <path d="M564 160 Q570 148 566 142" stroke="#F59E0B" stroke-width="7" stroke-linecap="round"/>
+
+  <!-- Gain label -->
+  <rect x="356" y="50" width="158" height="22" rx="5" fill="rgba(16,185,129,0.1)" stroke="rgba(16,185,129,0.3)" stroke-width="1"/>
+  <text x="435" y="65" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#10B981">Earns 4–5% / year</text>
+</svg>
