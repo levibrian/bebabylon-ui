@@ -1,467 +1,595 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#080808" />
   <title>Building Your First Investment Portfolio — Babylon</title>
-  <meta name="description" content="Starting your first investment portfolio doesn't have to be complicated. Here's how to build a resilient system in five simple steps — no finance degree required." />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="description"
+    content="Starting your first investment portfolio doesn't have to be complicated. Here's how to build a resilient system in five simple steps — no finance degree required." />
+  <link rel="icon" type="image/png" href="/babylon_logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
+    rel="stylesheet" crossorigin />
   <script type="module" src="/src/blog-main.ts"></script>
 </head>
+
 <body>
 
-<div id="reading-progress" aria-hidden="true"></div>
+  <div id="reading-progress" aria-hidden="true"></div>
 
-<nav class="navbar">
-  <div class="container">
-    <div class="navbar__inner">
-      <a href="/" aria-label="Babylon home">
-        <svg class="navbar__logo" viewBox="0 0 192 38" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Babylon">
-          <defs>
-            <linearGradient id="logo-grad" x1="19" y1="3" x2="19" y2="35" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#C084FC"/>
-              <stop offset="100%" stop-color="#7B2FBE"/>
-            </linearGradient>
-          </defs>
-          <path d="M3 35 L19 3 L35 35" stroke="url(#logo-grad)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <text x="50" y="26" font-family="'Inter', system-ui, sans-serif" font-size="17" font-weight="600" fill="#FFFFFF" letter-spacing="2">BABYLON</text>
+  <nav class="navbar">
+    <div class="container">
+      <div class="navbar__inner">
+        <a href="/" aria-label="Babylon home" style="text-decoration:none; display:flex; align-items:center; gap:0;">
+          <img src="/babylon_logo.png" class="navbar__logo" alt="Babylon Logo" style="mix-blend-mode:lighten" />
+          <span
+            style="margin-left:-18px; font-family:'Inter',system-ui,sans-serif; font-size:17px; font-weight:600; color:#FFFFFF; letter-spacing:2px;">BABYLON</span>
+        </a>
+        <div class="navbar__actions">
+          <a href="https://app.bebabylon.com" class="ghost-btn">Sign In</a>
+          <a href="https://app.bebabylon.com" class="neon-btn">Launch App</a>
+        </div>
+        <button class="navbar__menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
+          <span class="navbar__menu-icon" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="navbar__mobile-nav" id="mobile-nav" role="dialog" aria-label="Navigation menu">
+    <a href="https://app.bebabylon.com" class="neon-btn">Launch App — It's Free</a>
+    <a href="https://app.bebabylon.com" class="ghost-btn">Sign In</a>
+  </div>
+
+
+  <main>
+    <article class="article">
+
+      <a href="/#blog" class="article__back" data-reveal>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+            stroke-linejoin="round" />
         </svg>
+        Back to articles
       </a>
-      <div class="navbar__actions">
-        <a href="https://app.bebabylon.com" class="ghost-btn">Sign In</a>
-        <a href="https://app.bebabylon.com" class="neon-btn">Launch App</a>
-      </div>
-      <button class="navbar__menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
-        <span class="navbar__menu-icon" aria-hidden="true"></span>
-      </button>
-    </div>
-  </div>
-</nav>
 
-<div class="navbar__mobile-nav" id="mobile-nav" role="dialog" aria-label="Navigation menu">
-  <a href="https://app.bebabylon.com" class="neon-btn">Launch App — It's Free</a>
-  <a href="https://app.bebabylon.com" class="ghost-btn">Sign In</a>
-</div>
-
-
-<main>
-<article class="article">
-
-  <a href="/#blog" class="article__back" data-reveal>
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-      <path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-    Back to articles
-  </a>
-
-  <div class="article__meta" data-reveal style="--i:1">
-    <span class="badge badge--gain">Getting Started</span>
-    <span class="article__read-time">
-      <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
-        <circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.2"/>
-        <path d="M6.5 4V6.5l1.5 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-      </svg>
-      7 min read
-    </span>
-  </div>
-
-  <h1 class="article__title" data-reveal style="--i:2">Building Your First Investment Portfolio</h1>
-
-  <p class="article__lead" data-reveal style="--i:3">
-    You've saved your first $1,000. Maybe $5,000. And now you're frozen — overwhelmed by options, afraid of making the wrong move. Here's the thing: a portfolio isn't something Wall Street invented. It's just a plan for your money. And building one is simpler than you think.
-  </p>
-
-
-  <div class="article__body">
-
-    <!-- ── Hook ── -->
-    <h2 data-reveal>The fear of the first trade</h2>
-
-    <p data-reveal>Most people spend more time researching a new phone than they do making their first investment. Not because they don't care about money — but because they're terrified of getting it wrong. They read one article, encounter the word "diversification strategy," and promptly close the tab.</p>
-
-    <p data-reveal>Here's what nobody tells you: <strong>the goal isn't to pick winning stocks.</strong> Professionals with teams of analysts and supercomputers can't reliably do that. Your goal is to build a resilient system — one that grows slowly, weathers storms, and compounds quietly in the background while you get on with your life.</p>
-
-    <p data-reveal>Think of it less like gambling and more like planting a garden. You don't need to know which plant will grow tallest. You just need to plant the right mix, water it occasionally, and stay out of the way.</p>
-
-    <figure data-reveal style="margin:28px 0">
-      <img
-        src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=900&q=80&fit=crop"
-        alt="Person reviewing investment charts on a laptop — building a portfolio is about systems, not stock picking"
-        style="width:100%;border-radius:12px;display:block;aspect-ratio:16/7;object-fit:cover"
-        loading="lazy"
-      />
-    </figure>
-
-
-    <!-- ── Step 1: Asset Allocation ── -->
-    <h2 data-reveal>Step 1 — The "Sleep at Night" test</h2>
-
-    <p data-reveal>Before you buy anything, you need to answer one question: <strong>how much can my money move around without me panic-selling?</strong></p>
-
-    <p data-reveal>That's asset allocation — deciding how to split your money between stocks (high growth, more volatile), bonds (steadier, lower return), and cash (safe, but barely keeps up with inflation). The right split depends almost entirely on <strong>time horizon</strong> — how long before you'll need this money.</p>
-
-    <p data-reveal>If you're 25 and investing for retirement, a bad year in the market is just noise — you have 35+ years for it to recover and then some. If you're 55 and retiring in five years, you can't afford a 40% drop right before you need the money.</p>
-
-    <!-- Allocation table -->
-    <div class="article__chart-card glass-card gradient-border" data-reveal aria-label="Starter portfolio allocations by risk profile">
-      <div class="article__chart-header">
-        <span class="article__chart-label">Starter allocation by time horizon</span>
-        <span class="badge badge--neutral" style="font-family:var(--font-mono);font-size:11px">Rule of thumb</span>
-      </div>
-      <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
-        <table style="width:100%;border-collapse:collapse;font-size:13px;margin-top:8px">
-          <thead>
-            <tr>
-              <th style="text-align:left;padding:10px 12px;color:var(--color-text-muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;border-bottom:1px solid var(--color-border)">Profile</th>
-              <th style="text-align:right;padding:10px 12px;color:var(--color-text-muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;border-bottom:1px solid var(--color-border)">Stocks</th>
-              <th style="text-align:right;padding:10px 12px;color:var(--color-text-muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;border-bottom:1px solid var(--color-border)">Bonds</th>
-              <th style="text-align:right;padding:10px 12px;color:var(--color-text-muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;border-bottom:1px solid var(--color-border)">Cash</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="padding:10px 12px;color:var(--color-text-primary);font-weight:500;border-bottom:1px solid rgba(255,255,255,0.04)">Aggressive — age 20–35, 10+ yr horizon</td>
-              <td style="text-align:right;padding:10px 12px;font-family:var(--font-mono);font-weight:700;color:var(--color-gain);border-bottom:1px solid rgba(255,255,255,0.04)">80%</td>
-              <td style="text-align:right;padding:10px 12px;font-family:var(--font-mono);color:var(--color-text-primary);border-bottom:1px solid rgba(255,255,255,0.04)">15%</td>
-              <td style="text-align:right;padding:10px 12px;font-family:var(--font-mono);color:var(--color-text-muted);border-bottom:1px solid rgba(255,255,255,0.04)">5%</td>
-            </tr>
-            <tr>
-              <td style="padding:10px 12px;color:var(--color-text-primary);font-weight:500;border-bottom:1px solid rgba(255,255,255,0.04)">Moderate — age 35–50, 5–10 yr horizon</td>
-              <td style="text-align:right;padding:10px 12px;font-family:var(--font-mono);font-weight:700;color:var(--color-gain);border-bottom:1px solid rgba(255,255,255,0.04)">60%</td>
-              <td style="text-align:right;padding:10px 12px;font-family:var(--font-mono);color:var(--color-text-primary);border-bottom:1px solid rgba(255,255,255,0.04)">30%</td>
-              <td style="text-align:right;padding:10px 12px;font-family:var(--font-mono);color:var(--color-text-muted);border-bottom:1px solid rgba(255,255,255,0.04)">10%</td>
-            </tr>
-            <tr>
-              <td style="padding:10px 12px;color:var(--color-text-primary);font-weight:500">Conservative — age 50+, under 5 yr horizon</td>
-              <td style="text-align:right;padding:10px 12px;font-family:var(--font-mono);color:var(--color-text-primary)">40%</td>
-              <td style="text-align:right;padding:10px 12px;font-family:var(--font-mono);color:var(--color-text-primary)">45%</td>
-              <td style="text-align:right;padding:10px 12px;font-family:var(--font-mono);color:var(--color-text-primary)">15%</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="article__chart-note">These aren't rules — they're starting points. The right allocation is the one you can stick with when markets get bumpy.</p>
-    </div>
-
-    <div class="article__callout" data-reveal>
-      <p>The "Sleep at Night" test: if you woke up tomorrow and your portfolio had dropped 30%, would you sell everything in a panic? If yes, dial back your stock allocation. <strong>A plan you abandon in a downturn is worse than a conservative plan you stick to forever.</strong></p>
-    </div>
-
-
-    <!-- ── Step 2: Selecting Assets ── -->
-    <h2 data-reveal>Step 2 — Don't pick stocks. Buy the whole market.</h2>
-
-    <p data-reveal>Most first-time investors make the same mistake: they try to find the next big stock. They buy into a company they like, watch it do nothing for two years, and give up on investing entirely. This is the wrong game to play.</p>
-
-    <p data-reveal>For beginners, the answer is almost always the same: <strong>index funds and ETFs</strong> (Exchange Traded Funds). Instead of betting on one company, an index fund owns a slice of hundreds or thousands of companies at once. When you buy a global index ETF, you own a piece of Apple, Microsoft, Nestlé, Samsung, and hundreds more — in a single purchase, with a single click.</p>
-
-    <p data-reveal>Two reasons this wins for beginners. First, <strong>instant diversification</strong> — if one company crashes, it barely affects your overall portfolio. Second, <strong>lower fees</strong> — index funds don't need an expensive fund manager, so they cost a fraction of actively managed funds.</p>
-
-    <div class="article__compare" data-reveal>
-      <div class="article__compare-card">
-        <div class="article__compare-label">Picking individual stocks</div>
-        <h4>"I'll find the next big winner"</h4>
-        <div class="article__compare-outcome">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.5" stroke="#F43F5E" stroke-width="1.3"/><path d="M5.5 5.5l5 5M10.5 5.5l-5 5" stroke="#F43F5E" stroke-width="1.5" stroke-linecap="round"/></svg>
-          Concentrated risk. High fees if managed. Even professionals lose to the index most years.
-        </div>
-      </div>
-      <div class="article__compare-card article__compare-card--gain">
-        <div class="article__compare-label">Global index ETF</div>
-        <h4>"I'll own the whole market"</h4>
-        <div class="article__compare-outcome" style="color:var(--color-gain)">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.5" stroke="#10B981" stroke-width="1.3"/><path d="M5 8l2.5 2.5 4-4" stroke="#10B981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Instant diversification across hundreds of companies. Low fees. Historically 7–10%/year.
-        </div>
-      </div>
-    </div>
-
-    <figure data-reveal style="margin:28px 0">
-      <img
-        src="https://images.unsplash.com/photo-1642790551116-18e150f248e3?w=900&q=80&fit=crop"
-        alt="Stock market charts on a screen — index funds let you own the whole market instead of betting on one company"
-        style="width:100%;border-radius:12px;display:block;aspect-ratio:16/7;object-fit:cover"
-        loading="lazy"
-      />
-    </figure>
-
-
-    <!-- ── Step 3: Fees ── -->
-    <h2 data-reveal>Step 3 — The fee that quietly eats your future</h2>
-
-    <p data-reveal>Every fund charges a fee for managing your money. It's called an <strong>expense ratio</strong> — plain English: the percentage of your investment they take each year as payment. It sounds small. It isn't.</p>
-
-    <p data-reveal>A typical index fund charges around <strong>0.1% per year</strong>. An actively managed fund — where a human is making the decisions — often charges <strong>1% or more</strong>. That 0.9% gap looks tiny. Over 30 years, it's devastating.</p>
-
-    <!-- Fee comparison table -->
-    <div class="article__chart-card glass-card gradient-border" data-reveal aria-label="Fee impact: 0.1% vs 1.0% expense ratio on $10,000 over 30 years">
-      <div class="article__chart-header">
-        <span class="article__chart-label">$10,000 invested — 7% gross return, fees compared</span>
-        <span class="badge badge--neutral" style="font-family:var(--font-mono);font-size:11px">30-year impact</span>
-      </div>
-      <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
-        <table style="width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:13px;margin-top:8px">
-          <thead>
-            <tr>
-              <th style="text-align:left;padding:10px 12px;color:var(--color-text-muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;border-bottom:1px solid var(--color-border)">Fund type</th>
-              <th style="text-align:right;padding:10px 12px;color:var(--color-text-muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;border-bottom:1px solid var(--color-border)">Fee</th>
-              <th style="text-align:right;padding:10px 12px;color:var(--color-text-muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;border-bottom:1px solid var(--color-border)">10 years</th>
-              <th style="text-align:right;padding:10px 12px;color:var(--color-text-muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;border-bottom:1px solid var(--color-border)">20 years</th>
-              <th style="text-align:right;padding:10px 12px;color:var(--color-text-muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;border-bottom:1px solid var(--color-border)">30 years</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="padding:10px 12px;color:var(--color-text-primary);font-weight:500;border-bottom:1px solid rgba(255,255,255,0.04)">Index fund</td>
-              <td style="text-align:right;padding:10px 12px;color:var(--color-gain);border-bottom:1px solid rgba(255,255,255,0.04)">0.1%</td>
-              <td style="text-align:right;padding:10px 12px;color:var(--color-text-primary);border-bottom:1px solid rgba(255,255,255,0.04)">$18,930</td>
-              <td style="text-align:right;padding:10px 12px;color:var(--color-text-primary);border-bottom:1px solid rgba(255,255,255,0.04)">$35,813</td>
-              <td style="text-align:right;padding:10px 12px;font-weight:700;color:var(--color-gain);border-bottom:1px solid rgba(255,255,255,0.04)">$67,781</td>
-            </tr>
-            <tr>
-              <td style="padding:10px 12px;color:var(--color-text-primary);font-weight:500;border-bottom:1px solid rgba(255,255,255,0.04)">Actively managed</td>
-              <td style="text-align:right;padding:10px 12px;color:var(--color-loss);border-bottom:1px solid rgba(255,255,255,0.04)">1.0%</td>
-              <td style="text-align:right;padding:10px 12px;color:var(--color-text-primary);border-bottom:1px solid rgba(255,255,255,0.04)">$17,908</td>
-              <td style="text-align:right;padding:10px 12px;color:var(--color-text-primary);border-bottom:1px solid rgba(255,255,255,0.04)">$32,071</td>
-              <td style="text-align:right;padding:10px 12px;font-weight:700;color:var(--color-loss);border-bottom:1px solid rgba(255,255,255,0.04)">$57,435</td>
-            </tr>
-            <tr>
-              <td style="padding:10px 12px;color:var(--color-text-primary);font-weight:500">Difference</td>
-              <td style="text-align:right;padding:10px 12px;color:var(--color-text-muted)">—</td>
-              <td style="text-align:right;padding:10px 12px;color:var(--color-text-muted)">$1,022</td>
-              <td style="text-align:right;padding:10px 12px;color:var(--color-text-muted)">$3,742</td>
-              <td style="text-align:right;padding:10px 12px;font-weight:700;color:var(--color-loss)">$10,346</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="article__chart-note">Same $10,000. Same 7% market return. The only difference is the fee. After 30 years, the cheaper fund has $10,346 more — just from paying less.</p>
-    </div>
-
-    <div class="article__callout" data-reveal>
-      <p>The fund manager charging 1% doesn't have to beat the market by 1% to break even — they have to beat it by <strong>more than 1% every single year</strong> just to match the cheap index fund. Most years, most of them don't. <strong>Low fees are one of the only edges you can guarantee.</strong></p>
-    </div>
-
-
-    <!-- ── Step 4: Diversification ── -->
-    <h2 data-reveal>Step 4 — Spread further than you think</h2>
-
-    <p data-reveal>You already know "don't put all your eggs in one basket." But most people stop at buying a handful of different stocks and call it done. Real diversification goes deeper.</p>
-
-    <p data-reveal>Think across <strong>sectors</strong>: technology, energy, healthcare, consumer goods, financials. They don't all move together. When tech stocks fell 30% in 2022, energy stocks were up 60%. A portfolio spread across sectors smooths out those swings dramatically.</p>
-
-    <p data-reveal>Then think <strong>geographically</strong>: the US is roughly 60% of the global stock market — but 40% of the world's economic growth happens outside it. Owning international stocks (Europe, Asia, emerging markets) means you're not entirely dependent on one country's economic cycle.</p>
-
-    <!-- 3-step flow -->
-    <div class="article__steps" data-reveal>
-
-      <div class="article__step">
-        <div class="article__step-icon">
-          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
-            <path d="M11 3L4 8v10h4v-5h6v5h4V8L11 3z" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+      <div class="article__meta" data-reveal style="--i:1">
+        <span class="badge badge--gain">Getting Started</span>
+        <span class="article__read-time">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+            <circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.2" />
+            <path d="M6.5 4V6.5l1.5 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" />
           </svg>
-        </div>
-        <div class="article__step-num">01</div>
-        <div class="article__step-title">US Stocks</div>
-        <div class="article__step-desc">The world's largest market. Apple, Microsoft, Amazon. High growth potential.</div>
-      </div>
-
-      <div class="article__step-arrow" aria-hidden="true">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-          <path d="M4 10h12M12 6l4 4-4 4" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
-
-      <div class="article__step">
-        <div class="article__step-icon">
-          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
-            <circle cx="11" cy="11" r="7.5" stroke="white" stroke-width="1.5"/>
-            <path d="M11 3.5C11 3.5 8 8 8 11s3 7.5 3 7.5M11 3.5c0 0 3 4.5 3 7.5s-3 7.5-3 7.5M3.5 11h15" stroke="white" stroke-width="1.2"/>
-          </svg>
-        </div>
-        <div class="article__step-num">02</div>
-        <div class="article__step-title">International</div>
-        <div class="article__step-desc">Europe, Asia, emerging markets. Not correlated with US downturns.</div>
-      </div>
-
-      <div class="article__step-arrow" aria-hidden="true">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-          <path d="M4 10h12M12 6l4 4-4 4" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
-
-      <div class="article__step">
-        <div class="article__step-icon" style="background:rgba(16,185,129,0.15);border-color:rgba(16,185,129,0.3)">
-          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
-            <path d="M4 16h14M6 12h10M8 8h6" stroke="#10B981" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <div class="article__step-num" style="color:var(--color-gain)">03</div>
-        <div class="article__step-title">Bonds &amp; Cash</div>
-        <div class="article__step-desc">Your ballast. Steady income that cushions stock market swings.</div>
-      </div>
-
-    </div>
-
-    <div class="article__callout" data-reveal>
-      <p>A single global index ETF — like one tracking the MSCI World — already covers thousands of companies across 23 countries. <strong>For most beginners, one fund is genuinely enough to be well-diversified.</strong> You don't need ten different holdings to start.</p>
-    </div>
-
-
-    <!-- ── Step 5: Rebalancing ── -->
-    <h2 data-reveal>Step 5 — Your portfolio is a garden. It grows unevenly.</h2>
-
-    <p data-reveal>Here's something nobody mentions until it matters: your portfolio will drift over time. If stocks have a great year and bonds have a flat one, your 60/40 split quietly becomes 72/28 without you doing anything wrong. You're now taking more risk than you planned — because the winners grew faster than the rest.</p>
-
-    <p data-reveal>That's where <strong>rebalancing</strong> comes in. It's not complicated. It's not about timing the market. It just means periodically checking your split and selling a little of what grew too large to buy more of what fell behind — bringing your portfolio back to your original plan.</p>
-
-    <p data-reveal>The simplest rule: <strong>check it once a year on your birthday.</strong> If any part of your portfolio has drifted more than 5–10% from your target, rebalance. If not, close the app and go enjoy your birthday.</p>
-
-    <!-- Drift visualization -->
-    <div class="article__growth-card glass-card gradient-border" data-reveal aria-label="Illustration of portfolio drift after a bull market in stocks">
-      <div class="article__chart-header">
-        <span class="article__chart-label">60/40 portfolio — what drift looks like</span>
-      </div>
-      <div class="article__growth-bars">
-        <div class="article__growth-col">
-          <div class="article__growth-bar-wrap">
-            <div class="article__growth-bar" style="height:60%">
-              <div class="article__growth-bar__inner article__growth-bar__invest" style="height:60%"></div>
-              <div class="article__growth-bar__inner article__growth-bar__gains" style="height:40%"></div>
-            </div>
-          </div>
-          <div class="article__growth-year">Start</div>
-          <div class="article__growth-total">60% stocks</div>
-        </div>
-        <div class="article__growth-col">
-          <div class="article__growth-bar-wrap">
-            <div class="article__growth-bar" style="height:82%">
-              <div class="article__growth-bar__inner article__growth-bar__invest" style="height:42%"></div>
-              <div class="article__growth-bar__inner article__growth-bar__gains" style="height:58%"></div>
-            </div>
-          </div>
-          <div class="article__growth-year">3 yrs later</div>
-          <div class="article__growth-total" style="color:var(--color-loss)">72% stocks</div>
-        </div>
-        <div class="article__growth-col">
-          <div class="article__growth-bar-wrap">
-            <div class="article__growth-bar" style="height:100%">
-              <div class="article__growth-bar__inner article__growth-bar__invest" style="height:60%"></div>
-              <div class="article__growth-bar__inner article__growth-bar__gains" style="height:40%"></div>
-            </div>
-          </div>
-          <div class="article__growth-year">Rebalanced</div>
-          <div class="article__growth-total" style="color:var(--color-gain)">60% stocks ✓</div>
-        </div>
-      </div>
-      <div class="article__growth-legend">
-        <span class="article__growth-legend-item">
-          <span class="article__growth-dot" style="background:rgba(255,255,255,0.15)"></span>
-          Bonds / stable holdings
-        </span>
-        <span class="article__growth-legend-item">
-          <span class="article__growth-dot" style="background:var(--color-gain)"></span>
-          Stocks (grew faster)
+          7 min read
         </span>
       </div>
-    </div>
 
-    <p data-reveal style="text-align:center;font-size:14px;color:var(--color-text-muted)">After a bull run, stocks outgrew the plan. Rebalancing sells a little of the winner and buys back the balance — no panic, no guesswork.</p>
+      <h1 class="article__title" data-reveal style="--i:2">Building Your First Investment Portfolio</h1>
 
-    <div class="article__callout" data-reveal>
-      <p>Rebalancing once a year is not exciting. That's the point. <strong>The investors who do best are usually the ones who interfere the least.</strong> Set your allocation. Check it annually. Stay the course.</p>
-    </div>
-
-  </div>
-
-
-  <!-- Key takeaways -->
-  <div class="article__key" data-reveal>
-    <div class="article__key-title">The short version — 5 things to remember</div>
-    <ul>
-      <li>A portfolio is just a plan — not a Wall Street product. Anyone with $100 can have one.</li>
-      <li>Your time horizon decides how aggressive you should be. Longer runway = more stocks.</li>
-      <li>Index funds beat most professional stock-pickers over the long run — and cost a fraction of the fee.</li>
-      <li>A 0.9% fee difference costs you over $10,000 on a single $10,000 investment over 30 years.</li>
-      <li>Check your portfolio once a year. Rebalance if it drifts. Otherwise, leave it alone.</li>
-    </ul>
-  </div>
+      <p class="article__lead" data-reveal style="--i:3">
+        You've saved your first $1,000. Maybe $5,000. And now you're frozen — overwhelmed by options, afraid of making
+        the wrong move. Here's the thing: a portfolio isn't something Wall Street invented. It's just a plan for your
+        money. And building one is simpler than you think.
+      </p>
 
 
-  <!-- CTA -->
-  <div class="article__cta" data-reveal>
-    <span class="section-label">Your Day 1 plan</span>
-    <h2 class="display-2" style="text-align:center;max-width:20ch">
-      Three moves. One hour. You're invested.
-    </h2>
-    <p>You don't need to figure out the whole system today. You just need to start.</p>
-    <ol style="text-align:left;max-width:38ch;margin:0 auto 28px;padding-left:20px;line-height:2.2;font-size:15px">
-      <li><strong>Open a brokerage account</strong> — most take under 10 minutes</li>
-      <li><strong>Pick one global index fund</strong> — low fee, broadly diversified</li>
-      <li><strong>Set up an auto-deposit</strong> — even $25/month builds a habit</li>
-    </ol>
-    <a href="https://app.bebabylon.com" class="neon-btn neon-btn--lg">
-      Build my portfolio plan — It's Free
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-        <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </a>
-    <p style="font-size:12px;margin-top:0">No credit card. Takes 2 minutes.</p>
-  </div>
+      <div class="article__body">
 
-</article>
-</main>
+        <!-- ── Hook ── -->
+        <h2 data-reveal>The fear of the first trade</h2>
+
+        <p data-reveal>Most people spend more time researching a new phone than they do making their first investment.
+          Not because they don't care about money — but because they're terrified of getting it wrong. They read one
+          article, encounter the word "diversification strategy," and promptly close the tab.</p>
+
+        <p data-reveal>Here's what nobody tells you: <strong>the goal isn't to pick winning stocks.</strong>
+          Professionals with teams of analysts and supercomputers can't reliably do that. Your goal is to build a
+          resilient system — one that grows slowly, weathers storms, and compounds quietly in the background while you
+          get on with your life.</p>
+
+        <p data-reveal>Think of it less like gambling and more like planting a garden. You don't need to know which
+          plant will grow tallest. You just need to plant the right mix, water it occasionally, and stay out of the way.
+        </p>
+
+        <figure data-reveal style="margin:28px 0">
+          <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=900&q=80&fit=crop"
+            alt="Person reviewing investment charts on a laptop — building a portfolio is about systems, not stock picking"
+            style="width:100%;border-radius:12px;display:block;aspect-ratio:16/7;object-fit:cover" loading="lazy" />
+        </figure>
 
 
-<footer class="footer">
-  <div class="container">
-    <div class="footer__grid">
-      <div class="footer__brand">
-        <svg viewBox="0 0 192 38" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Babylon" style="height:26px;margin-bottom:14px">
-          <path d="M3 35 L19 3 L35 35" stroke="rgba(255,255,255,0.9)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <text x="50" y="26" font-family="'Inter', system-ui, sans-serif" font-size="17" font-weight="600" fill="rgba(255,255,255,0.9)" letter-spacing="2">BABYLON</text>
-        </svg>
-        <p class="footer__link" style="font-size:13px;max-width:28ch">Investing with a plan, built for real people.</p>
+        <!-- ── Step 1: Asset Allocation ── -->
+        <h2 data-reveal>Step 1 — The "Sleep at Night" test</h2>
+
+        <p data-reveal>Before you buy anything, you need to answer one question: <strong>how much can my money move
+            around without me panic-selling?</strong></p>
+
+        <p data-reveal>That's asset allocation — deciding how to split your money between stocks (high growth, more
+          volatile), bonds (steadier, lower return), and cash (safe, but barely keeps up with inflation). The right
+          split depends almost entirely on <strong>time horizon</strong> — how long before you'll need this money.</p>
+
+        <p data-reveal>If you're 25 and investing for retirement, a bad year in the market is just noise — you have 35+
+          years for it to recover and then some. If you're 55 and retiring in five years, you can't afford a 40% drop
+          right before you need the money.</p>
+
+        <!-- Allocation table -->
+        <div class="article__chart-card glass-card gradient-border" data-reveal
+          aria-label="Starter portfolio allocations by risk profile">
+          <div class="article__chart-header">
+            <span class="article__chart-label">Starter allocation by time horizon</span>
+            <span class="badge badge--neutral" style="font-family:var(--font-mono);font-size:11px">Rule of thumb</span>
+          </div>
+          <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+            <table style="width:100%;border-collapse:collapse;font-size:13px;margin-top:8px">
+              <thead>
+                <tr>
+                  <th
+                    style="text-align:left;padding:10px 12px;color:var(--color-text-muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;border-bottom:1px solid var(--color-border)">
+                    Profile</th>
+                  <th
+                    style="text-align:right;padding:10px 12px;color:var(--color-text-muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;border-bottom:1px solid var(--color-border)">
+                    Stocks</th>
+                  <th
+                    style="text-align:right;padding:10px 12px;color:var(--color-text-muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;border-bottom:1px solid var(--color-border)">
+                    Bonds</th>
+                  <th
+                    style="text-align:right;padding:10px 12px;color:var(--color-text-muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;border-bottom:1px solid var(--color-border)">
+                    Cash</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td
+                    style="padding:10px 12px;color:var(--color-text-primary);font-weight:500;border-bottom:1px solid rgba(255,255,255,0.04)">
+                    Aggressive — age 20–35, 10+ yr horizon</td>
+                  <td
+                    style="text-align:right;padding:10px 12px;font-family:var(--font-mono);font-weight:700;color:var(--color-gain);border-bottom:1px solid rgba(255,255,255,0.04)">
+                    80%</td>
+                  <td
+                    style="text-align:right;padding:10px 12px;font-family:var(--font-mono);color:var(--color-text-primary);border-bottom:1px solid rgba(255,255,255,0.04)">
+                    15%</td>
+                  <td
+                    style="text-align:right;padding:10px 12px;font-family:var(--font-mono);color:var(--color-text-muted);border-bottom:1px solid rgba(255,255,255,0.04)">
+                    5%</td>
+                </tr>
+                <tr>
+                  <td
+                    style="padding:10px 12px;color:var(--color-text-primary);font-weight:500;border-bottom:1px solid rgba(255,255,255,0.04)">
+                    Moderate — age 35–50, 5–10 yr horizon</td>
+                  <td
+                    style="text-align:right;padding:10px 12px;font-family:var(--font-mono);font-weight:700;color:var(--color-gain);border-bottom:1px solid rgba(255,255,255,0.04)">
+                    60%</td>
+                  <td
+                    style="text-align:right;padding:10px 12px;font-family:var(--font-mono);color:var(--color-text-primary);border-bottom:1px solid rgba(255,255,255,0.04)">
+                    30%</td>
+                  <td
+                    style="text-align:right;padding:10px 12px;font-family:var(--font-mono);color:var(--color-text-muted);border-bottom:1px solid rgba(255,255,255,0.04)">
+                    10%</td>
+                </tr>
+                <tr>
+                  <td style="padding:10px 12px;color:var(--color-text-primary);font-weight:500">Conservative — age 50+,
+                    under 5 yr horizon</td>
+                  <td
+                    style="text-align:right;padding:10px 12px;font-family:var(--font-mono);color:var(--color-text-primary)">
+                    40%</td>
+                  <td
+                    style="text-align:right;padding:10px 12px;font-family:var(--font-mono);color:var(--color-text-primary)">
+                    45%</td>
+                  <td
+                    style="text-align:right;padding:10px 12px;font-family:var(--font-mono);color:var(--color-text-primary)">
+                    15%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="article__chart-note">These aren't rules — they're starting points. The right allocation is the one
+            you can stick with when markets get bumpy.</p>
+        </div>
+
+        <div class="article__callout" data-reveal>
+          <p>The "Sleep at Night" test: if you woke up tomorrow and your portfolio had dropped 30%, would you sell
+            everything in a panic? If yes, dial back your stock allocation. <strong>A plan you abandon in a downturn is
+              worse than a conservative plan you stick to forever.</strong></p>
+        </div>
+
+
+        <!-- ── Step 2: Selecting Assets ── -->
+        <h2 data-reveal>Step 2 — Don't pick stocks. Buy the whole market.</h2>
+
+        <p data-reveal>Most first-time investors make the same mistake: they try to find the next big stock. They buy
+          into a company they like, watch it do nothing for two years, and give up on investing entirely. This is the
+          wrong game to play.</p>
+
+        <p data-reveal>For beginners, the answer is almost always the same: <strong>index funds and ETFs</strong>
+          (Exchange Traded Funds). Instead of betting on one company, an index fund owns a slice of hundreds or
+          thousands of companies at once. When you buy a global index ETF, you own a piece of Apple, Microsoft, Nestlé,
+          Samsung, and hundreds more — in a single purchase, with a single click.</p>
+
+        <p data-reveal>Two reasons this wins for beginners. First, <strong>instant diversification</strong> — if one
+          company crashes, it barely affects your overall portfolio. Second, <strong>lower fees</strong> — index funds
+          don't need an expensive fund manager, so they cost a fraction of actively managed funds.</p>
+
+        <div class="article__compare" data-reveal>
+          <div class="article__compare-card">
+            <div class="article__compare-label">Picking individual stocks</div>
+            <h4>"I'll find the next big winner"</h4>
+            <div class="article__compare-outcome">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <circle cx="8" cy="8" r="6.5" stroke="#F43F5E" stroke-width="1.3" />
+                <path d="M5.5 5.5l5 5M10.5 5.5l-5 5" stroke="#F43F5E" stroke-width="1.5" stroke-linecap="round" />
+              </svg>
+              Concentrated risk. High fees if managed. Even professionals lose to the index most years.
+            </div>
+          </div>
+          <div class="article__compare-card article__compare-card--gain">
+            <div class="article__compare-label">Global index ETF</div>
+            <h4>"I'll own the whole market"</h4>
+            <div class="article__compare-outcome" style="color:var(--color-gain)">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <circle cx="8" cy="8" r="6.5" stroke="#10B981" stroke-width="1.3" />
+                <path d="M5 8l2.5 2.5 4-4" stroke="#10B981" stroke-width="1.5" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+              Instant diversification across hundreds of companies. Low fees. Historically 7–10%/year.
+            </div>
+          </div>
+        </div>
+
+        <figure data-reveal style="margin:28px 0">
+          <img src="https://images.unsplash.com/photo-1642790551116-18e150f248e3?w=900&q=80&fit=crop"
+            alt="Stock market charts on a screen — index funds let you own the whole market instead of betting on one company"
+            style="width:100%;border-radius:12px;display:block;aspect-ratio:16/7;object-fit:cover" loading="lazy" />
+        </figure>
+
+
+        <!-- ── Step 3: Fees ── -->
+        <h2 data-reveal>Step 3 — The fee that quietly eats your future</h2>
+
+        <p data-reveal>Every fund charges a fee for managing your money. It's called an <strong>expense ratio</strong> —
+          plain English: the percentage of your investment they take each year as payment. It sounds small. It isn't.
+        </p>
+
+        <p data-reveal>A typical index fund charges around <strong>0.1% per year</strong>. An actively managed fund —
+          where a human is making the decisions — often charges <strong>1% or more</strong>. That 0.9% gap looks tiny.
+          Over 30 years, it's devastating.</p>
+
+        <!-- Fee comparison table -->
+        <div class="article__chart-card glass-card gradient-border" data-reveal
+          aria-label="Fee impact: 0.1% vs 1.0% expense ratio on $10,000 over 30 years">
+          <div class="article__chart-header">
+            <span class="article__chart-label">$10,000 invested — 7% gross return, fees compared</span>
+            <span class="badge badge--neutral" style="font-family:var(--font-mono);font-size:11px">30-year impact</span>
+          </div>
+          <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+            <table
+              style="width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:13px;margin-top:8px">
+              <thead>
+                <tr>
+                  <th
+                    style="text-align:left;padding:10px 12px;color:var(--color-text-muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;border-bottom:1px solid var(--color-border)">
+                    Fund type</th>
+                  <th
+                    style="text-align:right;padding:10px 12px;color:var(--color-text-muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;border-bottom:1px solid var(--color-border)">
+                    Fee</th>
+                  <th
+                    style="text-align:right;padding:10px 12px;color:var(--color-text-muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;border-bottom:1px solid var(--color-border)">
+                    10 years</th>
+                  <th
+                    style="text-align:right;padding:10px 12px;color:var(--color-text-muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;border-bottom:1px solid var(--color-border)">
+                    20 years</th>
+                  <th
+                    style="text-align:right;padding:10px 12px;color:var(--color-text-muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;border-bottom:1px solid var(--color-border)">
+                    30 years</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td
+                    style="padding:10px 12px;color:var(--color-text-primary);font-weight:500;border-bottom:1px solid rgba(255,255,255,0.04)">
+                    Index fund</td>
+                  <td
+                    style="text-align:right;padding:10px 12px;color:var(--color-gain);border-bottom:1px solid rgba(255,255,255,0.04)">
+                    0.1%</td>
+                  <td
+                    style="text-align:right;padding:10px 12px;color:var(--color-text-primary);border-bottom:1px solid rgba(255,255,255,0.04)">
+                    $18,930</td>
+                  <td
+                    style="text-align:right;padding:10px 12px;color:var(--color-text-primary);border-bottom:1px solid rgba(255,255,255,0.04)">
+                    $35,813</td>
+                  <td
+                    style="text-align:right;padding:10px 12px;font-weight:700;color:var(--color-gain);border-bottom:1px solid rgba(255,255,255,0.04)">
+                    $67,781</td>
+                </tr>
+                <tr>
+                  <td
+                    style="padding:10px 12px;color:var(--color-text-primary);font-weight:500;border-bottom:1px solid rgba(255,255,255,0.04)">
+                    Actively managed</td>
+                  <td
+                    style="text-align:right;padding:10px 12px;color:var(--color-loss);border-bottom:1px solid rgba(255,255,255,0.04)">
+                    1.0%</td>
+                  <td
+                    style="text-align:right;padding:10px 12px;color:var(--color-text-primary);border-bottom:1px solid rgba(255,255,255,0.04)">
+                    $17,908</td>
+                  <td
+                    style="text-align:right;padding:10px 12px;color:var(--color-text-primary);border-bottom:1px solid rgba(255,255,255,0.04)">
+                    $32,071</td>
+                  <td
+                    style="text-align:right;padding:10px 12px;font-weight:700;color:var(--color-loss);border-bottom:1px solid rgba(255,255,255,0.04)">
+                    $57,435</td>
+                </tr>
+                <tr>
+                  <td style="padding:10px 12px;color:var(--color-text-primary);font-weight:500">Difference</td>
+                  <td style="text-align:right;padding:10px 12px;color:var(--color-text-muted)">—</td>
+                  <td style="text-align:right;padding:10px 12px;color:var(--color-text-muted)">$1,022</td>
+                  <td style="text-align:right;padding:10px 12px;color:var(--color-text-muted)">$3,742</td>
+                  <td style="text-align:right;padding:10px 12px;font-weight:700;color:var(--color-loss)">$10,346</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="article__chart-note">Same $10,000. Same 7% market return. The only difference is the fee. After 30
+            years, the cheaper fund has $10,346 more — just from paying less.</p>
+        </div>
+
+        <div class="article__callout" data-reveal>
+          <p>The fund manager charging 1% doesn't have to beat the market by 1% to break even — they have to beat it by
+            <strong>more than 1% every single year</strong> just to match the cheap index fund. Most years, most of them
+            don't. <strong>Low fees are one of the only edges you can guarantee.</strong>
+          </p>
+        </div>
+
+
+        <!-- ── Step 4: Diversification ── -->
+        <h2 data-reveal>Step 4 — Spread further than you think</h2>
+
+        <p data-reveal>You already know "don't put all your eggs in one basket." But most people stop at buying a
+          handful of different stocks and call it done. Real diversification goes deeper.</p>
+
+        <p data-reveal>Think across <strong>sectors</strong>: technology, energy, healthcare, consumer goods,
+          financials. They don't all move together. When tech stocks fell 30% in 2022, energy stocks were up 60%. A
+          portfolio spread across sectors smooths out those swings dramatically.</p>
+
+        <p data-reveal>Then think <strong>geographically</strong>: the US is roughly 60% of the global stock market —
+          but 40% of the world's economic growth happens outside it. Owning international stocks (Europe, Asia, emerging
+          markets) means you're not entirely dependent on one country's economic cycle.</p>
+
+        <!-- 3-step flow -->
+        <div class="article__steps" data-reveal>
+
+          <div class="article__step">
+            <div class="article__step-icon">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+                <path d="M11 3L4 8v10h4v-5h6v5h4V8L11 3z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
+              </svg>
+            </div>
+            <div class="article__step-num">01</div>
+            <div class="article__step-title">US Stocks</div>
+            <div class="article__step-desc">The world's largest market. Apple, Microsoft, Amazon. High growth potential.
+            </div>
+          </div>
+
+          <div class="article__step-arrow" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M4 10h12M12 6l4 4-4 4" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </div>
+
+          <div class="article__step">
+            <div class="article__step-icon">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+                <circle cx="11" cy="11" r="7.5" stroke="white" stroke-width="1.5" />
+                <path d="M11 3.5C11 3.5 8 8 8 11s3 7.5 3 7.5M11 3.5c0 0 3 4.5 3 7.5s-3 7.5-3 7.5M3.5 11h15"
+                  stroke="white" stroke-width="1.2" />
+              </svg>
+            </div>
+            <div class="article__step-num">02</div>
+            <div class="article__step-title">International</div>
+            <div class="article__step-desc">Europe, Asia, emerging markets. Not correlated with US downturns.</div>
+          </div>
+
+          <div class="article__step-arrow" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M4 10h12M12 6l4 4-4 4" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </div>
+
+          <div class="article__step">
+            <div class="article__step-icon" style="background:rgba(16,185,129,0.15);border-color:rgba(16,185,129,0.3)">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+                <path d="M4 16h14M6 12h10M8 8h6" stroke="#10B981" stroke-width="1.5" stroke-linecap="round" />
+              </svg>
+            </div>
+            <div class="article__step-num" style="color:var(--color-gain)">03</div>
+            <div class="article__step-title">Bonds &amp; Cash</div>
+            <div class="article__step-desc">Your ballast. Steady income that cushions stock market swings.</div>
+          </div>
+
+        </div>
+
+        <div class="article__callout" data-reveal>
+          <p>A single global index ETF — like one tracking the MSCI World — already covers thousands of companies across
+            23 countries. <strong>For most beginners, one fund is genuinely enough to be well-diversified.</strong> You
+            don't need ten different holdings to start.</p>
+        </div>
+
+
+        <!-- ── Step 5: Rebalancing ── -->
+        <h2 data-reveal>Step 5 — Your portfolio is a garden. It grows unevenly.</h2>
+
+        <p data-reveal>Here's something nobody mentions until it matters: your portfolio will drift over time. If stocks
+          have a great year and bonds have a flat one, your 60/40 split quietly becomes 72/28 without you doing anything
+          wrong. You're now taking more risk than you planned — because the winners grew faster than the rest.</p>
+
+        <p data-reveal>That's where <strong>rebalancing</strong> comes in. It's not complicated. It's not about timing
+          the market. It just means periodically checking your split and selling a little of what grew too large to buy
+          more of what fell behind — bringing your portfolio back to your original plan.</p>
+
+        <p data-reveal>The simplest rule: <strong>check it once a year on your birthday.</strong> If any part of your
+          portfolio has drifted more than 5–10% from your target, rebalance. If not, close the app and go enjoy your
+          birthday.</p>
+
+        <!-- Drift visualization -->
+        <div class="article__growth-card glass-card gradient-border" data-reveal
+          aria-label="Illustration of portfolio drift after a bull market in stocks">
+          <div class="article__chart-header">
+            <span class="article__chart-label">60/40 portfolio — what drift looks like</span>
+          </div>
+          <div class="article__growth-bars">
+            <div class="article__growth-col">
+              <div class="article__growth-bar-wrap">
+                <div class="article__growth-bar" style="height:60%">
+                  <div class="article__growth-bar__inner article__growth-bar__invest" style="height:60%"></div>
+                  <div class="article__growth-bar__inner article__growth-bar__gains" style="height:40%"></div>
+                </div>
+              </div>
+              <div class="article__growth-year">Start</div>
+              <div class="article__growth-total">60% stocks</div>
+            </div>
+            <div class="article__growth-col">
+              <div class="article__growth-bar-wrap">
+                <div class="article__growth-bar" style="height:82%">
+                  <div class="article__growth-bar__inner article__growth-bar__invest" style="height:42%"></div>
+                  <div class="article__growth-bar__inner article__growth-bar__gains" style="height:58%"></div>
+                </div>
+              </div>
+              <div class="article__growth-year">3 yrs later</div>
+              <div class="article__growth-total" style="color:var(--color-loss)">72% stocks</div>
+            </div>
+            <div class="article__growth-col">
+              <div class="article__growth-bar-wrap">
+                <div class="article__growth-bar" style="height:100%">
+                  <div class="article__growth-bar__inner article__growth-bar__invest" style="height:60%"></div>
+                  <div class="article__growth-bar__inner article__growth-bar__gains" style="height:40%"></div>
+                </div>
+              </div>
+              <div class="article__growth-year">Rebalanced</div>
+              <div class="article__growth-total" style="color:var(--color-gain)">60% stocks ✓</div>
+            </div>
+          </div>
+          <div class="article__growth-legend">
+            <span class="article__growth-legend-item">
+              <span class="article__growth-dot" style="background:rgba(255,255,255,0.15)"></span>
+              Bonds / stable holdings
+            </span>
+            <span class="article__growth-legend-item">
+              <span class="article__growth-dot" style="background:var(--color-gain)"></span>
+              Stocks (grew faster)
+            </span>
+          </div>
+        </div>
+
+        <p data-reveal style="text-align:center;font-size:14px;color:var(--color-text-muted)">After a bull run, stocks
+          outgrew the plan. Rebalancing sells a little of the winner and buys back the balance — no panic, no guesswork.
+        </p>
+
+        <div class="article__callout" data-reveal>
+          <p>Rebalancing once a year is not exciting. That's the point. <strong>The investors who do best are usually
+              the ones who interfere the least.</strong> Set your allocation. Check it annually. Stay the course.</p>
+        </div>
+
       </div>
-      <div>
-        <div class="footer__nav-title">Product</div>
-        <ul class="footer__links">
-          <li><a href="/#strategy" class="footer__link">Strategy</a></li>
-          <li><a href="/#ai" class="footer__link">AI Engine</a></li>
-          <li><a href="/#blog" class="footer__link">Blog</a></li>
-          <li><a href="https://app.bebabylon.com" class="footer__link">Launch App</a></li>
-          <li><a href="#" class="footer__link">Pricing</a></li>
-          <li><a href="#" class="footer__link">Changelog</a></li>
+
+
+      <!-- Key takeaways -->
+      <div class="article__key" data-reveal>
+        <div class="article__key-title">The short version — 5 things to remember</div>
+        <ul>
+          <li>A portfolio is just a plan — not a Wall Street product. Anyone with $100 can have one.</li>
+          <li>Your time horizon decides how aggressive you should be. Longer runway = more stocks.</li>
+          <li>Index funds beat most professional stock-pickers over the long run — and cost a fraction of the fee.</li>
+          <li>A 0.9% fee difference costs you over $10,000 on a single $10,000 investment over 30 years.</li>
+          <li>Check your portfolio once a year. Rebalance if it drifts. Otherwise, leave it alone.</li>
         </ul>
       </div>
-      <div>
-        <div class="footer__nav-title">Company</div>
-        <ul class="footer__links">
-          <li><a href="#" class="footer__link">About</a></li>
-          <li><a href="/#blog" class="footer__link">Blog</a></li>
-          <li><a href="#" class="footer__link">Careers</a></li>
-          <li><a href="#" class="footer__link">Privacy</a></li>
-          <li><a href="#" class="footer__link">Terms</a></li>
-        </ul>
+
+
+      <!-- CTA -->
+      <div class="article__cta" data-reveal>
+        <span class="section-label">Your Day 1 plan</span>
+        <h2 class="display-2" style="text-align:center;max-width:20ch">
+          Three moves. One hour. You're invested.
+        </h2>
+        <p>You don't need to figure out the whole system today. You just need to start.</p>
+        <ol style="text-align:left;max-width:38ch;margin:0 auto 28px;padding-left:20px;line-height:2.2;font-size:15px">
+          <li><strong>Open a brokerage account</strong> — most take under 10 minutes</li>
+          <li><strong>Pick one global index fund</strong> — low fee, broadly diversified</li>
+          <li><strong>Set up an auto-deposit</strong> — even $25/month builds a habit</li>
+        </ol>
+        <a href="https://app.bebabylon.com" class="neon-btn neon-btn--lg">
+          Build my portfolio plan — It's Free
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+        </a>
+        <p style="font-size:12px;margin-top:0">No credit card. Takes 2 minutes.</p>
+      </div>
+
+    </article>
+  </main>
+
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a href="/" aria-label="Babylon home"
+            style="text-decoration:none; display:flex; align-items:center; gap:0; margin-bottom:14px;">
+            <img src="/babylon_logo.png" alt="Babylon Logo" style="height:26px;mix-blend-mode:lighten;opacity:0.85" />
+            <span
+              style="margin-left:-16px; font-family:'Inter',system-ui,sans-serif; font-size:17px; font-weight:600; color:rgba(255,255,255,0.85); letter-spacing:2px;">BABYLON</span>
+          </a>
+          <p class="footer__link" style="font-size:13px;max-width:28ch">Investing with a plan, built for real people.
+          </p>
+        </div>
+        <div>
+          <div class="footer__nav-title">Product</div>
+          <ul class="footer__links">
+            <li><a href="/#strategy" class="footer__link">Strategy</a></li>
+            <li><a href="/#ai" class="footer__link">AI Engine</a></li>
+            <li><a href="/#blog" class="footer__link">Blog</a></li>
+            <li><a href="https://app.bebabylon.com" class="footer__link">Launch App</a></li>
+            <li><a href="#" class="footer__link">Pricing</a></li>
+            <li><a href="#" class="footer__link">Changelog</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer__nav-title">Company</div>
+          <ul class="footer__links">
+            <li><a href="#" class="footer__link">About</a></li>
+            <li><a href="/#blog" class="footer__link">Blog</a></li>
+            <li><a href="#" class="footer__link">Careers</a></li>
+            <li><a href="#" class="footer__link">Privacy</a></li>
+            <li><a href="#" class="footer__link">Terms</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p class="footer__copy">© 2026 Babylon Technologies, Inc. All rights reserved.</p>
+        <div style="display:flex;gap:16px">
+          <a href="#" class="footer__link" aria-label="Twitter / X">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+              <path d="M2 2l5.5 7.5L2 16h2l4-5 3.5 5H16L10 8l5.5-6h-2l-3.7 4.3L6 2H2z" fill="currentColor" />
+            </svg>
+          </a>
+          <a href="#" class="footer__link" aria-label="LinkedIn">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+              <rect x="2" y="2" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.3" />
+              <path d="M5 7.5V13M5 5.5v.01M8.5 13v-3a1.5 1.5 0 013 0v3M8.5 9.5V13" stroke="currentColor"
+                stroke-width="1.3" stroke-linecap="round" />
+            </svg>
+          </a>
+        </div>
       </div>
     </div>
-    <div class="footer__bottom">
-      <p class="footer__copy">© 2026 Babylon Technologies, Inc. All rights reserved.</p>
-      <div style="display:flex;gap:16px">
-        <a href="#" class="footer__link" aria-label="Twitter / X">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M2 2l5.5 7.5L2 16h2l4-5 3.5 5H16L10 8l5.5-6h-2l-3.7 4.3L6 2H2z" fill="currentColor"/></svg>
-        </a>
-        <a href="#" class="footer__link" aria-label="LinkedIn">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><rect x="2" y="2" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M5 7.5V13M5 5.5v.01M8.5 13v-3a1.5 1.5 0 013 0v3M8.5 9.5V13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-        </a>
-      </div>
-    </div>
-  </div>
-</footer>
+  </footer>
 
 </body>
+
 </html>

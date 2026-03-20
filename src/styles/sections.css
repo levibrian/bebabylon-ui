@@ -429,7 +429,7 @@
   width: 110px;
   height: 110px;
   border-radius: 50%;
-  background: radial-gradient(circle at 40% 35%, rgba(157, 78, 221, 0.9), rgba(79, 0, 150, 0.8));
+  background: #080510;
   animation: glowPulse 3.5s ease-in-out infinite;
   position: relative;
   z-index: 2;
