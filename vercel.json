@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    { "source": "/brand", "destination": "/brand.html" },
+    { "source": "/blog/what-is-dca", "destination": "/blog/what-is-dca.html" },
+    { "source": "/blog/beat-inflation", "destination": "/blog/beat-inflation.html" },
+    { "source": "/blog/first-portfolio", "destination": "/blog/first-portfolio.html" }
+  ]
+}
