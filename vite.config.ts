@@ -10,6 +10,7 @@ export default defineConfig({
         'blog-dca': resolve(__dirname, 'blog/what-is-dca.html'),
         'blog-inflation': resolve(__dirname, 'blog/beat-inflation.html'),
         'blog-first-portfolio': resolve(__dirname, 'blog/first-portfolio.html'),
+        brand: resolve(__dirname, 'brand.html'),
       },
     },
   },

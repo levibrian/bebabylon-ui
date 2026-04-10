@@ -77,12 +77,12 @@
 
     .brand-nav__item:hover {
       color: var(--color-text-secondary);
-      background: rgba(255, 255, 255, 0.03);
+      background: color-mix(in srgb, var(--color-text-primary) 3%, transparent);
     }
 
     .brand-nav__item.active {
       color: var(--color-text-primary);
-      background: rgba(123, 47, 190, 0.15);
+      background: color-mix(in srgb, var(--color-accent) 15%, transparent);
     }
 
     .brand-nav__item.active .brand-nav__dot {
