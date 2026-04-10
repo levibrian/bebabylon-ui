@@ -1,3 +1,39 @@
-/* Babylon Design Tokens — imported from @babylon/tokens */
-/* To update: cd ../babylon-tokens && npm run build */
+/* Babylon Design Tokens — shared foundation */
 @import '@babylon/tokens/css';
+
+/* bebabylon.com — site-specific extensions and overrides */
+:root {
+  /* Aliases for variables the marketing site uses by these names */
+  --color-accent-glow:    #9D4EDD;
+  --color-bg-ai:          #080808;
+  --color-border-accent:  rgba(255, 255, 255, 0.14);
+
+  /* Marketing site uses a lighter secondary text than the app */
+  --color-text-secondary: #D4D4D4;
+
+  /* Radius — marketing site uses larger radii than the app's 10px cap */
+  --radius-sm:   6px;
+  --radius-btn:  8px;
+  --radius-card: 16px;
+
+  /* Neon glow shadows — marketing/brand only, not used in the app */
+  --shadow-neon:    0 0 24px rgba(123, 47, 190, 0.6), 0 0 48px rgba(123, 47, 190, 0.3);
+  --shadow-neon-sm: 0 0 12px rgba(123, 47, 190, 0.4);
+
+  /* Extended spacing scale beyond the 4px grid cap */
+  --space-5:  20px;
+  --space-10: 40px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --space-32: 128px;
+
+  /* Motion */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 200ms;
+  --duration-base: 400ms;
+  --duration-slow: 600ms;
+
+  /* Layout */
+  --max-width:       1200px;
+  --section-padding: var(--space-24) var(--space-6);
+}
