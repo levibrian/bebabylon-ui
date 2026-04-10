@@ -102,10 +102,13 @@
     /* ── Content ── */
     .brand-content {
       flex: 1;
-      max-width: 860px;
-      padding: 64px;
       overflow-y: auto;
       height: 100vh;
+    }
+
+    .brand-content__inner {
+      max-width: 860px;
+      padding: 64px;
     }
 
     .brand-section {
@@ -183,6 +186,7 @@
   </nav>
 
   <main class="brand-content" id="brand-content">
+  <div class="brand-content__inner">
     <!-- ── 01 Colours ────────────────────────────────────── -->
     <section class="brand-section" id="colours">
       <div class="brand-section__label">01 — Foundation</div>
@@ -524,6 +528,7 @@
         <div>✗ &nbsp;Do not use logo on busy or coloured backgrounds</div>
       </div>
     </section>
+  </div>
   </main>
 
   <script>
