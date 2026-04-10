@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Babylon — Brand Reference</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" crossorigin />
+  <link rel="stylesheet" href="/src/styles/index.css" />
+  <style>
+    /* Brand page layout — not part of the shared design system */
+    body {
+      display: flex;
+      min-height: 100vh;
+      background: var(--color-bg-base);
+    }
+
+    /* ── Sidebar ── */
+    .brand-sidebar {
+      width: 220px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      background: var(--color-bg-surface);
+      border-right: 1px solid var(--color-border);
+      display: flex;
+      flex-direction: column;
+      padding: 28px 0;
+      overflow-y: auto;
+    }
+
+    .brand-sidebar__header {
+      padding: 0 24px 28px;
+      border-bottom: 1px solid var(--color-border);
+      margin-bottom: 20px;
+    }
+
+    .brand-sidebar__wordmark {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      color: var(--color-text-primary);
+      display: block;
+    }
+
+    .brand-sidebar__label {
+      font-size: 10px;
+      color: var(--color-text-muted);
+      letter-spacing: 0.08em;
+      margin-top: 4px;
+      display: block;
+    }
+
+    .brand-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 0 12px;
+    }
+
+    .brand-nav__item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: var(--radius-md);
+      color: var(--color-text-muted);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--duration-fast) ease;
+      text-decoration: none;
+    }
+
+    .brand-nav__item:hover {
+      color: var(--color-text-secondary);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .brand-nav__item.active {
+      color: var(--color-text-primary);
+      background: rgba(123, 47, 190, 0.15);
+    }
+
+    .brand-nav__item.active .brand-nav__dot {
+      background: var(--color-accent);
+    }
+
+    .brand-nav__dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--color-text-ghost);
+      flex-shrink: 0;
+      transition: background var(--duration-fast) ease;
+    }
+
+    /* ── Content ── */
+    .brand-content {
+      flex: 1;
+      max-width: 860px;
+      padding: 60px 64px;
+      overflow-y: auto;
+      height: 100vh;
+    }
+
+    .brand-section {
+      margin-bottom: 72px;
+      padding-bottom: 72px;
+      border-bottom: 1px solid var(--color-border);
+      scroll-margin-top: 32px;
+    }
+
+    .brand-section:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+
+    .brand-section__label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .brand-section__title {
+      font-size: var(--font-size-heading-1);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-heading-1);
+      color: var(--color-text-primary);
+      margin-bottom: 32px;
+    }
+
+    .brand-subgroup-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="brand-sidebar">
+    <div class="brand-sidebar__header">
+      <span class="brand-sidebar__wordmark">BABYLON</span>
+      <span class="brand-sidebar__label">Brand Reference</span>
+    </div>
+    <div class="brand-nav" id="brand-nav">
+      <a class="brand-nav__item" href="#colours" data-section="colours">
+        <span class="brand-nav__dot"></span>Colours
+      </a>
+      <a class="brand-nav__item" href="#typography" data-section="typography">
+        <span class="brand-nav__dot"></span>Typography
+      </a>
+      <a class="brand-nav__item" href="#spacing" data-section="spacing">
+        <span class="brand-nav__dot"></span>Spacing
+      </a>
+      <a class="brand-nav__item" href="#components" data-section="components">
+        <span class="brand-nav__dot"></span>Components
+      </a>
+      <a class="brand-nav__item" href="#motion" data-section="motion">
+        <span class="brand-nav__dot"></span>Motion
+      </a>
+      <a class="brand-nav__item" href="#tokens" data-section="tokens">
+        <span class="brand-nav__dot"></span>Raw Tokens
+      </a>
+      <a class="brand-nav__item" href="#radii" data-section="radii">
+        <span class="brand-nav__dot"></span>Radii &amp; Shadows
+      </a>
+      <a class="brand-nav__item" href="#logo" data-section="logo">
+        <span class="brand-nav__dot"></span>Logo &amp; Brand
+      </a>
+    </div>
+  </nav>
+
+  <main class="brand-content" id="brand-content">
+    <!-- sections added in subsequent tasks -->
+  </main>
+
+</body>
+</html>
