@@ -431,7 +431,98 @@
       </div>
     </section>
 
-    <!-- sections 05–08 added in Task 4 -->
+    <!-- ── 05 Motion ─────────────────────────────────────── -->
+    <section class="brand-section" id="motion">
+      <div class="brand-section__label">05 — Animation</div>
+      <h2 class="brand-section__title">Motion</h2>
+      <p style="font-size:12px;color:var(--color-text-muted);margin-bottom:24px">
+        Hover each box to feel the easing and duration. All use <span style="font-family:var(--font-mono);color:var(--color-accent)">ease-out-expo</span> — cubic-bezier(0.16, 1, 0.3, 1).
+      </p>
+      <div style="display:flex;gap:24px;flex-wrap:wrap">
+        <div style="text-align:center">
+          <div style="width:80px;height:80px;background:var(--color-accent);border-radius:var(--radius-lg);margin-bottom:8px;transition:transform 200ms cubic-bezier(0.16,1,0.3,1);cursor:pointer"
+               onmouseenter="this.style.transform='scale(1.2)'" onmouseleave="this.style.transform=''"></div>
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted)">--duration-fast</div>
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-ghost);margin-top:2px">200ms</div>
+        </div>
+        <div style="text-align:center">
+          <div style="width:80px;height:80px;background:var(--color-accent);border-radius:var(--radius-lg);margin-bottom:8px;transition:transform 400ms cubic-bezier(0.16,1,0.3,1);cursor:pointer"
+               onmouseenter="this.style.transform='scale(1.2)'" onmouseleave="this.style.transform=''"></div>
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted)">--duration-base</div>
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-ghost);margin-top:2px">400ms</div>
+        </div>
+        <div style="text-align:center">
+          <div style="width:80px;height:80px;background:var(--color-accent);border-radius:var(--radius-lg);margin-bottom:8px;transition:transform 600ms cubic-bezier(0.16,1,0.3,1);cursor:pointer"
+               onmouseenter="this.style.transform='scale(1.2)'" onmouseleave="this.style.transform=''"></div>
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted)">--duration-slow</div>
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-ghost);margin-top:2px">600ms</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 06 Raw Tokens ──────────────────────────────────── -->
+    <section class="brand-section" id="tokens">
+      <div class="brand-section__label">06 — Variables</div>
+      <h2 class="brand-section__title">Raw Tokens</h2>
+      <p style="font-size:12px;color:var(--color-text-muted);margin-bottom:24px">
+        Resolved at runtime via <span style="font-family:var(--font-mono);color:var(--color-accent)">getComputedStyle()</span>. Click any row to copy the token name.
+      </p>
+      <div id="token-list"></div>
+    </section>
+
+    <!-- ── 07 Radii & Shadows ─────────────────────────────── -->
+    <section class="brand-section" id="radii">
+      <div class="brand-section__label">07 — Shape</div>
+      <h2 class="brand-section__title">Radii &amp; Shadows</h2>
+
+      <div class="brand-subgroup-label" style="margin-bottom:20px">Border Radius</div>
+      <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:48px;align-items:flex-end">
+        <div style="text-align:center"><div style="width:72px;height:72px;background:var(--color-bg-elevated);border-radius:2px;margin-bottom:8px"></div><div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted)">xs · 2px</div></div>
+        <div style="text-align:center"><div style="width:72px;height:72px;background:var(--color-bg-elevated);border-radius:4px;margin-bottom:8px"></div><div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted)">sm · 4px</div></div>
+        <div style="text-align:center"><div style="width:72px;height:72px;background:var(--color-bg-elevated);border-radius:6px;margin-bottom:8px"></div><div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted)">md · 6px</div></div>
+        <div style="text-align:center"><div style="width:72px;height:72px;background:var(--color-bg-elevated);border-radius:10px;margin-bottom:8px"></div><div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted)">lg · 10px</div></div>
+        <div style="text-align:center"><div style="width:72px;height:72px;background:var(--color-bg-elevated);border-radius:16px;margin-bottom:8px"></div><div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted)">card · 16px</div></div>
+        <div style="text-align:center"><div style="width:72px;height:72px;background:var(--color-bg-elevated);border-radius:9999px;margin-bottom:8px"></div><div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted)">full</div></div>
+      </div>
+
+      <div class="brand-subgroup-label" style="margin-bottom:20px">Shadows</div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap">
+        <div style="background:var(--color-bg-surface);border-radius:var(--radius-lg);padding:20px 24px;box-shadow:var(--shadow-sm);font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted)">shadow-sm</div>
+        <div style="background:var(--color-bg-surface);border-radius:var(--radius-lg);padding:20px 24px;box-shadow:var(--shadow-card);font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted)">shadow-card</div>
+        <div style="background:var(--color-bg-surface);border-radius:var(--radius-lg);padding:20px 24px;box-shadow:var(--shadow-modal);font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted)">shadow-modal</div>
+        <div style="background:var(--color-bg-surface);border-radius:var(--radius-lg);padding:20px 24px;box-shadow:var(--shadow-neon);font-family:var(--font-mono);font-size:10px;color:var(--color-text-secondary)">shadow-neon</div>
+        <div style="background:var(--color-bg-surface);border-radius:var(--radius-lg);padding:20px 24px;box-shadow:var(--shadow-focus);font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted)">shadow-focus</div>
+      </div>
+    </section>
+
+    <!-- ── 08 Logo & Brand ────────────────────────────────── -->
+    <section class="brand-section" id="logo">
+      <div class="brand-section__label">08 — Identity</div>
+      <h2 class="brand-section__title">Logo &amp; Brand</h2>
+      <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:32px">
+        <div>
+          <div style="font-size:10px;font-weight:600;letter-spacing:0.08em;color:var(--color-text-muted);text-transform:uppercase;margin-bottom:8px">On dark ✓ preferred</div>
+          <div style="background:var(--color-bg-base);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:32px 40px;display:flex;align-items:center;gap:10px">
+            <img src="/babylon_logo.png" alt="Babylon logo" style="height:32px;mix-blend-mode:lighten" />
+            <span style="font-size:17px;font-weight:600;letter-spacing:2px;color:var(--color-text-primary)">BABYLON</span>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:600;letter-spacing:0.08em;color:var(--color-text-muted);text-transform:uppercase;margin-bottom:8px">On light</div>
+          <div style="background:#f0f0f0;border-radius:var(--radius-lg);padding:32px 40px;display:flex;align-items:center;gap:10px">
+            <img src="/babylon_logo.png" alt="Babylon logo" style="height:32px" />
+            <span style="font-size:17px;font-weight:600;letter-spacing:2px;color:#080808">BABYLON</span>
+          </div>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--color-text-muted);line-height:2.2">
+        <div>✓ &nbsp;Always pair orb with BABYLON wordmark</div>
+        <div>✓ &nbsp;Minimum clear space: logo height on all sides</div>
+        <div>✗ &nbsp;Do not recolour the orb</div>
+        <div>✗ &nbsp;Do not use accent purple on body text</div>
+        <div>✗ &nbsp;Do not use logo on busy or coloured backgrounds</div>
+      </div>
+    </section>
   </main>
 
 </body>
