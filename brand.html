@@ -525,5 +525,99 @@
     </section>
   </main>
 
+  <script>
+    // ── Sidebar nav: highlight active section on scroll ──────────
+    const sections = document.querySelectorAll('.brand-section[id]');
+    const navItems = document.querySelectorAll('.brand-nav__item[data-section]');
+    const contentPane = document.getElementById('brand-content');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navItems.forEach(item => {
+            item.classList.toggle('active', item.dataset.section === entry.target.id);
+          });
+        }
+      });
+    }, {
+      root: contentPane,
+      rootMargin: '-10% 0px -75% 0px',
+      threshold: 0
+    });
+
+    sections.forEach(s => observer.observe(s));
+
+    navItems.forEach(item => {
+      item.addEventListener('click', e => {
+        e.preventDefault();
+        document.getElementById(item.dataset.section)
+          ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    // ── Raw tokens: enumerate all CSS vars via getComputedStyle ──
+    const tokenPrefixes = [
+      '--color-', '--font-', '--font-size-', '--font-weight-',
+      '--letter-spacing-', '--line-height-', '--space-',
+      '--radius-', '--shadow-', '--ease-', '--duration-'
+    ];
+
+    const style = getComputedStyle(document.documentElement);
+    const allVars = [];
+
+    for (const sheet of document.styleSheets) {
+      try {
+        for (const rule of sheet.cssRules) {
+          if (rule.style) {
+            for (let i = 0; i < rule.style.length; i++) {
+              const prop = rule.style[i];
+              if (prop.startsWith('--') && tokenPrefixes.some(p => prop.startsWith(p))) {
+                if (!allVars.includes(prop)) allVars.push(prop);
+              }
+            }
+          }
+        }
+      } catch (e) {
+        // Cross-origin stylesheet — skip
+      }
+    }
+
+    allVars.sort();
+
+    const tokenList = document.getElementById('token-list');
+    allVars.forEach(token => {
+      const value = style.getPropertyValue(token).trim();
+
+      const row = document.createElement('div');
+      row.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--color-border);gap:16px;cursor:pointer';
+
+      const nameEl = document.createElement('span');
+      nameEl.style.cssText = 'font-family:var(--font-mono);font-size:11px;color:var(--color-accent)';
+      nameEl.textContent = token;
+
+      const valueEl = document.createElement('span');
+      valueEl.style.cssText = 'font-family:var(--font-mono);font-size:11px;color:var(--color-text-muted);flex:1;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap';
+      valueEl.textContent = value;
+
+      const hint = document.createElement('span');
+      hint.style.cssText = 'font-size:9px;color:var(--color-text-ghost);letter-spacing:0.05em;flex-shrink:0;transition:color 150ms ease';
+      hint.textContent = 'COPY';
+
+      row.appendChild(nameEl);
+      row.appendChild(valueEl);
+      row.appendChild(hint);
+
+      row.addEventListener('mouseenter', () => { hint.style.color = 'var(--color-accent)'; });
+      row.addEventListener('mouseleave', () => { hint.style.color = 'var(--color-text-ghost)'; });
+      row.addEventListener('click', () => {
+        navigator.clipboard.writeText(token);
+        hint.textContent = 'COPIED';
+        hint.style.color = 'var(--color-gain)';
+        setTimeout(() => { hint.textContent = 'COPY'; hint.style.color = 'var(--color-text-ghost)'; }, 1500);
+      });
+
+      tokenList.appendChild(row);
+    });
+  </script>
 </body>
 </html>
