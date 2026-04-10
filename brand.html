@@ -547,6 +547,18 @@
 
     sections.forEach(s => observer.observe(s));
 
+    // Activate the last section when scrolled to the bottom of the content pane
+    // (the final section may be shorter than the 15% activation band)
+    contentPane.addEventListener('scroll', () => {
+      const atBottom = contentPane.scrollTop + contentPane.clientHeight >= contentPane.scrollHeight - 32;
+      if (atBottom) {
+        const lastSection = sections[sections.length - 1];
+        navItems.forEach(item => {
+          item.classList.toggle('active', item.dataset.section === lastSection.id);
+        });
+      }
+    }, { passive: true });
+
     navItems.forEach(item => {
       item.addEventListener('click', e => {
         e.preventDefault();
@@ -556,10 +568,10 @@
     });
 
     // ── Raw tokens: enumerate all CSS vars via getComputedStyle ──
+    // --font- covers --font-size-, --font-weight-, --letter-spacing-, --line-height-
+    // Custom properties declared only on :root (top-level rules), not inside @media blocks
     const tokenPrefixes = [
-      '--color-', '--font-', '--font-size-', '--font-weight-',
-      '--letter-spacing-', '--line-height-', '--space-',
-      '--radius-', '--shadow-', '--ease-', '--duration-'
+      '--color-', '--font-', '--space-', '--radius-', '--shadow-', '--ease-', '--duration-'
     ];
 
     const style = getComputedStyle(document.documentElement);
@@ -610,7 +622,7 @@
       row.addEventListener('mouseenter', () => { hint.style.color = 'var(--color-accent)'; });
       row.addEventListener('mouseleave', () => { hint.style.color = 'var(--color-text-ghost)'; });
       row.addEventListener('click', () => {
-        navigator.clipboard.writeText(token);
+        navigator.clipboard.writeText(token).catch(() => {});
         hint.textContent = 'COPIED';
         hint.style.color = 'var(--color-gain)';
         setTimeout(() => { hint.textContent = 'COPY'; hint.style.color = 'var(--color-text-ghost)'; }, 1500);
