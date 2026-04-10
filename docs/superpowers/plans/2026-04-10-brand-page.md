@@ -1,0 +1,890 @@
+# /brand Page Implementation Plan
+
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+
+**Goal:** Build a hidden `/brand` reference page at `bebabylon.com/brand` that documents the full Babylon visual identity, and fix button font-family to use Inter across the site.
+
+**Architecture:** Single `brand.html` file at project root — Vite auto-discovers it as a multi-page entry. Imports the existing `src/styles/index.css` (no new stylesheets). One inline `<script>` handles nav scroll tracking, dynamic token enumeration via `getComputedStyle`, and copy-to-clipboard. No link to the page from `index.html`.
+
+**Tech Stack:** Vanilla HTML/CSS/JS, Vite (multi-page), `@babylon/tokens` CSS variables
+
+---
+
+## File Map
+
+| Action | File | Purpose |
+|--------|------|---------|
+| Modify | `src/styles/components.css` | Switch `.neon-btn` and `.ghost-btn` from `var(--font-mono)` to `var(--font-sans)` |
+| Create | `brand.html` | Full brand reference page — all 8 sections |
+
+---
+
+## Task 1: Fix button font-family in components.css
+
+**Files:**
+- Modify: `src/styles/components.css`
+
+- [ ] **Step 1: Update `.neon-btn` font**
+
+In `src/styles/components.css`, change the `.neon-btn` rule (currently around line 50):
+
+```css
+/* ─── Neon Button ────────────────────────────────────────── */
+.neon-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 14px 28px;
+  min-height: 44px;
+  background: var(--color-accent);
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  border-radius: var(--radius-btn);
+  transition:
+    background var(--duration-fast) ease,
+    box-shadow var(--duration-fast) ease,
+    transform var(--duration-fast) ease;
+  white-space: nowrap;
+}
+```
+
+Changes: `font-family` → `var(--font-sans)`, `font-weight` → `600`, `letter-spacing` → `-0.01em`.
+
+- [ ] **Step 2: Update `.ghost-btn` font**
+
+Change the `.ghost-btn` rule (currently around line 87):
+
+```css
+/* ─── Ghost Button ───────────────────────────────────────── */
+.ghost-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 13px 24px;
+  min-height: 44px;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-btn);
+  transition:
+    border-color var(--duration-fast) ease,
+    color var(--duration-fast) ease,
+    background var(--duration-fast) ease;
+  white-space: nowrap;
+}
+```
+
+Change: `font-family` → `var(--font-sans)`.
+
+- [ ] **Step 3: Verify visually**
+
+Run `npm run dev` in `bebabylon-ui/`. Open `http://localhost:5173`. The hero CTA buttons should now render in Inter (cleaner, less mechanical than the mono font). No layout breaks.
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add src/styles/components.css
+git commit -m "fix: switch button font-family from mono to Inter
+
+JetBrains Mono is reserved for financial data. Buttons use Inter for
+better legibility and consistency with Checkout.com/Stripe patterns."
+```
+
+---
+
+## Task 2: Create brand.html — layout and sidebar
+
+**Files:**
+- Create: `brand.html`
+
+- [ ] **Step 1: Create the file with page shell, imports, and sidebar**
+
+Create `brand.html` at the project root with the following content:
+
+```html
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Babylon — Brand Reference</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" crossorigin />
+  <link rel="stylesheet" href="/src/styles/index.css" />
+  <style>
+    /* Brand page layout — not part of the shared design system */
+    body {
+      display: flex;
+      min-height: 100vh;
+      background: var(--color-bg-base);
+    }
+
+    /* ── Sidebar ── */
+    .brand-sidebar {
+      width: 220px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      background: var(--color-bg-surface);
+      border-right: 1px solid var(--color-border);
+      display: flex;
+      flex-direction: column;
+      padding: 28px 0;
+      overflow-y: auto;
+    }
+
+    .brand-sidebar__header {
+      padding: 0 24px 28px;
+      border-bottom: 1px solid var(--color-border);
+      margin-bottom: 20px;
+    }
+
+    .brand-sidebar__wordmark {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      color: var(--color-text-primary);
+      display: block;
+    }
+
+    .brand-sidebar__label {
+      font-size: 10px;
+      color: var(--color-text-muted);
+      letter-spacing: 0.08em;
+      margin-top: 4px;
+      display: block;
+    }
+
+    .brand-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 0 12px;
+    }
+
+    .brand-nav__item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: var(--radius-md);
+      color: var(--color-text-muted);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--duration-fast) ease;
+      text-decoration: none;
+    }
+
+    .brand-nav__item:hover {
+      color: var(--color-text-secondary);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .brand-nav__item.active {
+      color: var(--color-text-primary);
+      background: rgba(123, 47, 190, 0.15);
+    }
+
+    .brand-nav__item.active .brand-nav__dot {
+      background: var(--color-accent);
+    }
+
+    .brand-nav__dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--color-text-ghost);
+      flex-shrink: 0;
+      transition: background var(--duration-fast) ease;
+    }
+
+    /* ── Content ── */
+    .brand-content {
+      flex: 1;
+      max-width: 860px;
+      padding: 60px 64px;
+      overflow-y: auto;
+      height: 100vh;
+    }
+
+    .brand-section {
+      margin-bottom: 72px;
+      padding-bottom: 72px;
+      border-bottom: 1px solid var(--color-border);
+      scroll-margin-top: 32px;
+    }
+
+    .brand-section:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+
+    .brand-section__label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .brand-section__title {
+      font-size: var(--font-size-heading-1);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-heading-1);
+      color: var(--color-text-primary);
+      margin-bottom: 32px;
+    }
+
+    .brand-subgroup-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="brand-sidebar">
+    <div class="brand-sidebar__header">
+      <span class="brand-sidebar__wordmark">BABYLON</span>
+      <span class="brand-sidebar__label">Brand Reference</span>
+    </div>
+    <div class="brand-nav" id="brand-nav">
+      <a class="brand-nav__item" href="#colours" data-section="colours">
+        <span class="brand-nav__dot"></span>Colours
+      </a>
+      <a class="brand-nav__item" href="#typography" data-section="typography">
+        <span class="brand-nav__dot"></span>Typography
+      </a>
+      <a class="brand-nav__item" href="#spacing" data-section="spacing">
+        <span class="brand-nav__dot"></span>Spacing
+      </a>
+      <a class="brand-nav__item" href="#components" data-section="components">
+        <span class="brand-nav__dot"></span>Components
+      </a>
+      <a class="brand-nav__item" href="#motion" data-section="motion">
+        <span class="brand-nav__dot"></span>Motion
+      </a>
+      <a class="brand-nav__item" href="#tokens" data-section="tokens">
+        <span class="brand-nav__dot"></span>Raw Tokens
+      </a>
+      <a class="brand-nav__item" href="#radii" data-section="radii">
+        <span class="brand-nav__dot"></span>Radii &amp; Shadows
+      </a>
+      <a class="brand-nav__item" href="#logo" data-section="logo">
+        <span class="brand-nav__dot"></span>Logo &amp; Brand
+      </a>
+    </div>
+  </nav>
+
+  <main class="brand-content" id="brand-content">
+    <!-- sections added in subsequent tasks -->
+  </main>
+
+</body>
+</html>
+```
+
+- [ ] **Step 2: Verify layout renders**
+
+With `npm run dev` running, open `http://localhost:5173/brand`. You should see:
+- Dark background (`#080808`)
+- Left sidebar (220px) with "BABYLON / Brand Reference" header and 8 nav items
+- Empty white content area on the right
+
+- [ ] **Step 3: Commit**
+
+```bash
+git add brand.html
+git commit -m "feat: add brand.html shell with sidebar nav"
+```
+
+---
+
+## Task 3: Add sections 01–04 (Colours, Typography, Spacing, Components)
+
+**Files:**
+- Modify: `brand.html` — replace `<!-- sections added in subsequent tasks -->` with section HTML and add inline styles
+
+- [ ] **Step 1: Add Colours section**
+
+Replace `<!-- sections added in subsequent tasks -->` inside `<main class="brand-content" id="brand-content">` with:
+
+```html
+    <!-- ── 01 Colours ────────────────────────────────────── -->
+    <section class="brand-section" id="colours">
+      <div class="brand-section__label">01 — Foundation</div>
+      <h2 class="brand-section__title">Colours</h2>
+
+      <div class="brand-subgroup-label">Backgrounds</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px;margin-bottom:32px">
+        <div style="border-radius:8px;overflow:hidden;background:var(--color-bg-elevated)">
+          <div style="height:56px;background:#080808"></div>
+          <div style="padding:8px 10px">
+            <div style="font-family:var(--font-mono);font-size:10px;font-weight:600;color:var(--color-text-secondary)">--color-bg-base</div>
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);margin-top:2px">#080808</div>
+          </div>
+        </div>
+        <div style="border-radius:8px;overflow:hidden;background:var(--color-bg-elevated)">
+          <div style="height:56px;background:#101010"></div>
+          <div style="padding:8px 10px">
+            <div style="font-family:var(--font-mono);font-size:10px;font-weight:600;color:var(--color-text-secondary)">--color-bg-surface</div>
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);margin-top:2px">#101010</div>
+          </div>
+        </div>
+        <div style="border-radius:8px;overflow:hidden;background:var(--color-bg-elevated)">
+          <div style="height:56px;background:#1a1a1a;border:1px solid rgba(255,255,255,0.06)"></div>
+          <div style="padding:8px 10px">
+            <div style="font-family:var(--font-mono);font-size:10px;font-weight:600;color:var(--color-text-secondary)">--color-bg-elevated</div>
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);margin-top:2px">#1A1A1A</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="brand-subgroup-label">Text</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px;margin-bottom:32px">
+        <div style="border-radius:8px;overflow:hidden;background:var(--color-bg-elevated)">
+          <div style="height:56px;background:#ffffff;border:1px solid rgba(255,255,255,0.06)"></div>
+          <div style="padding:8px 10px">
+            <div style="font-family:var(--font-mono);font-size:10px;font-weight:600;color:var(--color-text-secondary)">--color-text-primary</div>
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);margin-top:2px">#FFFFFF</div>
+          </div>
+        </div>
+        <div style="border-radius:8px;overflow:hidden;background:var(--color-bg-elevated)">
+          <div style="height:56px;background:#D4D4D4"></div>
+          <div style="padding:8px 10px">
+            <div style="font-family:var(--font-mono);font-size:10px;font-weight:600;color:var(--color-text-secondary)">--color-text-secondary</div>
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);margin-top:2px">#D4D4D4 · site</div>
+          </div>
+        </div>
+        <div style="border-radius:8px;overflow:hidden;background:var(--color-bg-elevated)">
+          <div style="height:56px;background:#a3a3a3"></div>
+          <div style="padding:8px 10px">
+            <div style="font-family:var(--font-mono);font-size:10px;font-weight:600;color:var(--color-text-secondary)">--color-text-secondary</div>
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);margin-top:2px">#A3A3A3 · app</div>
+          </div>
+        </div>
+        <div style="border-radius:8px;overflow:hidden;background:var(--color-bg-elevated)">
+          <div style="height:56px;background:#525252"></div>
+          <div style="padding:8px 10px">
+            <div style="font-family:var(--font-mono);font-size:10px;font-weight:600;color:var(--color-text-secondary)">--color-text-muted</div>
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);margin-top:2px">#525252</div>
+          </div>
+        </div>
+        <div style="border-radius:8px;overflow:hidden;background:var(--color-bg-elevated)">
+          <div style="height:56px;background:#2e2e2e"></div>
+          <div style="padding:8px 10px">
+            <div style="font-family:var(--font-mono);font-size:10px;font-weight:600;color:var(--color-text-secondary)">--color-text-ghost</div>
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);margin-top:2px">#2E2E2E</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="brand-subgroup-label">Interactive &amp; Semantic</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px">
+        <div style="border-radius:8px;overflow:hidden;background:var(--color-bg-elevated)">
+          <div style="height:56px;background:#7B2FBE"></div>
+          <div style="padding:8px 10px">
+            <div style="font-family:var(--font-mono);font-size:10px;font-weight:600;color:var(--color-text-secondary)">--color-accent</div>
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);margin-top:2px">#7B2FBE · interactive</div>
+          </div>
+        </div>
+        <div style="border-radius:8px;overflow:hidden;background:var(--color-bg-elevated)">
+          <div style="height:56px;background:#9D4EDD"></div>
+          <div style="padding:8px 10px">
+            <div style="font-family:var(--font-mono);font-size:10px;font-weight:600;color:var(--color-text-secondary)">--color-accent-hover</div>
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);margin-top:2px">#9D4EDD</div>
+          </div>
+        </div>
+        <div style="border-radius:8px;overflow:hidden;background:var(--color-bg-elevated)">
+          <div style="height:56px;background:#10B981"></div>
+          <div style="padding:8px 10px">
+            <div style="font-family:var(--font-mono);font-size:10px;font-weight:600;color:var(--color-text-secondary)">--color-gain</div>
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);margin-top:2px">#10B981</div>
+          </div>
+        </div>
+        <div style="border-radius:8px;overflow:hidden;background:var(--color-bg-elevated)">
+          <div style="height:56px;background:#F43F5E"></div>
+          <div style="padding:8px 10px">
+            <div style="font-family:var(--font-mono);font-size:10px;font-weight:600;color:var(--color-text-secondary)">--color-loss</div>
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);margin-top:2px">#F43F5E</div>
+          </div>
+        </div>
+        <div style="border-radius:8px;overflow:hidden;background:var(--color-bg-elevated)">
+          <div style="height:56px;background:#F59E0B"></div>
+          <div style="padding:8px 10px">
+            <div style="font-family:var(--font-mono);font-size:10px;font-weight:600;color:var(--color-text-secondary)">--color-warning</div>
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);margin-top:2px">#F59E0B</div>
+          </div>
+        </div>
+        <div style="border-radius:8px;overflow:hidden;background:var(--color-bg-elevated)">
+          <div style="height:56px;background:#818CF8"></div>
+          <div style="padding:8px 10px">
+            <div style="font-family:var(--font-mono);font-size:10px;font-weight:600;color:var(--color-text-secondary)">--color-info</div>
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);margin-top:2px">#818CF8</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 02 Typography ──────────────────────────────────── -->
+    <section class="brand-section" id="typography">
+      <div class="brand-section__label">02 — Type</div>
+      <h2 class="brand-section__title">Typography</h2>
+      <div style="display:flex;flex-direction:column">
+        <div style="display:flex;align-items:baseline;gap:24px;padding:16px 0;border-bottom:1px solid var(--color-border)">
+          <div style="width:160px;flex-shrink:0;font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);line-height:1.6">
+            <span style="display:block">display-1</span><span style="display:block">40px / −0.04em</span><span style="display:block">Inter 600</span>
+          </div>
+          <div style="font-size:40px;font-weight:600;letter-spacing:-0.04em;line-height:1.05;color:var(--color-text-primary)">Wealth, simplified.</div>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:24px;padding:16px 0;border-bottom:1px solid var(--color-border)">
+          <div style="width:160px;flex-shrink:0;font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);line-height:1.6">
+            <span style="display:block">display-2</span><span style="display:block">28px / −0.03em</span><span style="display:block">Inter 600</span>
+          </div>
+          <div style="font-size:28px;font-weight:600;letter-spacing:-0.03em;line-height:1.05;color:var(--color-text-primary)">Portfolio overview</div>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:24px;padding:16px 0;border-bottom:1px solid var(--color-border)">
+          <div style="width:160px;flex-shrink:0;font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);line-height:1.6">
+            <span style="display:block">heading-1</span><span style="display:block">22px / −0.025em</span><span style="display:block">Inter 600</span>
+          </div>
+          <div style="font-size:22px;font-weight:600;letter-spacing:-0.025em;color:var(--color-text-primary)">Your positions</div>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:24px;padding:16px 0;border-bottom:1px solid var(--color-border)">
+          <div style="width:160px;flex-shrink:0;font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);line-height:1.6">
+            <span style="display:block">heading-2</span><span style="display:block">18px / −0.02em</span><span style="display:block">Inter 600</span>
+          </div>
+          <div style="font-size:18px;font-weight:600;letter-spacing:-0.02em;color:var(--color-text-primary)">Allocation breakdown</div>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:24px;padding:16px 0;border-bottom:1px solid var(--color-border)">
+          <div style="width:160px;flex-shrink:0;font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);line-height:1.6">
+            <span style="display:block">body-lg</span><span style="display:block">15px / 1.6lh</span><span style="display:block">Inter 400</span>
+          </div>
+          <div style="font-size:15px;color:var(--color-text-secondary);line-height:1.6">Your portfolio is up 4.2% this month, outperforming the benchmark.</div>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:24px;padding:16px 0;border-bottom:1px solid var(--color-border)">
+          <div style="width:160px;flex-shrink:0;font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);line-height:1.6">
+            <span style="display:block">body</span><span style="display:block">13px / 1.55lh</span><span style="display:block">Inter 400</span>
+          </div>
+          <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.55">Transaction history, notes, and secondary descriptions use this size.</div>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:24px;padding:16px 0;border-bottom:1px solid var(--color-border)">
+          <div style="width:160px;flex-shrink:0;font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);line-height:1.6">
+            <span style="display:block">label</span><span style="display:block">11px / 0.1em ls</span><span style="display:block">Inter 600 · CAPS</span>
+          </div>
+          <div style="font-size:11px;font-weight:600;letter-spacing:0.1em;color:var(--color-text-muted);text-transform:uppercase">Section label</div>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:24px;padding:16px 0">
+          <div style="width:160px;flex-shrink:0;font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);line-height:1.6">
+            <span style="display:block">mono · data only</span><span style="display:block">JetBrains Mono</span><span style="display:block">tabular-nums always</span>
+          </div>
+          <div style="font-family:var(--font-mono);font-size:15px;font-variant-numeric:tabular-nums;color:var(--color-text-primary)">
+            +£12,450.00 <span style="color:var(--color-gain)">+4.21%</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 03 Spacing ─────────────────────────────────────── -->
+    <section class="brand-section" id="spacing">
+      <div class="brand-section__label">03 — Grid</div>
+      <h2 class="brand-section__title">Spacing</h2>
+      <p style="font-size:12px;color:var(--color-text-muted);margin-bottom:28px">4px base grid. All values are multiples of 4.</p>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:16px"><span style="width:80px;font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);flex-shrink:0">--space-1</span><div style="height:6px;width:4px;background:var(--color-accent);border-radius:3px;opacity:0.7"></div><span style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-ghost)">4px</span></div>
+        <div style="display:flex;align-items:center;gap:16px"><span style="width:80px;font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);flex-shrink:0">--space-2</span><div style="height:6px;width:8px;background:var(--color-accent);border-radius:3px;opacity:0.7"></div><span style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-ghost)">8px</span></div>
+        <div style="display:flex;align-items:center;gap:16px"><span style="width:80px;font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);flex-shrink:0">--space-3</span><div style="height:6px;width:12px;background:var(--color-accent);border-radius:3px;opacity:0.7"></div><span style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-ghost)">12px</span></div>
+        <div style="display:flex;align-items:center;gap:16px"><span style="width:80px;font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);flex-shrink:0">--space-4</span><div style="height:6px;width:16px;background:var(--color-accent);border-radius:3px;opacity:0.7"></div><span style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-ghost)">16px</span></div>
+        <div style="display:flex;align-items:center;gap:16px"><span style="width:80px;font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);flex-shrink:0">--space-5</span><div style="height:6px;width:20px;background:var(--color-accent);border-radius:3px;opacity:0.7"></div><span style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-ghost)">20px</span></div>
+        <div style="display:flex;align-items:center;gap:16px"><span style="width:80px;font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);flex-shrink:0">--space-6</span><div style="height:6px;width:24px;background:var(--color-accent);border-radius:3px;opacity:0.7"></div><span style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-ghost)">24px</span></div>
+        <div style="display:flex;align-items:center;gap:16px"><span style="width:80px;font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);flex-shrink:0">--space-8</span><div style="height:6px;width:32px;background:var(--color-accent);border-radius:3px;opacity:0.7"></div><span style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-ghost)">32px</span></div>
+        <div style="display:flex;align-items:center;gap:16px"><span style="width:80px;font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);flex-shrink:0">--space-10</span><div style="height:6px;width:40px;background:var(--color-accent);border-radius:3px;opacity:0.7"></div><span style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-ghost)">40px</span></div>
+        <div style="display:flex;align-items:center;gap:16px"><span style="width:80px;font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);flex-shrink:0">--space-12</span><div style="height:6px;width:48px;background:var(--color-accent);border-radius:3px;opacity:0.7"></div><span style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-ghost)">48px</span></div>
+        <div style="display:flex;align-items:center;gap:16px"><span style="width:80px;font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);flex-shrink:0">--space-16</span><div style="height:6px;width:64px;background:var(--color-accent);border-radius:3px;opacity:0.7"></div><span style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-ghost)">64px</span></div>
+        <div style="display:flex;align-items:center;gap:16px"><span style="width:80px;font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);flex-shrink:0">--space-20</span><div style="height:6px;width:80px;background:var(--color-accent);border-radius:3px;opacity:0.7"></div><span style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-ghost)">80px</span></div>
+        <div style="display:flex;align-items:center;gap:16px"><span style="width:80px;font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);flex-shrink:0">--space-24</span><div style="height:6px;width:96px;background:var(--color-accent);border-radius:3px;opacity:0.7"></div><span style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-ghost)">96px</span></div>
+        <div style="display:flex;align-items:center;gap:16px"><span style="width:80px;font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);flex-shrink:0">--space-32</span><div style="height:6px;width:128px;background:var(--color-accent);border-radius:3px;opacity:0.7"></div><span style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-ghost)">128px</span></div>
+      </div>
+    </section>
+
+    <!-- ── 04 Components ──────────────────────────────────── -->
+    <section class="brand-section" id="components">
+      <div class="brand-section__label">04 — UI Kit</div>
+      <h2 class="brand-section__title">Components</h2>
+
+      <div style="margin-bottom:40px">
+        <div style="font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.08em;color:var(--color-text-muted);text-transform:uppercase;margin-bottom:16px">Buttons</div>
+        <div style="background:#0f0f0f;border-radius:8px;padding:24px;border:1px solid var(--color-border);display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <button class="neon-btn">Get started</button>
+          <button class="neon-btn neon-btn--lg">Get started — lg</button>
+          <button class="ghost-btn">Learn more</button>
+        </div>
+      </div>
+
+      <div style="margin-bottom:40px">
+        <div style="font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.08em;color:var(--color-text-muted);text-transform:uppercase;margin-bottom:16px">Badges</div>
+        <div style="background:#0f0f0f;border-radius:8px;padding:24px;border:1px solid var(--color-border);display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <span class="badge badge--gain">+4.21%</span>
+          <span class="badge badge--loss">−1.83%</span>
+          <span class="badge badge--neutral">Pending</span>
+        </div>
+      </div>
+
+      <div style="margin-bottom:40px">
+        <div style="font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.08em;color:var(--color-text-muted);text-transform:uppercase;margin-bottom:16px">Glass Card</div>
+        <div style="background:#050505;border-radius:8px;padding:24px;border:1px solid var(--color-border)">
+          <div class="glass-card" style="padding:20px 24px;width:220px">
+            <div style="font-size:11px;font-weight:600;color:var(--color-text-muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.08em">Total Value</div>
+            <div style="font-family:var(--font-mono);font-size:20px;font-weight:700;color:var(--color-text-primary);font-variant-numeric:tabular-nums">£48,291.00</div>
+            <div style="margin-top:8px"><span class="badge badge--gain">+4.21%</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.08em;color:var(--color-text-muted);text-transform:uppercase;margin-bottom:16px">Allocation Bar</div>
+        <div style="background:#0f0f0f;border-radius:8px;padding:24px;border:1px solid var(--color-border)">
+          <div class="alloc-bar" style="margin-bottom:12px">
+            <div class="alloc-bar__segment" style="flex:0.45;background:var(--color-accent)"></div>
+            <div class="alloc-bar__segment" style="flex:0.28;background:var(--color-gain)"></div>
+            <div class="alloc-bar__segment" style="flex:0.18;background:var(--color-info)"></div>
+            <div class="alloc-bar__segment" style="flex:0.09;background:var(--color-text-muted)"></div>
+          </div>
+          <div style="display:flex;gap:16px;font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted);flex-wrap:wrap">
+            <span style="color:var(--color-accent)">● Equities 45%</span>
+            <span style="color:var(--color-gain)">● Bonds 28%</span>
+            <span style="color:var(--color-info)">● Cash 18%</span>
+            <span>● Other 9%</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- sections 05–08 added in Task 4 -->
+```
+
+- [ ] **Step 2: Verify sections 01–04**
+
+Open `http://localhost:5173/brand`. Scroll through the first four sections:
+- Colours: three groups of swatches, hex values visible
+- Typography: eight rows from display-1 to mono, rendered at correct sizes
+- Spacing: 13 rows with purple bars matching their pixel values
+- Components: live buttons (Inter font), badges, glass card, alloc bar — all interactive
+
+- [ ] **Step 3: Commit**
+
+```bash
+git add brand.html
+git commit -m "feat: add brand page sections 01-04 (colours, type, spacing, components)"
+```
+
+---
+
+## Task 4: Add sections 05–08 (Motion, Tokens, Radii, Logo)
+
+**Files:**
+- Modify: `brand.html` — replace `<!-- sections 05–08 added in Task 4 -->` with section HTML
+
+- [ ] **Step 1: Add sections 05–08**
+
+Replace `<!-- sections 05–08 added in Task 4 -->` with:
+
+```html
+    <!-- ── 05 Motion ─────────────────────────────────────── -->
+    <section class="brand-section" id="motion">
+      <div class="brand-section__label">05 — Animation</div>
+      <h2 class="brand-section__title">Motion</h2>
+      <p style="font-size:12px;color:var(--color-text-muted);margin-bottom:28px">
+        Hover each box to feel the easing and duration. All use <span style="font-family:var(--font-mono);color:var(--color-accent)">ease-out-expo</span> — cubic-bezier(0.16, 1, 0.3, 1).
+      </p>
+      <div style="display:flex;gap:24px;flex-wrap:wrap">
+        <div style="text-align:center">
+          <div style="width:80px;height:80px;background:var(--color-accent);border-radius:var(--radius-lg);margin-bottom:10px;transition:transform 200ms cubic-bezier(0.16,1,0.3,1);cursor:pointer"
+               onmouseenter="this.style.transform='scale(1.2)'" onmouseleave="this.style.transform=''"></div>
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted)">--duration-fast</div>
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-ghost);margin-top:2px">200ms</div>
+        </div>
+        <div style="text-align:center">
+          <div style="width:80px;height:80px;background:var(--color-accent);border-radius:var(--radius-lg);margin-bottom:10px;transition:transform 400ms cubic-bezier(0.16,1,0.3,1);cursor:pointer"
+               onmouseenter="this.style.transform='scale(1.2)'" onmouseleave="this.style.transform=''"></div>
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted)">--duration-base</div>
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-ghost);margin-top:2px">400ms</div>
+        </div>
+        <div style="text-align:center">
+          <div style="width:80px;height:80px;background:var(--color-accent);border-radius:var(--radius-lg);margin-bottom:10px;transition:transform 600ms cubic-bezier(0.16,1,0.3,1);cursor:pointer"
+               onmouseenter="this.style.transform='scale(1.2)'" onmouseleave="this.style.transform=''"></div>
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted)">--duration-slow</div>
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-ghost);margin-top:2px">600ms</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 06 Raw Tokens ──────────────────────────────────── -->
+    <section class="brand-section" id="tokens">
+      <div class="brand-section__label">06 — Variables</div>
+      <h2 class="brand-section__title">Raw Tokens</h2>
+      <p style="font-size:12px;color:var(--color-text-muted);margin-bottom:28px">
+        Resolved at runtime via <span style="font-family:var(--font-mono);color:var(--color-accent)">getComputedStyle()</span>. Click any row to copy the token name.
+      </p>
+      <div id="token-list"></div>
+    </section>
+
+    <!-- ── 07 Radii & Shadows ─────────────────────────────── -->
+    <section class="brand-section" id="radii">
+      <div class="brand-section__label">07 — Shape</div>
+      <h2 class="brand-section__title">Radii &amp; Shadows</h2>
+
+      <div class="brand-subgroup-label" style="margin-bottom:20px">Border Radius</div>
+      <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:48px;align-items:flex-end">
+        <div style="text-align:center"><div style="width:72px;height:72px;background:var(--color-bg-elevated);border-radius:2px;margin-bottom:8px"></div><div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted)">xs · 2px</div></div>
+        <div style="text-align:center"><div style="width:72px;height:72px;background:var(--color-bg-elevated);border-radius:4px;margin-bottom:8px"></div><div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted)">sm · 4px</div></div>
+        <div style="text-align:center"><div style="width:72px;height:72px;background:var(--color-bg-elevated);border-radius:6px;margin-bottom:8px"></div><div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted)">md · 6px</div></div>
+        <div style="text-align:center"><div style="width:72px;height:72px;background:var(--color-bg-elevated);border-radius:10px;margin-bottom:8px"></div><div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted)">lg · 10px</div></div>
+        <div style="text-align:center"><div style="width:72px;height:72px;background:var(--color-bg-elevated);border-radius:16px;margin-bottom:8px"></div><div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted)">card · 16px</div></div>
+        <div style="text-align:center"><div style="width:72px;height:72px;background:var(--color-bg-elevated);border-radius:9999px;margin-bottom:8px"></div><div style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted)">full</div></div>
+      </div>
+
+      <div class="brand-subgroup-label" style="margin-bottom:20px">Shadows</div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap">
+        <div style="background:var(--color-bg-surface);border-radius:var(--radius-lg);padding:20px 24px;box-shadow:var(--shadow-sm);font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted)">shadow-sm</div>
+        <div style="background:var(--color-bg-surface);border-radius:var(--radius-lg);padding:20px 24px;box-shadow:var(--shadow-card);font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted)">shadow-card</div>
+        <div style="background:var(--color-bg-surface);border-radius:var(--radius-lg);padding:20px 24px;box-shadow:var(--shadow-modal);font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted)">shadow-modal</div>
+        <div style="background:var(--color-bg-surface);border-radius:var(--radius-lg);padding:20px 24px;box-shadow:var(--shadow-neon);font-family:var(--font-mono);font-size:10px;color:var(--color-text-secondary)">shadow-neon</div>
+        <div style="background:var(--color-bg-surface);border-radius:var(--radius-lg);padding:20px 24px;box-shadow:var(--shadow-focus);font-family:var(--font-mono);font-size:10px;color:var(--color-text-muted)">shadow-focus</div>
+      </div>
+    </section>
+
+    <!-- ── 08 Logo & Brand ────────────────────────────────── -->
+    <section class="brand-section" id="logo">
+      <div class="brand-section__label">08 — Identity</div>
+      <h2 class="brand-section__title">Logo &amp; Brand</h2>
+      <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:32px">
+        <div>
+          <div style="font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.08em;color:var(--color-text-muted);text-transform:uppercase;margin-bottom:10px">On dark ✓ preferred</div>
+          <div style="background:var(--color-bg-base);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:32px 40px;display:flex;align-items:center;gap:10px">
+            <img src="/babylon_logo.png" alt="Babylon logo" style="height:32px;mix-blend-mode:lighten" />
+            <span style="font-size:17px;font-weight:600;letter-spacing:2px;color:var(--color-text-primary)">BABYLON</span>
+          </div>
+        </div>
+        <div>
+          <div style="font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.08em;color:var(--color-text-muted);text-transform:uppercase;margin-bottom:10px">On light</div>
+          <div style="background:#f0f0f0;border-radius:var(--radius-lg);padding:32px 40px;display:flex;align-items:center;gap:10px">
+            <img src="/babylon_logo.png" alt="Babylon logo" style="height:32px" />
+            <span style="font-size:17px;font-weight:600;letter-spacing:2px;color:#080808">BABYLON</span>
+          </div>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--color-text-muted);line-height:2.2">
+        <div>✓ &nbsp;Always pair orb with BABYLON wordmark</div>
+        <div>✓ &nbsp;Minimum clear space: logo height on all sides</div>
+        <div>✗ &nbsp;Do not recolour the orb</div>
+        <div>✗ &nbsp;Do not use accent purple on body text</div>
+        <div>✗ &nbsp;Do not use logo on busy or coloured backgrounds</div>
+      </div>
+    </section>
+```
+
+- [ ] **Step 2: Verify sections 05–08**
+
+Open `http://localhost:5173/brand`. Scroll to the bottom half:
+- Motion: three purple boxes animate on hover at different speeds
+- Raw Tokens: section exists but `#token-list` is empty (populated by JS in Task 5)
+- Radii: six boxes with increasing corner radius visible
+- Shadows: five cards with distinct shadow styles, neon card glows purple
+- Logo: both lockups show the actual PNG logo (served from `/public/`)
+
+- [ ] **Step 3: Commit**
+
+```bash
+git add brand.html
+git commit -m "feat: add brand page sections 05-08 (motion, tokens, radii, logo)"
+```
+
+---
+
+## Task 5: Add inline script — nav tracking + token enumeration + copy
+
+**Files:**
+- Modify: `brand.html` — add `<script>` before `</body>`
+
+- [ ] **Step 1: Add the script**
+
+Add the following immediately before `</body>` in `brand.html`:
+
+```html
+  <script>
+    // ── Sidebar nav: highlight active section on scroll ──────────
+    const sections = document.querySelectorAll('.brand-section[id]');
+    const navItems = document.querySelectorAll('.brand-nav__item[data-section]');
+    const contentPane = document.getElementById('brand-content');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navItems.forEach(item => {
+            item.classList.toggle('active', item.dataset.section === entry.target.id);
+          });
+        }
+      });
+    }, {
+      root: contentPane,
+      rootMargin: '-10% 0px -75% 0px',
+      threshold: 0
+    });
+
+    sections.forEach(s => observer.observe(s));
+
+    navItems.forEach(item => {
+      item.addEventListener('click', e => {
+        e.preventDefault();
+        document.getElementById(item.dataset.section)
+          ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    // ── Raw tokens: enumerate all CSS vars via getComputedStyle ──
+    const tokenPrefixes = [
+      '--color-', '--font-', '--font-size-', '--font-weight-',
+      '--letter-spacing-', '--line-height-', '--space-',
+      '--radius-', '--shadow-', '--ease-', '--duration-'
+    ];
+
+    const style = getComputedStyle(document.documentElement);
+    const allVars = [];
+
+    // Enumerate by reading the stylesheet rules
+    for (const sheet of document.styleSheets) {
+      try {
+        for (const rule of sheet.cssRules) {
+          if (rule.style) {
+            for (let i = 0; i < rule.style.length; i++) {
+              const prop = rule.style[i];
+              if (prop.startsWith('--') && tokenPrefixes.some(p => prop.startsWith(p))) {
+                if (!allVars.includes(prop)) allVars.push(prop);
+              }
+            }
+          }
+        }
+      } catch (e) {
+        // Cross-origin stylesheet — skip
+      }
+    }
+
+    allVars.sort();
+
+    const tokenList = document.getElementById('token-list');
+    allVars.forEach(token => {
+      const value = style.getPropertyValue(token).trim();
+      const row = document.createElement('div');
+      row.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--color-border);gap:16px;cursor:pointer';
+      row.innerHTML = `
+        <span style="font-family:var(--font-mono);font-size:11px;color:var(--color-accent)">${token}</span>
+        <span style="font-family:var(--font-mono);font-size:11px;color:var(--color-text-muted);flex:1;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${value}</span>
+        <span class="copy-hint" style="font-size:9px;color:var(--color-text-ghost);letter-spacing:0.05em;flex-shrink:0;transition:color 150ms ease">COPY</span>
+      `;
+      row.addEventListener('mouseenter', () => row.querySelector('.copy-hint').style.color = 'var(--color-accent)');
+      row.addEventListener('mouseleave', () => row.querySelector('.copy-hint').style.color = 'var(--color-text-ghost)');
+      row.addEventListener('click', () => {
+        navigator.clipboard.writeText(token);
+        const hint = row.querySelector('.copy-hint');
+        hint.textContent = 'COPIED';
+        hint.style.color = 'var(--color-gain)';
+        setTimeout(() => { hint.textContent = 'COPY'; hint.style.color = 'var(--color-text-ghost)'; }, 1500);
+      });
+      tokenList.appendChild(row);
+    });
+  </script>
+```
+
+- [ ] **Step 2: Verify script behaviour**
+
+Open `http://localhost:5173/brand`:
+- Scroll down — sidebar nav item highlights as each section enters view
+- Click a nav item — content pane scrolls smoothly to that section
+- Section 06 (Raw Tokens) now shows a full list of CSS variables with resolved values
+- Click any token row — hint changes to "COPIED" for 1.5s; token name is on clipboard
+
+- [ ] **Step 3: Commit**
+
+```bash
+git add brand.html
+git commit -m "feat: add brand page script (nav tracking, token enumeration, copy)"
+```
+
+---
+
+## Task 6: Push and open PR
+
+- [ ] **Step 1: Push branch**
+
+```bash
+git push
+```
+
+- [ ] **Step 2: Open PR**
+
+```bash
+gh pr create \
+  --title "feat: add /brand reference page + fix button font to Inter" \
+  --body "$(cat <<'EOF'
+## Summary
+
+- Adds \`brand.html\` at project root — accessible at \`/brand\`, not linked from anywhere
+- 8 sections: Colours, Typography, Spacing, Components, Motion, Raw Tokens, Radii & Shadows, Logo & Brand
+- Sidebar nav with IntersectionObserver scroll tracking
+- Raw tokens enumerated dynamically via \`getComputedStyle()\` — stays accurate as \`@babylon/tokens\` updates
+- Copy-to-clipboard on token rows
+- Fixes \`.neon-btn\` and \`.ghost-btn\` font-family from JetBrains Mono → Inter (spec correction)
+
+## Test plan
+
+- [ ] Open \`/brand\` — dark background, sidebar visible, all 8 sections present
+- [ ] Scroll — sidebar nav highlights active section
+- [ ] Click nav item — smooth scrolls to section
+- [ ] Section 06 lists all CSS variables with resolved values
+- [ ] Click a token row — copies token name, hint flashes "COPIED"
+- [ ] Logo displays in both dark and light lockups
+- [ ] Motion boxes animate at correct speeds on hover
+- [ ] Main site (\`/\`) — buttons now render in Inter
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+EOF
+)"
+```
+
+---
+
+## Task 7: Brand compliance audit (post-implementation)
+
+After the `/brand` page ships, audit both consumers of `@babylon/tokens` for compliance with the visual identity rules documented on the page.
+
+**Scope:**
+- `D:/Repo/babylon/bebabylon-ui/` — marketing site
+- `D:/Repo/babylon/babylon-app/` — Angular frontend
+
+**Checklist to verify in each repo:**
+
+- [ ] **No raw hex values** — all colours use `var(--color-*)` tokens. Search: `grep -rn "#[0-9a-fA-F]\{3,6\}" src/` (excluding `tokens.css` itself)
+- [ ] **No borders on cards** — background contrast only. Search for `.card` and `card` class usages with `border:` properties
+- [ ] **No lines on tables** — spacing separates rows, not `border-bottom`. Search table/row styles
+- [ ] **Gain/loss colours semantic only** — `--color-gain` and `--color-loss` never used as decorative colours
+- [ ] **Accent is interactive only** — `--color-accent` never on body text. Search for `color: var(--color-accent)` on non-interactive elements
+- [ ] **JetBrains Mono for data only** — `var(--font-mono)` only on numbers, tickers, financial values; not on buttons or body copy (fix: this plan already corrects buttons)
+- [ ] **4px spacing grid** — no arbitrary pixel values in spacing properties. Search for `padding:`, `margin:`, `gap:` with non-token values
+- [ ] **Max border-radius 10px** — except `brand.html` which allows up to 16px for cards and `full` for badges
+
+**Output:** File a brief findings note at `docs/superpowers/audits/YYYY-MM-DD-brand-compliance.md` listing any violations found, with file path and line number. If clean, note that too.
