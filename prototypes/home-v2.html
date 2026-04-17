@@ -1,0 +1,1900 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>bebabylon.com — Prototype v2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:           #080808;
+      --surface:      #101010;
+      --elevated:     #1A1A1A;
+      --text-primary: #FFFFFF;
+      --text-secondary:#A3A3A3;
+      --text-muted:   #525252;
+      --text-ghost:   #2E2E2E;
+      --border:       rgba(255,255,255,0.07);
+      --gain:         #10B981;
+      --loss:         #F43F5E;
+      --accent:       #7B2FBE;
+      --accent-hover: #9D4EDD;
+      --font-sans:    'Inter', system-ui, sans-serif;
+      --font-mono:    'JetBrains Mono', monospace;
+      --dur:          200ms;
+      --ease:         cubic-bezier(0.16,1,0.3,1);
+      --r-md: 6px; --r-lg: 10px; --r-full: 9999px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text-primary);font-family:var(--font-sans);font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    a{text-decoration:none;color:inherit;cursor:pointer}
+
+    .container{max-width:1120px;margin:0 auto;padding:0 32px}
+    @media(max-width:640px){.container{padding:0 20px}}
+
+    /* ── NAV ── */
+    .nav{position:fixed;inset:0 0 auto 0;z-index:100;height:56px;background:rgba(8,8,8,0.85);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
+    .nav .container{height:100%;display:flex;align-items:center;justify-content:space-between}
+    .nav__wordmark{font-size:13px;font-weight:300;letter-spacing:0.22em;text-transform:uppercase}
+    .nav__cta{font-size:13px;font-weight:500;background:var(--accent);padding:7px 18px;border-radius:var(--r-lg);transition:background var(--dur) var(--ease)}
+    .nav__cta:hover{background:var(--accent-hover)}
+
+    /* ── HERO ── */
+    .hero{min-height:100svh;display:flex;align-items:center;justify-content:center;text-align:center;padding:128px 32px 80px;position:relative;overflow:hidden}
+    .hero__line{position:relative;font-size:clamp(48px,7.5vw,96px);font-weight:700;letter-spacing:-0.04em;line-height:1.05;color:var(--text-primary)}
+    .hero__sub{font-size:clamp(14px,1.4vw,18px);color:var(--text-muted);font-weight:400;letter-spacing:-0.01em}
+    .hero__scroll{position:absolute;bottom:32px;left:50%;transform:translateX(-50%)}
+    .hero__scroll-line{width:1px;height:48px;background:linear-gradient(to bottom,var(--text-ghost),transparent)}
+
+    /* ── SECTION HEADER ── */
+    .sec-header{text-align:center;margin-bottom:64px}
+    .sec-label{display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:var(--text-muted);margin-bottom:12px}
+    .sec-heading{font-size:clamp(32px,4vw,44px);font-weight:700;letter-spacing:-0.03em;line-height:1.05}
+
+    /* ── MOBILE SECTION ── */
+    .mobile-section{padding:128px 0;background:var(--bg)}
+    .phone-stage{display:flex;align-items:flex-start;justify-content:center;gap:16px;overflow:hidden;padding:40px 0 100px;width:100%;background:var(--bg)}
+    .phone-col{display:flex;flex-direction:column;align-items:center;gap:10px;flex-shrink:0}
+    .phone-sm-outer{width:200px;height:420px;overflow:hidden;flex-shrink:0}
+    .phone--sm{transform:scale(0.807);transform-origin:top left;box-shadow:none}
+
+    /* Phone frame */
+    .phone{width:248px;height:520px;background:#0A0A0A;border-radius:40px;border:1.5px solid rgba(255,255,255,0.10);box-shadow:0 0 0 1px rgba(255,255,255,0.03) inset,0 40px 70px rgba(0,0,0,0.55);overflow:hidden;position:relative;flex-shrink:0}
+    .phone__screen{position:absolute;inset:0;padding:0;display:flex;flex-direction:column}
+
+    /* App shell */
+    .app{flex:1;display:flex;flex-direction:column;padding:0 16px;overflow-y:auto;gap:0;scrollbar-width:none}
+    .app::-webkit-scrollbar{display:none}
+    .app-topbar{display:flex;align-items:center;justify-content:space-between;padding:8px 0 4px}
+    .app-greeting{font-size:11px;color:var(--text-muted);font-weight:500}
+    .app-avatar{width:24px;height:24px;border-radius:50%;background:rgba(123,47,190,0.20);border:1px solid rgba(123,47,190,0.35);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#C084FC}
+
+    /* Value block */
+    .app-value{padding:8px 0 6px}
+    .app-value__amount{font-family:var(--font-mono);font-size:26px;font-weight:700;letter-spacing:-0.02em;font-feature-settings:'tnum'}
+    .app-value__delta{font-family:var(--font-mono);font-size:11px;font-weight:500;color:var(--gain);font-feature-settings:'tnum';margin-top:2px}
+
+    /* Chart */
+    .app-chart{padding:6px 0 10px}
+    .chart-period{display:flex;gap:2px;margin-bottom:8px}
+    .cp{font-family:var(--font-mono);font-size:9px;padding:2px 6px;border-radius:3px;color:var(--text-muted);cursor:pointer}
+    .cp--active{background:rgba(255,255,255,0.08);color:var(--text-primary)}
+
+    /* Positions */
+    .app-pos-label{font-size:9px;font-weight:600;letter-spacing:0.10em;text-transform:uppercase;color:var(--text-muted);padding:6px 0 4px}
+    .app-pos{display:flex;align-items:center;gap:8px;padding:7px 0}
+    .app-pos__av{width:26px;height:26px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
+    .app-pos__name{font-size:11px;font-weight:600;color:var(--text-primary)}
+    .app-pos__ticker{font-family:var(--font-mono);font-size:9px;color:var(--text-muted);font-feature-settings:'tnum'}
+    .app-pos__right{margin-left:auto;text-align:right}
+    .app-pos__val{font-family:var(--font-mono);font-size:11px;font-weight:600;font-feature-settings:'tnum'}
+    .app-pos__g{font-family:var(--font-mono);font-size:9px;color:var(--gain);font-feature-settings:'tnum'}
+    .app-pos__l{font-family:var(--font-mono);font-size:9px;color:var(--loss);font-feature-settings:'tnum'}
+
+    /* Bottom nav */
+    .app-bottom{display:flex;justify-content:space-around;padding:8px 0 4px;border-top:1px solid rgba(255,255,255,0.05);margin-top:auto}
+    .app-tab{display:flex;flex-direction:column;align-items:center;gap:3px}
+    .app-tab__lbl{font-size:8px;font-weight:500;letter-spacing:0.03em}
+
+    /* Stock detail screen */
+    .stock-back{font-size:10px;color:var(--text-muted);padding:6px 0 2px;display:flex;align-items:center;gap:4px}
+    .stock-header{display:flex;align-items:center;gap:8px;padding:4px 0 6px}
+    .stock-av{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+    .stock-name{font-size:13px;font-weight:700;color:var(--text-primary)}
+    .stock-ticker{font-family:var(--font-mono);font-size:10px;color:var(--text-muted)}
+    .stock-value{font-family:var(--font-mono);font-size:22px;font-weight:700;letter-spacing:-0.02em;font-feature-settings:'tnum';padding:2px 0}
+    .stock-sub{font-size:10px;color:var(--text-muted);margin-bottom:2px}
+    .stock-delta{font-family:var(--font-mono);font-size:11px;color:var(--gain);font-feature-settings:'tnum';margin-bottom:6px}
+    .dca-legend{display:flex;align-items:center;gap:12px;margin-top:6px}
+    .dca-legend__item{display:flex;align-items:center;gap:4px;font-size:9px;color:var(--text-muted)}
+    .dca-legend__dot{width:8px;height:8px;border-radius:50%}
+    .stock-stats{display:flex;flex-direction:column;gap:5px;margin-top:8px}
+    .stock-stat{display:flex;justify-content:space-between}
+    .stock-stat__k{font-size:10px;color:var(--text-muted)}
+    .stock-stat__v{font-family:var(--font-mono);font-size:10px;font-weight:600;font-feature-settings:'tnum'}
+
+    /* ── SHEET NAVIGATION PATTERN ── */
+    /* Background screen: scales down + dims when a sheet is open */
+    .psheet-base{position:absolute;inset:0;padding:38px 16px 0;display:flex;flex-direction:column;gap:0;transform:scale(0.935);transform-origin:top center;filter:brightness(0.45);border-radius:14px;overflow:hidden}
+    /* Dark scrim over the base */
+    .psheet-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.30)}
+    /* The sheet itself — slides up, takes ~93% of phone height */
+    .psheet{position:absolute;bottom:0;left:0;right:0;top:38px;background:#0A0A0A;border-radius:18px 18px 0 0;display:flex;flex-direction:column;overflow:hidden;animation:sheetIn 0.5s cubic-bezier(0.16,1,0.3,1) both}
+    @keyframes sheetIn{from{transform:translateY(100%)}to{transform:translateY(0)}}
+    /* Drag handle */
+    .psheet__handle{width:36px;height:4px;background:rgba(255,255,255,0.13);border-radius:2px;margin:10px auto 4px;flex-shrink:0;cursor:grab}
+    /* Scrollable content area inside sheet */
+    .psheet__scroll{flex:1;overflow-y:auto;scrollbar-width:none;padding:4px 16px 24px}
+    .psheet__scroll::-webkit-scrollbar{display:none}
+
+    /* Stock section dividers */
+    .stock-section-label{font-size:8px;font-weight:600;letter-spacing:0.10em;text-transform:uppercase;color:var(--text-muted);padding:10px 0 6px;border-top:1px solid rgba(255,255,255,0.04);margin-top:6px}
+
+    /* Key metrics grid */
+    .stock-metrics-scroll{overflow-x:auto;scrollbar-width:none;margin-bottom:2px;margin-left:-2px;margin-right:-2px;padding:0 2px}
+    .stock-metrics-scroll::-webkit-scrollbar{display:none}
+    .stock-metrics-grid{display:grid;grid-template-rows:repeat(2,auto);grid-auto-flow:column;grid-auto-columns:46px;gap:0;width:max-content}
+    .smg-cell{padding:5px 6px;display:flex;flex-direction:column;gap:1px}
+    .smg-k{font-size:8px;color:var(--text-muted)}
+    .smg-v{font-family:var(--font-mono);font-size:11px;font-weight:600;font-feature-settings:'tnum'}
+
+    /* Reported financials widget */
+    .fin-widget{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);border-radius:var(--r-md);padding:10px;margin-bottom:20px}
+    .fin-toggle{display:flex;gap:2px}
+    .fin-toggle__btn{font-size:8px;font-weight:600;padding:2px 7px;border-radius:3px;color:var(--text-muted);cursor:pointer}
+    .fin-toggle__btn--active{background:rgba(255,255,255,0.08);color:var(--text-primary)}
+    .fin-row{display:flex;justify-content:space-between;align-items:center;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+    .fin-row:last-child{border-bottom:none}
+    .fin-year{font-size:9px;font-weight:700;color:var(--text-primary);padding:6px 0 3px}
+    .fin-k{font-size:9px;color:var(--text-muted)}
+    .fin-v{font-family:var(--font-mono);font-size:9px;font-weight:600;font-feature-settings:'tnum'}
+    .fin-d{font-family:var(--font-mono);font-size:8px;color:var(--gain);font-feature-settings:'tnum'}
+
+    /* Transactions screen */
+    .txn-filters{display:flex;gap:2px;padding:4px 0 8px}
+    .tf{font-size:9px;font-weight:600;padding:3px 8px;border-radius:var(--r-full);color:var(--text-muted)}
+    .tf--active{background:rgba(255,255,255,0.08);color:var(--text-primary)}
+    .txn-group-date{font-size:9px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);padding:8px 0 4px}
+    .txn-row{display:flex;align-items:center;gap:8px;padding:7px 0}
+    .txn-icon{width:26px;height:26px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .txn-name{font-size:11px;font-weight:600}
+    .txn-detail{font-size:9px;color:var(--text-muted)}
+    .txn-right{margin-left:auto;text-align:right}
+    .txn-amount{font-family:var(--font-mono);font-size:11px;font-weight:600;font-feature-settings:'tnum'}
+    .txn-shares{font-family:var(--font-mono);font-size:9px;color:var(--text-muted);font-feature-settings:'tnum'}
+
+    /* Analytics screen */
+    .anl-kpis{display:flex;gap:8px;padding:4px 0 10px}
+    .anl-kpi{flex:1;background:rgba(255,255,255,0.04);border-radius:var(--r-md);padding:8px 10px}
+    .anl-kpi__label{font-size:9px;color:var(--text-muted);margin-bottom:3px}
+    .anl-kpi__value{font-family:var(--font-mono);font-size:13px;font-weight:700;font-feature-settings:'tnum'}
+    .anl-kpi__sub{font-family:var(--font-mono);font-size:9px;color:var(--gain);margin-top:1px;font-feature-settings:'tnum'}
+    .anl-section-label{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:var(--text-muted);padding:6px 0 8px}
+    .perf-row{display:flex;align-items:center;gap:6px;padding:3px 0}
+    .perf-name{font-size:10px;color:var(--text-secondary);width:54px;flex-shrink:0}
+    .perf-bar-track{flex:1;height:4px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden}
+    .perf-bar-fill{height:100%;border-radius:2px}
+    .perf-pct{font-family:var(--font-mono);font-size:9px;font-weight:600;font-feature-settings:'tnum';width:36px;text-align:right}
+
+    /* ── WEB APP SECTION ── */
+    .webapp-section{padding:128px 0}
+    .webapp-tabs{display:flex;gap:0;margin-bottom:24px;border-bottom:1px solid rgba(255,255,255,0.07);width:100%}
+    .wt{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:500;padding:10px 16px 9px;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color var(--dur) var(--ease),border-color var(--dur) var(--ease);background:none;border-top:none;border-left:none;border-right:none;white-space:nowrap}
+    .wt svg{opacity:0.6;transition:opacity var(--dur) var(--ease)}
+    .wt:hover{color:var(--text-secondary)}
+    .wt--active{color:var(--text-primary);border-bottom-color:var(--accent)}
+    .wt--active svg{opacity:1}
+    .wb-panel{display:none}
+    .wb-panel--active{display:block}
+    .webapp-frame{background:var(--surface);border-radius:14px;border:1px solid var(--border);overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,0.50)}
+    .webapp-titlebar{height:36px;background:#0C0C0C;border-bottom:1px solid rgba(255,255,255,0.04);display:flex;align-items:center;padding:0 14px;gap:7px}
+    .tb-dot{width:10px;height:10px;border-radius:50%}
+    .webapp-titlebar__url{margin-left:auto;font-family:var(--font-mono);font-size:11px;color:var(--text-muted);background:rgba(255,255,255,0.04);padding:3px 12px;border-radius:var(--r-md)}
+    .webapp-body{display:flex;height:640px}
+    .wb-sidebar{width:196px;flex-shrink:0;background:#0C0C0C;border-right:1px solid rgba(255,255,255,0.04);display:flex;flex-direction:column;padding:20px 0}
+    .wb-wordmark{font-size:11px;font-weight:300;letter-spacing:0.22em;text-transform:uppercase;padding:0 18px 20px}
+    .wb-nav{display:flex;flex-direction:column;gap:1px;padding:0 10px}
+    .wb-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:var(--r-md);font-size:13px;font-weight:500;color:var(--text-muted)}
+    .wb-item--active{background:rgba(255,255,255,0.05);color:var(--text-primary)}
+    .wb-item svg{opacity:0.4;flex-shrink:0}
+    .wb-item--active svg{opacity:1}
+    .wb-main{flex:1;padding:24px 28px;display:flex;flex-direction:column;gap:16px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#7B2FBE transparent}
+    .wb-main::-webkit-scrollbar{width:4px}
+    .wb-main::-webkit-scrollbar-track{background:transparent}
+    .wb-main::-webkit-scrollbar-thumb{background:#7B2FBE;border-radius:2px}
+    .wb-main::-webkit-scrollbar-button{display:none}
+    .wb-header{display:flex;align-items:flex-start;justify-content:space-between}
+    .wb-page-title{font-size:22px;font-weight:700;letter-spacing:-0.025em}
+    .wb-page-sub{font-size:11px;color:var(--text-muted);margin-top:3px}
+    .wb-value__amount{font-family:var(--font-mono);font-size:26px;font-weight:700;letter-spacing:-0.02em;font-feature-settings:'tnum';text-align:right}
+    .wb-value__delta{font-family:var(--font-mono);font-size:11px;color:var(--gain);margin-top:2px;text-align:right;font-feature-settings:'tnum'}
+    .wb-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .wb-grid--3{grid-template-columns:1fr 1fr 1fr}
+    .wb-card{background:var(--elevated);border-radius:var(--r-lg);padding:18px 20px;overflow:hidden}
+    .wb-card__label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:var(--text-muted);margin-bottom:12px}
+    .wb-chart-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+    .alloc-list{display:flex;flex-direction:column;gap:10px}
+    .alloc-row{display:flex;align-items:center;gap:10px}
+    .alloc-name{font-size:12px;color:var(--text-secondary);width:84px;flex-shrink:0}
+    .alloc-track{flex:1;height:3px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden}
+    .alloc-fill{height:100%;border-radius:2px}
+    .alloc-pct{font-family:var(--font-mono);font-size:12px;font-weight:600;font-feature-settings:'tnum';width:34px;text-align:right;flex-shrink:0}
+    .pos-table{display:flex;flex-direction:column}
+    .pos-row{display:flex;align-items:center;gap:10px;padding:8px 0}
+    .pos-av{width:28px;height:28px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+    .pos-info{flex:1;min-width:0}
+    .pos-name{font-size:12px;font-weight:600}
+    .pos-ticker{font-family:var(--font-mono);font-size:10px;color:var(--text-muted);font-feature-settings:'tnum'}
+    .pos-val{font-family:var(--font-mono);font-size:12px;font-weight:600;font-feature-settings:'tnum';text-align:right;min-width:64px}
+    .pos-delta{font-family:var(--font-mono);font-size:10px;font-feature-settings:'tnum';text-align:right;min-width:48px}
+    .pos-delta--g{color:var(--gain)}
+    .pos-delta--l{color:var(--loss)}
+
+    /* Web stock detail */
+    .wb-stock-header{display:flex;align-items:center;gap:12px}
+    .wb-stock-av{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0}
+    .wb-back{font-size:12px;color:var(--text-muted);display:flex;align-items:center;gap:4px;margin-bottom:8px;cursor:pointer}
+    .wb-dca-legend{display:flex;align-items:center;gap:16px;margin-top:8px}
+    .wb-dca-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-muted)}
+
+    /* Web transactions */
+    .wb-txn-filters{display:flex;gap:2px;margin-bottom:12px}
+    .wtf{font-size:12px;font-weight:500;padding:5px 14px;border-radius:var(--r-full);color:var(--text-muted);cursor:pointer}
+    .wtf--active{background:rgba(255,255,255,0.07);color:var(--text-primary)}
+    .wb-txn-group{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);padding:10px 0 6px}
+    .wb-txn-row{display:flex;align-items:center;gap:12px;padding:9px 0}
+    .wb-txn-icon{width:32px;height:32px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .wb-txn-name{font-size:13px;font-weight:600}
+    .wb-txn-detail{font-size:11px;color:var(--text-muted)}
+    .wb-txn-amount{font-family:var(--font-mono);font-size:13px;font-weight:600;font-feature-settings:'tnum';margin-left:auto}
+    .wb-txn-shares{font-family:var(--font-mono);font-size:10px;color:var(--text-muted);font-feature-settings:'tnum';text-align:right;margin-top:1px}
+
+    /* Web analytics */
+    .wb-anl-kpis{display:flex;gap:12px;margin-bottom:4px}
+    .wb-kpi{flex:1;background:var(--elevated);border-radius:var(--r-lg);padding:16px 18px}
+    .wb-kpi__label{font-size:11px;color:var(--text-muted);margin-bottom:4px}
+    .wb-kpi__value{font-family:var(--font-mono);font-size:20px;font-weight:700;font-feature-settings:'tnum'}
+    .wb-kpi__sub{font-family:var(--font-mono);font-size:11px;color:var(--gain);margin-top:2px;font-feature-settings:'tnum'}
+    .wb-kpi__sub--l{color:var(--loss)}
+
+    /* Sidebar sub-item (breadcrumb context in nav) */
+    .wb-item--sub{display:flex;align-items:center;gap:9px;padding:5px 10px 5px 30px;font-size:12px;font-weight:500;color:var(--accent);opacity:0.9;cursor:pointer}
+    .wb-item--sub::before{content:'›';color:var(--text-muted);font-size:10px;margin-left:-14px;margin-right:5px}
+
+    /* Breadcrumb in main content */
+    .wb-breadcrumb{display:flex;align-items:center;gap:6px;margin-bottom:16px}
+    .wb-breadcrumb__item{font-size:12px;color:var(--text-muted);cursor:pointer;transition:color var(--dur) var(--ease)}
+    .wb-breadcrumb__item:hover{color:var(--text-primary)}
+    .wb-breadcrumb__item--active{color:var(--text-primary);font-weight:500;cursor:default}
+    .wb-breadcrumb__sep{font-size:10px;color:var(--text-ghost)}
+
+    /* Wealth screen */
+    .wb-nw-hero{text-align:center;padding:12px 0 16px;border-bottom:1px solid rgba(255,255,255,0.04);margin-bottom:16px}
+    .wb-nw-label{font-size:11px;color:var(--text-muted);margin-bottom:6px}
+    .wb-nw-amount{font-family:var(--font-mono);font-size:32px;font-weight:700;letter-spacing:-0.03em;font-feature-settings:'tnum'}
+    .wb-nw-delta{font-family:var(--font-mono);font-size:12px;color:var(--gain);margin-top:4px;font-feature-settings:'tnum'}
+    .wb-asset-row{display:flex;align-items:center;gap:12px;padding:9px 0}
+    .wb-asset-row + .wb-asset-row{border-top:1px solid rgba(255,255,255,0.03)}
+    .wb-asset-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+    .wb-asset-name{font-size:12px;color:var(--text-secondary);flex:1}
+    .wb-asset-val{font-family:var(--font-mono);font-size:12px;font-weight:600;font-feature-settings:'tnum'}
+    .wb-asset-pct{font-family:var(--font-mono);font-size:11px;color:var(--text-muted);font-feature-settings:'tnum';width:38px;text-align:right}
+
+    /* ── BLOG ── */
+    .blog-section{padding:96px 0 128px}
+    .blog-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    @media(max-width:960px){.blog-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:540px){.blog-grid{grid-template-columns:1fr}}
+    .blog-card{position:relative;border-radius:var(--r-lg);overflow:hidden;aspect-ratio:3/4;display:flex;flex-direction:column;justify-content:flex-end;text-decoration:none;transition:transform 300ms var(--ease)}
+    .blog-card:hover{transform:translateY(-5px)}
+    .blog-card__cover{position:absolute;inset:0}
+    .blog-card__fade{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 25%,rgba(0,0,0,0.82) 100%)}
+    .blog-card__body{position:relative;z-index:1;padding:20px}
+    .blog-card__tag{display:block;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.10em;color:rgba(255,255,255,0.50);margin-bottom:7px}
+    .blog-card__title{font-size:15px;font-weight:700;letter-spacing:-0.02em;line-height:1.35;color:#fff}
+    .blog-card__meta{font-size:10px;color:rgba(255,255,255,0.38);margin-top:9px}
+
+    /* ── FOOTER ── */
+    .footer{border-top:1px solid var(--border);padding:48px 0}
+    .footer__inner{display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center}
+    @media(min-width:640px){.footer__inner{flex-direction:row;justify-content:space-between;text-align:left}}
+    .footer__wordmark{font-size:12px;font-weight:300;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-secondary)}
+    .footer__links{display:flex;gap:24px;list-style:none}
+    .footer__links a{font-size:12px;color:var(--text-muted);transition:color var(--dur) var(--ease)}
+    .footer__links a:hover{color:var(--text-primary)}
+    .footer__copy{font-size:11px;color:var(--text-ghost)}
+
+    /* ── HOW IT WORKS ── */
+    .opt-section{padding:128px 0;border-top:1px solid rgba(255,255,255,0.04)}
+
+    /* ── HOW IT WORKS STAGE ── */
+    .hiw-nav{display:flex;justify-content:center;margin-bottom:40px}
+    .hiw-nav-inner{display:inline-flex;gap:3px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:100px;padding:4px}
+    .hiw-tab{position:relative;display:inline-flex;align-items:center;gap:7px;padding:10px 22px;border-radius:100px;font-size:13px;font-weight:500;color:var(--text-muted);cursor:pointer;background:none;border:none;font-family:inherit;transition:color 250ms,background 250ms;overflow:hidden;white-space:nowrap}
+    .hiw-tab:hover:not(.hiw-tab--active){color:var(--text-secondary)}
+    .hiw-tab--active{background:var(--accent);color:#fff}
+    .hiw-tab__num{font-family:var(--font-mono);font-size:10px;opacity:0.65}
+    .hiw-tab__bar{position:absolute;bottom:0;left:0;height:2px;background:rgba(255,255,255,0.45);border-radius:1px;width:0}
+    @keyframes hiwProgress{from{width:0}to{width:100%}}
+    .hiw-sub-row{text-align:center;height:48px;display:flex;align-items:center;justify-content:center;margin-bottom:40px;overflow:hidden;position:relative}
+    .hiw-sub{font-size:15px;color:var(--text-muted);line-height:1.6;max-width:520px;position:absolute;opacity:0;transform:translateY(8px);transition:opacity 350ms,transform 350ms;pointer-events:none}
+    .hiw-sub--active{opacity:1;transform:translateY(0);pointer-events:auto}
+    /* stage-outer: padding-top creates the "above-stage" space for the phone to float into.
+       phones div spans the full outer height (padding + stage).
+       top:50% of that puts the anchor at (padding + stage/2) = 80+190 = 270px.
+       translateY(+50px) shifts the phone's center to 280px, so phone top = 280-260 = 20px
+       inside the outer → 60px below the subtitle (40px margin + 20px) and 60px above the black stage (80-20). */
+    .hiw-stage-outer{position:relative;padding-top:80px}
+    .hiw-stage{background:#000;border-radius:24px;border:1px solid rgba(255,255,255,0.06);height:380px;box-shadow:0 0 0 1px rgba(255,255,255,0.03) inset}
+    .hiw-phones{position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none}
+    .hiw-phone-wrap{position:absolute;left:50%;top:50%;pointer-events:auto;transition:transform 550ms cubic-bezier(0.4,0,0.2,1),opacity 400ms ease;will-change:transform,opacity}
+    .hiw-phone-wrap--active{transform:translate(-50%,calc(-50% + 50px));opacity:1;z-index:3;filter:drop-shadow(0 32px 56px rgba(0,0,0,0.9))}
+    .hiw-phone-wrap--prev{transform:translate(calc(-50% - 300px),calc(-50% + 80px)) scale(0.75);opacity:0.15;z-index:1;pointer-events:none}
+    .hiw-phone-wrap--next{transform:translate(calc(-50% + 300px),calc(-50% + 80px)) scale(0.75);opacity:0.15;z-index:1;pointer-events:none}
+    /* status bar + dynamic island */
+    .phone-status{position:relative;display:flex;align-items:center;justify-content:space-between;padding:10px 10px 4px 18px;height:38px;flex-shrink:0}
+    .phone-island{position:absolute;left:50%;top:8px;transform:translateX(-50%);width:86px;height:26px;background:#000;border-radius:14px}
+    .phone-status__time{font-size:12px;font-weight:600;color:rgba(255,255,255,0.9);font-family:var(--font-sans);letter-spacing:-0.01em;position:relative;z-index:1}
+    .phone-status__icons{display:flex;align-items:center;gap:5px;color:rgba(255,255,255,0.9);position:relative;z-index:1}
+
+    /* ── REVEAL ── */
+    [data-reveal]{opacity:0;transform:translateY(18px);transition:opacity 600ms var(--ease),transform 600ms var(--ease)}
+    [data-reveal].visible{opacity:1;transform:none}
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════ NAV ════════════════════════════ -->
+<nav class="nav">
+  <div class="container">
+    <span class="nav__wordmark">Babylon</span>
+    <a href="https://app.bebabylon.com" class="nav__cta">Open App</a>
+  </div>
+</nav>
+
+
+<!-- ════════════════════════════ HERO ════════════════════════════ -->
+<section class="hero">
+  <div style="display:flex;flex-direction:column;align-items:center;gap:16px">
+    <h1 class="hero__line" data-reveal>Understand how to Money</h1>
+    <p class="hero__sub" data-reveal style="transition-delay:120ms">Grow your wealth. Step by step. One day at a time.</p>
+  </div>
+  <div class="hero__scroll" aria-hidden="true"><div class="hero__scroll-line"></div></div>
+</section>
+
+
+<!-- ════════════════════════════ MOBILE ════════════════════════════ -->
+<section class="mobile-section">
+  <div style="text-align:center;margin-bottom:64px" data-reveal>
+    <span class="sec-label">Your strategy, visualised</span>
+    <h2 class="sec-heading">You've been<br />building this.</h2>
+  </div>
+
+  <div class="phone-stage">
+
+    <!-- ── PHONE 1: WEALTH — leftmost, lowest ── -->
+    <div class="phone-col" data-reveal style="transform:translateY(72px)">
+      <div class="phone-sm-outer"><div class="phone phone--sm">
+        <div class="phone__screen">
+          <div class="phone-status"><div class="phone-island"></div>
+            <span class="phone-status__time">9:41</span>
+            <div class="phone-status__icons">
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><rect x="0" y="7" width="3" height="5" rx="0.6"/><rect x="4.5" y="4.5" width="3" height="7.5" rx="0.6"/><rect x="9" y="2" width="3" height="10" rx="0.6"/></svg>
+              <svg width="15" height="11" viewBox="0 0 16 12" fill="none"><path d="M8 10.5a1 1 0 100-2 1 1 0 000 2z" fill="currentColor"/><path d="M5.2 7.8a4 4 0 015.6 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/><path d="M2.4 5.1a7.5 7.5 0 0111.2 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/></svg>
+              <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3.5" stroke="currentColor" stroke-opacity="0.35"/><rect x="22" y="4" width="3" height="4" rx="1" fill="currentColor" fill-opacity="0.4"/><rect x="2" y="2" width="16" height="8" rx="2" fill="currentColor"/></svg>
+            </div>
+          </div>
+          <div class="app">
+            <div class="app-topbar">
+              <span style="font-size:14px;font-weight:700;letter-spacing:-0.02em">Wealth</span>
+            </div>
+            <div style="text-align:center;padding:14px 0 10px">
+              <div style="font-size:9px;color:var(--text-muted);margin-bottom:3px;text-transform:uppercase;letter-spacing:0.08em">Net worth</div>
+              <div style="font-family:var(--font-mono);font-size:26px;font-weight:700;letter-spacing:-0.03em;font-feature-settings:'tnum'">€247,691</div>
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--gain);margin-top:3px;font-feature-settings:'tnum'">↑ +€2,430 this month</div>
+            </div>
+            <div style="height:2px;border-radius:2px;overflow:hidden;display:flex;gap:1px;margin-bottom:10px">
+              <div style="width:92%;background:#7B2FBE;border-radius:2px 0 0 2px"></div>
+              <div style="width:5%;background:#4F46E5"></div>
+              <div style="width:3%;background:#F59E0B;border-radius:0 2px 2px 0"></div>
+            </div>
+            <div class="app-pos-label">Assets</div>
+            <div style="display:flex;flex-direction:column;gap:6px;padding:4px 0 10px">
+              <div style="display:flex;align-items:center;gap:6px"><div style="width:6px;height:6px;border-radius:50%;background:#7B2FBE;flex-shrink:0"></div><span style="font-size:10px;color:var(--text-secondary);flex:1">Portfolio</span><span style="font-family:var(--font-mono);font-size:10px;font-feature-settings:'tnum'">€248,391</span></div>
+              <div style="display:flex;align-items:center;gap:6px"><div style="width:6px;height:6px;border-radius:50%;background:#4F46E5;flex-shrink:0"></div><span style="font-size:10px;color:var(--text-secondary);flex:1">Cash</span><span style="font-family:var(--font-mono);font-size:10px;font-feature-settings:'tnum'">€13,500</span></div>
+              <div style="display:flex;align-items:center;gap:6px"><div style="width:6px;height:6px;border-radius:50%;background:#F59E0B;flex-shrink:0"></div><span style="font-size:10px;color:var(--text-secondary);flex:1">Crypto</span><span style="font-family:var(--font-mono);font-size:10px;font-feature-settings:'tnum'">€8,200</span></div>
+            </div>
+            <div class="app-pos-label">Liabilities</div>
+            <div style="display:flex;align-items:center;gap:6px;padding:4px 0">
+              <div style="width:6px;height:6px;border-radius:50%;background:#F43F5E;flex-shrink:0"></div>
+              <span style="font-size:10px;color:var(--text-secondary);flex:1">Car Loan</span>
+              <span style="font-family:var(--font-mono);font-size:10px;color:var(--loss);font-feature-settings:'tnum'">−€22,400</span>
+            </div>
+            <div class="app-bottom">
+              <div class="app-tab"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="2" stroke="#7B2FBE" stroke-width="1.2"/><path d="M1 7h14" stroke="#7B2FBE" stroke-width="1.2"/></svg><span class="app-tab__lbl" style="color:#7B2FBE">Wealth</span></div>
+              <div class="app-tab"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="9" width="4" height="6" rx="1" fill="#525252"/><rect x="6" y="5" width="4" height="10" rx="1" fill="#525252" opacity="0.55"/><rect x="11" y="2" width="4" height="13" rx="1" fill="#525252" opacity="0.30"/></svg><span class="app-tab__lbl" style="color:#525252">Portfolio</span></div>
+              <div class="app-tab"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="10" rx="2" stroke="#525252" stroke-width="1.2"/><path d="M5 7h6M5 9.5h4" stroke="#525252" stroke-width="1.1" stroke-linecap="round"/></svg><span class="app-tab__lbl" style="color:#525252">Txns</span></div>
+              <div class="app-tab"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12l4-4 3 3 5-6" stroke="#525252" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="app-tab__lbl" style="color:#525252">Analytics</span></div>
+            </div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- ── PHONE 2: PORTFOLIO — second from left ── -->
+    <div class="phone-col" data-reveal style="transform:translateY(12px);transition-delay:60ms">
+      <div class="phone-sm-outer"><div class="phone phone--sm">
+        <div class="phone__screen">
+          <div class="phone-status"><div class="phone-island"></div>
+            <span class="phone-status__time">9:41</span>
+            <div class="phone-status__icons">
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><rect x="0" y="7" width="3" height="5" rx="0.6"/><rect x="4.5" y="4.5" width="3" height="7.5" rx="0.6"/><rect x="9" y="2" width="3" height="10" rx="0.6"/></svg>
+              <svg width="15" height="11" viewBox="0 0 16 12" fill="none"><path d="M8 10.5a1 1 0 100-2 1 1 0 000 2z" fill="currentColor"/><path d="M5.2 7.8a4 4 0 015.6 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/><path d="M2.4 5.1a7.5 7.5 0 0111.2 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/></svg>
+              <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3.5" stroke="currentColor" stroke-opacity="0.35"/><rect x="22" y="4" width="3" height="4" rx="1" fill="currentColor" fill-opacity="0.4"/><rect x="2" y="2" width="16" height="8" rx="2" fill="currentColor"/></svg>
+            </div>
+          </div>
+          <div class="app">
+            <div class="app-topbar">
+              <span style="font-size:14px;font-weight:700;letter-spacing:-0.02em">Portfolio</span>
+            </div>
+            <div class="app-value" style="padding:6px 0 4px">
+              <div class="app-value__amount">€248,391</div>
+              <div class="app-value__delta">↑ +€12,430 · +12.4%</div>
+            </div>
+            <svg viewBox="0 0 216 34" width="100%" style="display:block;margin:2px 0">
+              <defs><linearGradient id="bgg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#7B2FBE" stop-opacity="0.18"/><stop offset="100%" stop-color="#7B2FBE" stop-opacity="0"/></linearGradient></defs>
+              <path d="M0,28 C10,29 18,26 30,24 C40,22 48,26 60,24 C72,22 80,18 94,16 C102,15 112,18 124,16 C136,14 144,11 156,9 C166,8 176,11 188,7 C198,4 208,2 216,0 L216,34 L0,34 Z" fill="url(#bgg2)"/>
+              <path d="M0,28 C10,29 18,26 30,24 C40,22 48,26 60,24 C72,22 80,18 94,16 C102,15 112,18 124,16 C136,14 144,11 156,9 C166,8 176,11 188,7 C198,4 208,2 216,0" fill="none" stroke="#7B2FBE" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <div class="app-pos-label">Top Positions</div>
+            <div class="app-pos">
+              <div class="app-pos__av" style="background:rgba(59,130,246,0.12);color:#93C5FD">M</div>
+              <div><div class="app-pos__name">Microsoft</div><div class="app-pos__ticker">MSF.DE</div></div>
+              <div class="app-pos__right"><div class="app-pos__val">€24,180</div><div class="app-pos__g">+12.4%</div></div>
+            </div>
+            <div class="app-pos">
+              <div class="app-pos__av" style="background:rgba(16,185,129,0.12);color:#6EE7B7">N</div>
+              <div><div class="app-pos__name">Nvidia</div><div class="app-pos__ticker">NVD.DE</div></div>
+              <div class="app-pos__right"><div class="app-pos__val">€18,230</div><div class="app-pos__g">+8.2%</div></div>
+            </div>
+            <div class="app-pos">
+              <div class="app-pos__av" style="background:rgba(244,63,94,0.12);color:#FCA5A5">T</div>
+              <div><div class="app-pos__name">Tesla</div><div class="app-pos__ticker">TL0.DE</div></div>
+              <div class="app-pos__right"><div class="app-pos__val">€9,840</div><div class="app-pos__l">−4.1%</div></div>
+            </div>
+            <div class="app-bottom">
+              <div class="app-tab"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="2" stroke="#525252" stroke-width="1.2"/><path d="M1 7h14" stroke="#525252" stroke-width="1.2"/></svg><span class="app-tab__lbl" style="color:#525252">Wealth</span></div>
+              <div class="app-tab"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="9" width="4" height="6" rx="1" fill="#7B2FBE"/><rect x="6" y="5" width="4" height="10" rx="1" fill="#7B2FBE" opacity="0.55"/><rect x="11" y="2" width="4" height="13" rx="1" fill="#7B2FBE" opacity="0.30"/></svg><span class="app-tab__lbl" style="color:#7B2FBE">Portfolio</span></div>
+              <div class="app-tab"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="10" rx="2" stroke="#525252" stroke-width="1.2"/><path d="M5 7h6M5 9.5h4" stroke="#525252" stroke-width="1.1" stroke-linecap="round"/></svg><span class="app-tab__lbl" style="color:#525252">Txns</span></div>
+              <div class="app-tab"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12l4-4 3 3 5-6" stroke="#525252" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="app-tab__lbl" style="color:#525252">Analytics</span></div>
+            </div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- ── PHONE 3 (HERO): DCA — centre, highest, largest ── -->
+    <div class="phone-col" data-reveal style="transform:translateY(-28px);transition-delay:120ms">
+        <div class="phone" style="box-shadow:0 0 0 1px rgba(255,255,255,0.03) inset,0 40px 70px rgba(0,0,0,0.60)">
+          <!-- phone__screen: position:absolute overrides padding+flex so layers work -->
+          <div class="phone__screen" style="padding:0;display:block">
+            <div class="phone-status" style="position:relative;z-index:20;background:#0A0A0A"><div class="phone-island"></div>
+              <span class="phone-status__time">9:41</span>
+              <div class="phone-status__icons">
+                <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><rect x="0" y="7" width="3" height="5" rx="0.6"/><rect x="4.5" y="4.5" width="3" height="7.5" rx="0.6"/><rect x="9" y="2" width="3" height="10" rx="0.6"/></svg>
+                <svg width="15" height="11" viewBox="0 0 16 12" fill="none"><path d="M8 10.5a1 1 0 100-2 1 1 0 000 2z" fill="currentColor"/><path d="M5.2 7.8a4 4 0 015.6 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/><path d="M2.4 5.1a7.5 7.5 0 0111.2 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/></svg>
+                <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3.5" stroke="currentColor" stroke-opacity="0.35"/><rect x="22" y="4" width="3" height="4" rx="1" fill="currentColor" fill-opacity="0.4"/><rect x="2" y="2" width="16" height="8" rx="2" fill="currentColor"/></svg>
+              </div>
+            </div>
+
+            <!-- ── LAYER 1: Portfolio (scaled + dimmed behind the sheet) ── -->
+            <div class="psheet-base">
+              <div class="app-topbar">
+                <span class="app-greeting">Good morning, Brian</span>
+                <div class="app-avatar">B</div>
+              </div>
+              <div class="app-value" style="padding:6px 0 4px">
+                <div class="app-value__amount">€248,391</div>
+                <div class="app-value__delta">↑ +€12,430 · +12.4%</div>
+              </div>
+              <svg viewBox="0 0 216 34" width="100%" style="display:block;margin:2px 0">
+                <defs><linearGradient id="bgg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#7B2FBE" stop-opacity="0.18"/><stop offset="100%" stop-color="#7B2FBE" stop-opacity="0"/></linearGradient></defs>
+                <path d="M0,28 C10,29 18,26 30,24 C40,22 48,26 60,24 C72,22 80,18 94,16 C102,15 112,18 124,16 C136,14 144,11 156,9 C166,8 176,11 188,7 C198,4 208,2 216,0 L216,34 L0,34 Z" fill="url(#bgg)"/>
+                <path d="M0,28 C10,29 18,26 30,24 C40,22 48,26 60,24 C72,22 80,18 94,16 C102,15 112,18 124,16 C136,14 144,11 156,9 C166,8 176,11 188,7 C198,4 208,2 216,0" fill="none" stroke="#7B2FBE" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+              <div class="app-pos-label">Top Positions</div>
+              <div class="app-pos">
+                <div class="app-pos__av" style="background:rgba(59,130,246,0.12);color:#93C5FD">M</div>
+                <div><div class="app-pos__name">Microsoft</div><div class="app-pos__ticker">MSF.DE</div></div>
+                <div class="app-pos__right"><div class="app-pos__val">€24,180</div><div class="app-pos__g">+12.4%</div></div>
+              </div>
+              <div class="app-pos">
+                <div class="app-pos__av" style="background:rgba(16,185,129,0.12);color:#6EE7B7">N</div>
+                <div><div class="app-pos__name">Nvidia</div><div class="app-pos__ticker">NVD.DE</div></div>
+                <div class="app-pos__right"><div class="app-pos__val">€18,230</div><div class="app-pos__g">+8.2%</div></div>
+              </div>
+              <div class="app-pos">
+                <div class="app-pos__av" style="background:rgba(244,63,94,0.12);color:#FCA5A5">T</div>
+                <div><div class="app-pos__name">Tesla</div><div class="app-pos__ticker">TL0.DE</div></div>
+                <div class="app-pos__right"><div class="app-pos__val">€9,840</div><div class="app-pos__l">−4.1%</div></div>
+              </div>
+            </div>
+
+            <!-- ── LAYER 2: Dark scrim ── -->
+            <div class="psheet-overlay"></div>
+
+            <!-- ── LAYER 3: Detail sheet — slides up from below ── -->
+            <div class="psheet">
+              <div class="psheet__handle"></div>
+              <div class="psheet__scroll">
+
+                <!-- Stock header (no back button — sheet dismisses by swiping down) -->
+                <div class="stock-header" style="padding:4px 0 8px">
+                  <div class="stock-av" style="background:rgba(59,130,246,0.14);color:#93C5FD">M</div>
+                  <div>
+                    <div class="stock-name">Microsoft</div>
+                    <div class="stock-ticker">MSF.DE</div>
+                  </div>
+                </div>
+                <div class="stock-value">€2,015.00</div>
+                <div class="stock-delta">↑ +€12.40 · +0.62% today</div>
+                <div class="chart-period" style="margin-top:6px">
+                  <span class="cp">1M</span><span class="cp">3M</span><span class="cp">6M</span><span class="cp cp--active">1Y</span><span class="cp">All</span>
+                </div>
+
+                <!-- DCA CHART — the differentiator -->
+                <svg viewBox="0 0 230 80" width="100%" style="display:block">
+                  <defs>
+                    <linearGradient id="dg" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#7B2FBE" stop-opacity="0.16"/>
+                      <stop offset="100%" stop-color="#7B2FBE" stop-opacity="0"/>
+                    </linearGradient>
+                  </defs>
+                  <path d="M0,55 C12,57 22,63 34,65 C42,66 50,58 60,55 C70,52 76,60 84,58 C92,56 100,48 110,46 C118,44 124,48 134,46 C144,44 154,39 164,37 C172,35 180,44 190,42 C202,40 216,29 230,22 L230,80 L0,80 Z" fill="url(#dg)"/>
+                  <path d="M0,55 C12,57 22,63 34,65 C42,66 50,58 60,55 C70,52 76,60 84,58 C92,56 100,48 110,46 C118,44 124,48 134,46 C144,44 154,39 164,37 C172,35 180,44 190,42 C202,40 216,29 230,22" fill="none" stroke="#7B2FBE" stroke-width="1.5" stroke-linecap="round"/>
+                  <line x1="0" y1="48" x2="230" y2="48" stroke="#525252" stroke-width="1" stroke-dasharray="3 3"/>
+                  <text x="2" y="44" fill="#525252" font-family="JetBrains Mono,monospace" font-size="7">avg cost</text>
+                  <circle cx="34" cy="65" r="4.5" fill="#0A0A0A" stroke="#7B2FBE" stroke-width="1.5"/>
+                  <circle cx="34" cy="65" r="1.8" fill="#7B2FBE"/>
+                  <circle cx="84" cy="58" r="4.5" fill="#0A0A0A" stroke="#7B2FBE" stroke-width="1.5"/>
+                  <circle cx="84" cy="58" r="1.8" fill="#7B2FBE"/>
+                  <circle cx="134" cy="46" r="4.5" fill="#0A0A0A" stroke="#7B2FBE" stroke-width="1.5"/>
+                  <circle cx="134" cy="46" r="1.8" fill="#7B2FBE"/>
+                  <circle cx="164" cy="37" r="4.5" fill="#0A0A0A" stroke="#7B2FBE" stroke-width="1.5"/>
+                  <circle cx="164" cy="37" r="1.8" fill="#7B2FBE"/>
+                  <circle cx="190" cy="42" r="4.5" fill="#0A0A0A" stroke="#7B2FBE" stroke-width="1.5"/>
+                  <circle cx="190" cy="42" r="1.8" fill="#7B2FBE"/>
+                  <circle cx="230" cy="22" r="3" fill="#7B2FBE"/>
+                  <circle cx="230" cy="22" r="7" fill="rgba(123,47,190,0.18)"/>
+                </svg>
+                <div class="dca-legend">
+                  <div class="dca-legend__item"><div class="dca-legend__dot" style="background:#0A0A0A;border:1.5px solid #7B2FBE"></div>Buy</div>
+                  <div class="dca-legend__item"><div style="width:16px;height:1px;border-top:1px dashed #525252"></div>Avg cost</div>
+                  <div class="dca-legend__item"><div class="dca-legend__dot" style="background:#7B2FBE"></div>Current</div>
+                </div>
+                <div class="stock-stats">
+                  <div class="stock-stat"><span class="stock-stat__k">Shares</span><span class="stock-stat__v">12</span></div>
+                  <div class="stock-stat"><span class="stock-stat__k">Avg price</span><span class="stock-stat__v">€1,877.08</span></div>
+                  <div class="stock-stat"><span class="stock-stat__k">Total invested</span><span class="stock-stat__v">€22,524.96</span></div>
+                  <div class="stock-stat"><span class="stock-stat__k">Market value</span><span class="stock-stat__v" style="color:var(--gain)">€24,180.00</span></div>
+                </div>
+
+                <!-- ── KEY METRICS ── -->
+                <div class="stock-section-label">Key Metrics</div>
+                <div class="stock-metrics-scroll">
+                  <div class="stock-metrics-grid">
+                    <!-- Col 1 -->
+                    <div class="smg-cell"><span class="smg-k">P/E</span><span class="smg-v">35.2</span></div>
+                    <div class="smg-cell"><span class="smg-k">EPS</span><span class="smg-v">€11.48</span></div>
+                    <!-- Col 2 -->
+                    <div class="smg-cell"><span class="smg-k">Mkt Cap</span><span class="smg-v">€2.8T</span></div>
+                    <div class="smg-cell"><span class="smg-k">Beta</span><span class="smg-v">0.91</span></div>
+                    <!-- Col 3 — 52W Lo -->
+                    <div class="smg-cell"><span class="smg-k">52W Lo</span><span class="smg-v">€320</span></div>
+                    <div class="smg-cell"><span class="smg-k">Div Yld</span><span class="smg-v">0.68%</span></div>
+                    <!-- Col 4 — 52W Hi, adjacent to Lo -->
+                    <div class="smg-cell"><span class="smg-k">52W Hi</span><span class="smg-v">€468</span></div>
+                    <div class="smg-cell"><span class="smg-k">Fwd P/E</span><span class="smg-v">30.1</span></div>
+                    <!-- Col 5 -->
+                    <div class="smg-cell"><span class="smg-k">ROE</span><span class="smg-v">38.2%</span></div>
+                    <div class="smg-cell"><span class="smg-k">P/B</span><span class="smg-v">12.4</span></div>
+                  </div>
+                </div>
+
+                <!-- ── DIVIDEND PROJECTION ── -->
+                <div class="stock-section-label">Dividends 2026</div>
+                <svg viewBox="0 0 216 72" width="100%" style="display:block">
+                  <rect x="4"   y="40" width="44" height="22" rx="2" fill="#10B981" opacity="0.85"/>
+                  <text x="26"  y="36" fill="#10B981" font-family="JetBrains Mono,monospace" font-size="7.5" text-anchor="middle">€8.16</text>
+                  <rect x="58"  y="32" width="44" height="30" rx="2" fill="#10B981" opacity="0.20"/>
+                  <rect x="58"  y="32" width="44" height="30" rx="2" fill="none" stroke="#10B981" stroke-width="1" stroke-dasharray="3 2" opacity="0.45"/>
+                  <text x="80"  y="28" fill="#525252" font-family="JetBrains Mono,monospace" font-size="7.5" text-anchor="middle">€10.88</text>
+                  <rect x="112" y="22" width="44" height="40" rx="2" fill="#10B981" opacity="0.20"/>
+                  <rect x="112" y="22" width="44" height="40" rx="2" fill="none" stroke="#10B981" stroke-width="1" stroke-dasharray="3 2" opacity="0.45"/>
+                  <text x="134" y="18" fill="#525252" font-family="JetBrains Mono,monospace" font-size="7.5" text-anchor="middle">€13.60</text>
+                  <rect x="166" y="12" width="44" height="50" rx="2" fill="#10B981" opacity="0.20"/>
+                  <rect x="166" y="12" width="44" height="50" rx="2" fill="none" stroke="#10B981" stroke-width="1" stroke-dasharray="3 2" opacity="0.45"/>
+                  <text x="188" y="8"  fill="#525252" font-family="JetBrains Mono,monospace" font-size="7.5" text-anchor="middle">€16.32</text>
+                  <text x="26"  y="70" fill="#525252" font-family="JetBrains Mono,monospace" font-size="7" text-anchor="middle">Q1</text>
+                  <text x="80"  y="70" fill="#525252" font-family="JetBrains Mono,monospace" font-size="7" text-anchor="middle">Q2</text>
+                  <text x="134" y="70" fill="#525252" font-family="JetBrains Mono,monospace" font-size="7" text-anchor="middle">Q3</text>
+                  <text x="188" y="70" fill="#525252" font-family="JetBrains Mono,monospace" font-size="7" text-anchor="middle">Q4</text>
+                </svg>
+                <div style="display:flex;align-items:center;gap:10px;margin:4px 0 8px">
+                  <div style="display:flex;align-items:center;gap:4px">
+                    <div style="width:8px;height:8px;border-radius:1px;background:rgba(16,185,129,0.85)"></div>
+                    <span style="font-size:8px;color:var(--text-muted)">Paid</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:4px">
+                    <div style="width:8px;height:8px;border-radius:1px;border:1px dashed rgba(16,185,129,0.5);background:rgba(16,185,129,0.2)"></div>
+                    <span style="font-size:8px;color:var(--text-muted)">Projected · recurring plan</span>
+                  </div>
+                </div>
+
+                <!-- ── REPORTED FINANCIALS ── -->
+                <div class="stock-section-label">Reported Financials</div>
+                <div class="fin-widget">
+                  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+                    <div>
+                      <div style="font-size:10px;font-weight:700;color:var(--text-primary)">Financials</div>
+                      <div style="font-size:8px;color:var(--text-muted);margin-top:1px">Reported figures till 2025</div>
+                    </div>
+                    <div class="fin-toggle">
+                      <span class="fin-toggle__btn fin-toggle__btn--active">Annual</span>
+                      <span class="fin-toggle__btn">Quarter</span>
+                    </div>
+                  </div>
+                  <svg viewBox="0 0 216 72" width="100%" style="display:block">
+                    <rect x="4"   y="24" width="16" height="38" rx="2" fill="#10B981" opacity="0.50"/>
+                    <rect x="24"  y="48" width="16" height="14" rx="2" fill="#10B981" opacity="0.22"/>
+                    <rect x="58"  y="21" width="16" height="41" rx="2" fill="#10B981" opacity="0.50"/>
+                    <rect x="78"  y="48" width="16" height="14" rx="2" fill="#10B981" opacity="0.22"/>
+                    <rect x="112" y="18" width="16" height="44" rx="2" fill="#10B981" opacity="0.50"/>
+                    <rect x="132" y="46" width="16" height="16" rx="2" fill="#10B981" opacity="0.22"/>
+                    <rect x="166" y="12" width="16" height="50" rx="2" fill="#10B981"/>
+                    <rect x="186" y="44" width="16" height="18" rx="2" fill="#10B981" opacity="0.40"/>
+                    <text x="174" y="8"  fill="#10B981" font-family="JetBrains Mono,monospace" font-size="6" text-anchor="middle">259B</text>
+                    <text x="194" y="40" fill="#525252" font-family="JetBrains Mono,monospace" font-size="6" text-anchor="middle">93.6B</text>
+                    <text x="20"  y="70" fill="#525252" font-family="JetBrains Mono,monospace" font-size="6.5" text-anchor="middle">2022</text>
+                    <text x="74"  y="70" fill="#525252" font-family="JetBrains Mono,monospace" font-size="6.5" text-anchor="middle">2023</text>
+                    <text x="128" y="70" fill="#525252" font-family="JetBrains Mono,monospace" font-size="6.5" text-anchor="middle">2024</text>
+                    <text x="182" y="70" fill="#10B981" font-family="JetBrains Mono,monospace" font-size="6.5" text-anchor="middle">2025</text>
+                  </svg>
+                  <div style="display:flex;gap:8px;margin:6px 0 8px">
+                    <div style="display:flex;align-items:center;gap:3px"><div style="width:7px;height:7px;border-radius:1px;background:#10B981"></div><span style="font-size:8px;color:var(--text-muted)">Revenue</span></div>
+                    <div style="display:flex;align-items:center;gap:3px"><div style="width:7px;height:7px;border-radius:1px;background:#10B981;opacity:0.35"></div><span style="font-size:8px;color:var(--text-muted)">Net income</span></div>
+                  </div>
+                  <div class="fin-year">2025</div>
+                  <div class="fin-row">
+                    <span class="fin-k">Revenue</span>
+                    <div style="display:flex;align-items:center;gap:8px"><span class="fin-v">€259B</span><span class="fin-d">▲ 14.93%</span></div>
+                  </div>
+                  <div class="fin-row">
+                    <span class="fin-k">EBITDA</span>
+                    <div style="display:flex;align-items:center;gap:8px"><span class="fin-v">€150B</span><span class="fin-d">▲ 23.51%</span></div>
+                  </div>
+                  <div class="fin-row">
+                    <span class="fin-k">Net income</span>
+                    <div style="display:flex;align-items:center;gap:8px"><span class="fin-v">€93.6B</span><span class="fin-d">▲ 15.54%</span></div>
+                  </div>
+                </div>
+
+              </div><!-- /psheet__scroll -->
+            </div><!-- /psheet -->
+
+          </div><!-- /phone__screen -->
+        </div><!-- /phone -->
+      </div>
+
+    <!-- ── PHONE 4: TRANSACTIONS ── -->
+    <div class="phone-col" data-reveal style="transform:translateY(24px);transition-delay:180ms">
+      <div class="phone-sm-outer"><div class="phone phone--sm">
+        <div class="phone__screen">
+          <div class="phone-status"><div class="phone-island"></div>
+            <span class="phone-status__time">9:41</span>
+            <div class="phone-status__icons">
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><rect x="0" y="7" width="3" height="5" rx="0.6"/><rect x="4.5" y="4.5" width="3" height="7.5" rx="0.6"/><rect x="9" y="2" width="3" height="10" rx="0.6"/></svg>
+              <svg width="15" height="11" viewBox="0 0 16 12" fill="none"><path d="M8 10.5a1 1 0 100-2 1 1 0 000 2z" fill="currentColor"/><path d="M5.2 7.8a4 4 0 015.6 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/><path d="M2.4 5.1a7.5 7.5 0 0111.2 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/></svg>
+              <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3.5" stroke="currentColor" stroke-opacity="0.35"/><rect x="22" y="4" width="3" height="4" rx="1" fill="currentColor" fill-opacity="0.4"/><rect x="2" y="2" width="16" height="8" rx="2" fill="currentColor"/></svg>
+            </div>
+          </div>
+          <div class="app">
+            <div class="app-topbar">
+              <span style="font-size:14px;font-weight:700;letter-spacing:-0.02em">Transactions</span>
+            </div>
+            <div class="txn-filters">
+              <span class="tf tf--active">All</span>
+              <span class="tf">Buys</span>
+              <span class="tf">Sells</span>
+              <span class="tf">Dividends</span>
+            </div>
+            <div class="txn-group-date">Dec 2025</div>
+            <div class="txn-row">
+              <div class="txn-icon" style="background:rgba(16,185,129,0.10)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 10V2M2 6l4-4 4 4" stroke="#10B981" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div><div class="txn-name">Microsoft</div><div class="txn-detail">Buy · 2 shares · Dec 15</div></div>
+              <div class="txn-right"><div class="txn-amount" style="color:var(--loss)">−€4,030</div><div class="txn-shares">MSF.DE</div></div>
+            </div>
+            <div class="txn-group-date">Nov 2025</div>
+            <div class="txn-row">
+              <div class="txn-icon" style="background:rgba(16,185,129,0.10)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 10V2M2 6l4-4 4 4" stroke="#10B981" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div><div class="txn-name">Nvidia</div><div class="txn-detail">Buy · 3 shares · Nov 20</div></div>
+              <div class="txn-right"><div class="txn-amount" style="color:var(--loss)">−€6,690</div><div class="txn-shares">NVD.DE</div></div>
+            </div>
+            <div class="txn-group-date">Oct 2025</div>
+            <div class="txn-row">
+              <div class="txn-icon" style="background:rgba(244,63,94,0.10)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M10 6L6 10 2 6" stroke="#F43F5E" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div><div class="txn-name">Tesla</div><div class="txn-detail">Sell · 5 shares · Oct 8</div></div>
+              <div class="txn-right"><div class="txn-amount" style="color:var(--gain)">+€24,550</div><div class="txn-shares">TL0.DE</div></div>
+            </div>
+            <div class="txn-group-date">Sep 2025</div>
+            <div class="txn-row">
+              <div class="txn-icon" style="background:rgba(16,185,129,0.10)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 10V2M2 6l4-4 4 4" stroke="#10B981" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div><div class="txn-name">Microsoft</div><div class="txn-detail">Buy · 2 shares · Sep 15</div></div>
+              <div class="txn-right"><div class="txn-amount" style="color:var(--loss)">−€3,760</div><div class="txn-shares">MSF.DE</div></div>
+            </div>
+            <div class="txn-row">
+              <div class="txn-icon" style="background:rgba(16,185,129,0.08)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4" stroke="#10B981" stroke-width="1.2"/><path d="M6 4v2l1.5 1" stroke="#10B981" stroke-width="1.1" stroke-linecap="round"/></svg></div>
+              <div><div class="txn-name">Apple</div><div class="txn-detail">Dividend · Sep 1</div></div>
+              <div class="txn-right"><div class="txn-amount" style="color:var(--gain)">+€42.50</div><div class="txn-shares">APC.DE</div></div>
+            </div>
+            <div class="app-bottom">
+              <div class="app-tab"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="2" stroke="#525252" stroke-width="1.2"/><path d="M1 7h14" stroke="#525252" stroke-width="1.2"/></svg><span class="app-tab__lbl" style="color:#525252">Wealth</span></div>
+              <div class="app-tab"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="9" width="4" height="6" rx="1" fill="#525252"/><rect x="6" y="5" width="4" height="10" rx="1" fill="#525252" opacity="0.55"/><rect x="11" y="2" width="4" height="13" rx="1" fill="#525252" opacity="0.30"/></svg><span class="app-tab__lbl" style="color:#525252">Portfolio</span></div>
+              <div class="app-tab"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="10" rx="2" stroke="#7B2FBE" stroke-width="1.2"/><path d="M5 7h6M5 9.5h4" stroke="#7B2FBE" stroke-width="1.1" stroke-linecap="round"/></svg><span class="app-tab__lbl" style="color:#7B2FBE">Txns</span></div>
+              <div class="app-tab"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12l4-4 3 3 5-6" stroke="#525252" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="app-tab__lbl" style="color:#525252">Analytics</span></div>
+            </div>
+          </div>
+        </div>
+      </div></div><!-- /phone-sm-outer -->
+    </div>
+
+    <!-- ── PHONE 5: ANALYTICS — rightmost, lowest ── -->
+    <div class="phone-col" data-reveal style="transform:translateY(76px);transition-delay:240ms">
+      <div class="phone-sm-outer"><div class="phone phone--sm">
+        <div class="phone__screen">
+          <div class="phone-status"><div class="phone-island"></div>
+            <span class="phone-status__time">9:41</span>
+            <div class="phone-status__icons">
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><rect x="0" y="7" width="3" height="5" rx="0.6"/><rect x="4.5" y="4.5" width="3" height="7.5" rx="0.6"/><rect x="9" y="2" width="3" height="10" rx="0.6"/></svg>
+              <svg width="15" height="11" viewBox="0 0 16 12" fill="none"><path d="M8 10.5a1 1 0 100-2 1 1 0 000 2z" fill="currentColor"/><path d="M5.2 7.8a4 4 0 015.6 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/><path d="M2.4 5.1a7.5 7.5 0 0111.2 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/></svg>
+              <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3.5" stroke="currentColor" stroke-opacity="0.35"/><rect x="22" y="4" width="3" height="4" rx="1" fill="currentColor" fill-opacity="0.4"/><rect x="2" y="2" width="16" height="8" rx="2" fill="currentColor"/></svg>
+            </div>
+          </div>
+          <div class="app">
+            <div class="app-topbar">
+              <span style="font-size:14px;font-weight:700;letter-spacing:-0.02em">Analytics</span>
+            </div>
+            <div class="chart-period" style="padding:4px 0 8px">
+              <span class="cp">1M</span><span class="cp">3M</span><span class="cp">6M</span><span class="cp cp--active">1Y</span><span class="cp">All</span>
+            </div>
+            <div class="anl-kpis">
+              <div class="anl-kpi"><div class="anl-kpi__label">Total Return</div><div class="anl-kpi__value" style="color:var(--gain)">+€28,430</div><div class="anl-kpi__sub">+12.9% all time</div></div>
+              <div class="anl-kpi"><div class="anl-kpi__label">YTD</div><div class="anl-kpi__value" style="color:var(--gain)">+€12,430</div><div class="anl-kpi__sub">+5.3% this year</div></div>
+            </div>
+            <!-- Monthly bars -->
+            <div class="anl-section-label">Monthly Performance</div>
+            <svg viewBox="0 0 216 60" width="100%" style="display:block;margin-bottom:10px">
+              <!-- Month bars — positive/negative -->
+              <rect x="2"   y="30" width="14" height="18" rx="2" fill="#10B981" opacity="0.8"/>
+              <rect x="20"  y="36" width="14" height="12" rx="2" fill="#10B981" opacity="0.8"/>
+              <rect x="38"  y="32" width="14" height="16" rx="2" fill="#10B981" opacity="0.8"/>
+              <rect x="56"  y="34" width="14" height="14" rx="2" fill="#10B981" opacity="0.8"/>
+              <rect x="74"  y="24" width="14" height="24" rx="2" fill="#10B981" opacity="0.8"/>
+              <rect x="92"  y="30" width="14" height="18" rx="2" fill="#F43F5E" opacity="0.8"/><!-- loss month -->
+              <rect x="110" y="26" width="14" height="22" rx="2" fill="#10B981" opacity="0.8"/>
+              <rect x="128" y="30" width="14" height="18" rx="2" fill="#F43F5E" opacity="0.8"/><!-- loss month -->
+              <rect x="146" y="20" width="14" height="28" rx="2" fill="#10B981" opacity="0.8"/>
+              <rect x="164" y="16" width="14" height="32" rx="2" fill="#10B981" opacity="0.8"/>
+              <rect x="182" y="12" width="14" height="36" rx="2" fill="#10B981" opacity="0.8"/>
+              <rect x="200" y="18" width="14" height="30" rx="2" fill="#10B981" opacity="0.8"/>
+              <!-- Zero line -->
+              <line x1="0" y1="48" x2="216" y2="48" stroke="#2E2E2E" stroke-width="1"/>
+              <!-- Month labels -->
+              <text x="2"   y="58" fill="#525252" font-family="JetBrains Mono,monospace" font-size="6">J</text>
+              <text x="20"  y="58" fill="#525252" font-family="JetBrains Mono,monospace" font-size="6">F</text>
+              <text x="38"  y="58" fill="#525252" font-family="JetBrains Mono,monospace" font-size="6">M</text>
+              <text x="56"  y="58" fill="#525252" font-family="JetBrains Mono,monospace" font-size="6">A</text>
+              <text x="74"  y="58" fill="#525252" font-family="JetBrains Mono,monospace" font-size="6">M</text>
+              <text x="92"  y="58" fill="#525252" font-family="JetBrains Mono,monospace" font-size="6">J</text>
+              <text x="110" y="58" fill="#525252" font-family="JetBrains Mono,monospace" font-size="6">J</text>
+              <text x="128" y="58" fill="#525252" font-family="JetBrains Mono,monospace" font-size="6">A</text>
+              <text x="146" y="58" fill="#525252" font-family="JetBrains Mono,monospace" font-size="6">S</text>
+              <text x="164" y="58" fill="#525252" font-family="JetBrains Mono,monospace" font-size="6">O</text>
+              <text x="182" y="58" fill="#525252" font-family="JetBrains Mono,monospace" font-size="6">N</text>
+              <text x="200" y="58" fill="#525252" font-family="JetBrains Mono,monospace" font-size="6">D</text>
+            </svg>
+            <div class="anl-section-label">Best &amp; Worst</div>
+            <div class="perf-row"><span class="perf-name">Nvidia</span><div class="perf-bar-track"><div class="perf-bar-fill" style="width:82%;background:var(--gain)"></div></div><span class="perf-pct" style="color:var(--gain)">+8.2%</span></div>
+            <div class="perf-row"><span class="perf-name">Microsoft</span><div class="perf-bar-track"><div class="perf-bar-fill" style="width:100%;background:var(--gain)"></div></div><span class="perf-pct" style="color:var(--gain)">+12.4%</span></div>
+            <div class="perf-row"><span class="perf-name">Apple</span><div class="perf-bar-track"><div class="perf-bar-fill" style="width:68%;background:var(--gain)"></div></div><span class="perf-pct" style="color:var(--gain)">+10.3%</span></div>
+            <div class="perf-row"><span class="perf-name">Tesla</span><div class="perf-bar-track"><div class="perf-bar-fill" style="width:41%;background:var(--loss)"></div></div><span class="perf-pct" style="color:var(--loss)">−4.1%</span></div>
+            <div class="app-bottom">
+              <div class="app-tab"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="2" stroke="#525252" stroke-width="1.2"/><path d="M1 7h14" stroke="#525252" stroke-width="1.2"/></svg><span class="app-tab__lbl" style="color:#525252">Wealth</span></div>
+              <div class="app-tab"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="9" width="4" height="6" rx="1" fill="#525252"/><rect x="6" y="5" width="4" height="10" rx="1" fill="#525252" opacity="0.55"/><rect x="11" y="2" width="4" height="13" rx="1" fill="#525252" opacity="0.30"/></svg><span class="app-tab__lbl" style="color:#525252">Portfolio</span></div>
+              <div class="app-tab"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="10" rx="2" stroke="#525252" stroke-width="1.2"/><path d="M5 7h6M5 9.5h4" stroke="#525252" stroke-width="1.1" stroke-linecap="round"/></svg><span class="app-tab__lbl" style="color:#525252">Txns</span></div>
+              <div class="app-tab"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12l4-4 3 3 5-6" stroke="#7B2FBE" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="app-tab__lbl" style="color:#7B2FBE">Analytics</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div></div><!-- /phone-sm-outer -->
+    </div>
+
+  </div><!-- /phone-stage -->
+</section>
+
+
+<!-- ════════════════════════════ WEB APP ════════════════════════════ -->
+<section class="webapp-section">
+  <div class="container">
+    <div class="sec-header" data-reveal>
+      <span class="sec-label">The complete picture</span>
+      <h2 class="sec-heading">Everything.<br />One place.</h2>
+    </div>
+
+    <!-- Tab bar -->
+    <div class="webapp-tabs" data-reveal>
+      <button id="tab-wealth"    class="wt wt--active" onclick="switchTab('wb-wealth',this)"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M1 7h14" stroke="currentColor" stroke-width="1.3"/></svg>Wealth</button>
+      <button id="tab-portfolio" class="wt" onclick="switchTab('wb-portfolio',this)"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="1" y="9" width="4" height="6" rx="1" fill="currentColor"/><rect x="6" y="5" width="4" height="10" rx="1" fill="currentColor" opacity="0.6"/><rect x="11" y="2" width="4" height="13" rx="1" fill="currentColor" opacity="0.35"/></svg>Portfolio</button>
+      <button id="tab-stock"     class="wt" onclick="switchTab('wb-stock',this)"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M8 5v3l2 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Microsoft</button>
+      <button id="tab-txns"      class="wt" onclick="switchTab('wb-txns',this)"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="10" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M5 7h6M5 9.5h4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>Transactions</button>
+      <button id="tab-analytics" class="wt" onclick="switchTab('wb-analytics',this)"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M2 12l4-4 3 3 5-6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Analytics</button>
+      <button id="tab-planning" class="wt" onclick="switchTab('wb-planning',this)"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 1.5L9.4 6.6L14.5 8L9.4 9.4L8 14.5L6.6 9.4L1.5 8L6.6 6.6Z" fill="currentColor"/></svg>Planning</button>
+    </div>
+
+    <!-- ── TAB: WEALTH ── -->
+    <div id="wb-wealth" class="wb-panel wb-panel--active">
+      <div class="webapp-frame">
+        <div class="webapp-titlebar">
+          <div class="tb-dot" style="background:#FF5F57"></div>
+          <div class="tb-dot" style="background:#FFBD2E"></div>
+          <div class="tb-dot" style="background:#28C840"></div>
+          <div class="webapp-titlebar__url">app.bebabylon.com/wealth</div>
+        </div>
+        <div class="webapp-body">
+          <div class="wb-sidebar">
+            <div class="wb-wordmark">Babylon</div>
+            <nav class="wb-nav">
+              <div class="wb-item wb-item--active" onclick="switchTab('wb-wealth',document.getElementById('tab-wealth'))"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M1 7h14" stroke="currentColor" stroke-width="1.2"/></svg>Wealth</div>
+              <div class="wb-item" onclick="switchTab('wb-portfolio',document.getElementById('tab-portfolio'))"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><rect x="1" y="9" width="4" height="6" rx="1" fill="currentColor"/><rect x="6" y="5" width="4" height="10" rx="1" fill="currentColor" opacity="0.6"/><rect x="11" y="2" width="4" height="13" rx="1" fill="currentColor" opacity="0.35"/></svg>Portfolio</div>
+              <div class="wb-item" onclick="switchTab('wb-txns',document.getElementById('tab-txns'))"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M5 7h6M5 9.5h4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>Transactions</div>
+              <div class="wb-item" onclick="switchTab('wb-analytics',document.getElementById('tab-analytics'))"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M2 12l4-4 3 3 5-6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Analytics</div>
+              <div class="wb-item" onclick="switchTab('wb-planning',document.getElementById('tab-planning'))"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M8 1.5L9.4 6.6L14.5 8L9.4 9.4L8 14.5L6.6 9.4L1.5 8L6.6 6.6Z" fill="currentColor"/></svg>Planning</div>
+            </nav>
+          </div>
+          <div class="wb-main">
+            <div class="wb-header" style="margin-bottom:20px">
+              <div><div class="wb-page-title">Wealth</div><div class="wb-page-sub">Updated just now</div></div>
+              <div><div class="wb-value__amount">€247,691</div><div class="wb-value__delta">↑ +€2,430 this month · +€41,691 all time</div></div>
+            </div>
+            <!-- Assets / Liabilities grid -->
+            <div class="wb-grid">
+              <div class="wb-card">
+                <div class="wb-card__label">Assets</div>
+                <div class="wb-asset-row">
+                  <div class="wb-asset-dot" style="background:#7B2FBE"></div>
+                  <span class="wb-asset-name">Portfolio</span>
+                  <span class="wb-asset-val">€248,391</span>
+                  <span class="wb-asset-pct">91.9%</span>
+                </div>
+                <div class="wb-asset-row">
+                  <div class="wb-asset-dot" style="background:#4F46E5"></div>
+                  <span class="wb-asset-name">Cash &amp; Savings</span>
+                  <span class="wb-asset-val">€13,500</span>
+                  <span class="wb-asset-pct">5.0%</span>
+                </div>
+                <div class="wb-asset-row">
+                  <div class="wb-asset-dot" style="background:#F59E0B"></div>
+                  <span class="wb-asset-name">Crypto</span>
+                  <span class="wb-asset-val">€8,200</span>
+                  <span class="wb-asset-pct">3.0%</span>
+                </div>
+                <div class="wb-asset-row" style="margin-top:4px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.06)">
+                  <span class="wb-asset-name" style="font-weight:600;color:var(--text-primary)">Total</span>
+                  <span class="wb-asset-val" style="font-weight:700">€270,091</span>
+                  <span class="wb-asset-pct"></span>
+                </div>
+              </div>
+              <div class="wb-card">
+                <div class="wb-card__label">Liabilities</div>
+                <div class="wb-asset-row">
+                  <div class="wb-asset-dot" style="background:#F43F5E"></div>
+                  <span class="wb-asset-name">Car Loan</span>
+                  <span class="wb-asset-val" style="color:var(--loss)">−€22,400</span>
+                  <span class="wb-asset-pct"></span>
+                </div>
+                <div class="wb-asset-row" style="margin-top:4px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.06)">
+                  <span class="wb-asset-name" style="font-weight:600;color:var(--text-primary)">Total</span>
+                  <span class="wb-asset-val" style="font-weight:700;color:var(--loss)">−€22,400</span>
+                  <span class="wb-asset-pct"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TAB: PORTFOLIO ── -->
+    <div id="wb-portfolio" class="wb-panel">
+      <div class="webapp-frame">
+        <div class="webapp-titlebar">
+          <div class="tb-dot" style="background:#FF5F57"></div>
+          <div class="tb-dot" style="background:#FFBD2E"></div>
+          <div class="tb-dot" style="background:#28C840"></div>
+          <div class="webapp-titlebar__url">app.bebabylon.com/portfolio</div>
+        </div>
+        <div class="webapp-body">
+          <div class="wb-sidebar">
+            <div class="wb-wordmark">Babylon</div>
+            <nav class="wb-nav">
+              <div class="wb-item" onclick="switchTab('wb-wealth',document.getElementById('tab-wealth'))"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M1 7h14" stroke="currentColor" stroke-width="1.2"/></svg>Wealth</div>
+              <div class="wb-item wb-item--active" onclick="switchTab('wb-portfolio',document.getElementById('tab-portfolio'))"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><rect x="1" y="9" width="4" height="6" rx="1" fill="currentColor"/><rect x="6" y="5" width="4" height="10" rx="1" fill="currentColor" opacity="0.6"/><rect x="11" y="2" width="4" height="13" rx="1" fill="currentColor" opacity="0.35"/></svg>Portfolio</div>
+              <div class="wb-item" onclick="switchTab('wb-txns',document.getElementById('tab-txns'))"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M5 7h6M5 9.5h4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>Transactions</div>
+              <div class="wb-item" onclick="switchTab('wb-analytics',document.getElementById('tab-analytics'))"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M2 12l4-4 3 3 5-6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Analytics</div>
+              <div class="wb-item" onclick="switchTab('wb-planning',document.getElementById('tab-planning'))"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M8 1.5L9.4 6.6L14.5 8L9.4 9.4L8 14.5L6.6 9.4L1.5 8L6.6 6.6Z" fill="currentColor"/></svg>Planning</div>
+            </nav>
+          </div>
+          <!-- Portfolio: split layout — holdings list left, chart + rebalance right -->
+          <div class="wb-main" style="padding:0;gap:0;flex-direction:row;overflow:hidden">
+
+            <!-- ── Left: Holdings list ── -->
+            <div style="width:196px;flex-shrink:0;border-right:1px solid rgba(255,255,255,0.05);overflow-y:auto;display:flex;flex-direction:column;scrollbar-width:thin;scrollbar-color:#7B2FBE transparent">
+              <div style="padding:20px 14px 10px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
+                <span style="font-size:10px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--text-ghost)">Holdings</span>
+                <span style="font-size:10px;font-family:var(--font-mono);color:var(--text-ghost)">5</span>
+              </div>
+
+              <!-- MSFT — overweight +1.7% -->
+              <div style="display:flex;align-items:center;gap:8px;padding:8px 14px 8px 16px;cursor:pointer">
+                <div class="pos-av" style="background:rgba(59,130,246,0.10);color:#93C5FD;width:26px;height:26px;font-size:11px">M</div>
+                <div style="flex:1;min-width:0">
+                  <div style="display:flex;align-items:baseline;justify-content:space-between;gap:4px">
+                    <span style="font-size:12px;font-weight:500;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Microsoft</span>
+                    <span style="font-size:10px;font-family:var(--font-mono);font-feature-settings:'tnum';color:var(--loss);flex-shrink:0;font-weight:600">OW</span>
+                  </div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:4px;margin-top:2px">
+                    <span style="font-size:10px;color:var(--text-ghost)">MSF.DE</span>
+                    <span style="font-size:10px;font-family:var(--font-mono);font-feature-settings:'tnum';color:var(--text-ghost)">9.7% / 8.0%</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- AAPL — underweight −1.2% -->
+              <div style="display:flex;align-items:center;gap:8px;padding:8px 14px 8px 16px;cursor:pointer">
+                <div class="pos-av" style="background:rgba(156,163,175,0.10);color:#D1D5DB;width:26px;height:26px;font-size:11px">A</div>
+                <div style="flex:1;min-width:0">
+                  <div style="display:flex;align-items:baseline;justify-content:space-between;gap:4px">
+                    <span style="font-size:12px;font-weight:500;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Apple</span>
+                    <span style="font-size:10px;font-family:var(--font-mono);font-feature-settings:'tnum';color:#F59E0B;flex-shrink:0;font-weight:600">UW</span>
+                  </div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:4px;margin-top:2px">
+                    <span style="font-size:10px;color:var(--text-ghost)">APC.DE</span>
+                    <span style="font-size:10px;font-family:var(--font-mono);font-feature-settings:'tnum';color:var(--text-ghost)">6.8% / 8.0%</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- NVD — overweight +2.3% -->
+              <div style="display:flex;align-items:center;gap:8px;padding:8px 14px 8px 16px;cursor:pointer">
+                <div class="pos-av" style="background:rgba(16,185,129,0.10);color:#6EE7B7;width:26px;height:26px;font-size:11px">N</div>
+                <div style="flex:1;min-width:0">
+                  <div style="display:flex;align-items:baseline;justify-content:space-between;gap:4px">
+                    <span style="font-size:12px;font-weight:500;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Nvidia</span>
+                    <span style="font-size:10px;font-family:var(--font-mono);font-feature-settings:'tnum';color:var(--loss);flex-shrink:0;font-weight:600">OW</span>
+                  </div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:4px;margin-top:2px">
+                    <span style="font-size:10px;color:var(--text-ghost)">NVD.DE</span>
+                    <span style="font-size:10px;font-family:var(--font-mono);font-feature-settings:'tnum';color:var(--text-ghost)">7.3% / 5.0%</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SPY5 — underweight −2.0% -->
+              <div style="display:flex;align-items:center;gap:8px;padding:8px 14px 8px 16px;cursor:pointer">
+                <div class="pos-av" style="background:rgba(245,158,11,0.10);color:#FCD34D;width:26px;height:26px;font-size:11px">S</div>
+                <div style="flex:1;min-width:0">
+                  <div style="display:flex;align-items:baseline;justify-content:space-between;gap:4px">
+                    <span style="font-size:12px;font-weight:500;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">S&amp;P 500</span>
+                    <span style="font-size:10px;font-family:var(--font-mono);font-feature-settings:'tnum';color:#F59E0B;flex-shrink:0;font-weight:600">UW</span>
+                  </div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:4px;margin-top:2px">
+                    <span style="font-size:10px;color:var(--text-ghost)">SPY5.DE</span>
+                    <span style="font-size:10px;font-family:var(--font-mono);font-feature-settings:'tnum';color:var(--text-ghost)">13.0% / 15.0%</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- TL0 — underweight −1.0% -->
+              <div style="display:flex;align-items:center;gap:8px;padding:8px 14px 8px 16px;cursor:pointer">
+                <div class="pos-av" style="background:rgba(244,63,94,0.10);color:#FCA5A5;width:26px;height:26px;font-size:11px">T</div>
+                <div style="flex:1;min-width:0">
+                  <div style="display:flex;align-items:baseline;justify-content:space-between;gap:4px">
+                    <span style="font-size:12px;font-weight:500;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Tesla</span>
+                    <span style="font-size:10px;font-family:var(--font-mono);font-feature-settings:'tnum';color:#F59E0B;flex-shrink:0;font-weight:600">UW</span>
+                  </div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:4px;margin-top:2px">
+                    <span style="font-size:10px;color:var(--text-ghost)">TL0.DE</span>
+                    <span style="font-size:10px;font-family:var(--font-mono);font-feature-settings:'tnum';color:var(--text-ghost)">4.0% / 5.0%</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Legend -->
+              <div style="margin-top:auto;padding:16px 16px 20px;border-top:1px solid rgba(255,255,255,0.05);display:flex;flex-direction:column;gap:5px">
+                <div style="display:flex;align-items:center;gap:6px"><span style="font-size:10px;font-weight:600;font-family:var(--font-mono);color:var(--loss)">OW</span><span style="font-size:10px;color:var(--text-ghost)">Overweight</span></div>
+                <div style="display:flex;align-items:center;gap:6px"><span style="font-size:10px;font-weight:600;font-family:var(--font-mono);color:#F59E0B">UW</span><span style="font-size:10px;color:var(--text-ghost)">Underweight</span></div>
+                <div style="display:flex;align-items:center;gap:6px"><span style="font-size:10px;font-weight:600;font-family:var(--font-mono);color:var(--gain)">OK</span><span style="font-size:10px;color:var(--text-ghost)">Balanced</span></div>
+              </div>
+            </div>
+
+            <!-- ── Right: Performance + Rebalance ── -->
+            <div style="flex:1;overflow-y:auto;padding:20px 20px 20px 20px;display:flex;flex-direction:column;gap:12px;scrollbar-width:thin;scrollbar-color:#7B2FBE transparent">
+              <div class="wb-header" style="margin-bottom:0">
+                <div><div class="wb-page-title">Portfolio</div><div class="wb-page-sub">Last updated just now</div></div>
+                <div><div class="wb-value__amount">€248,391</div><div class="wb-value__delta">↑ +€12,430 · +12.4% all time</div></div>
+              </div>
+
+              <!-- Performance chart -->
+              <div class="wb-card" style="padding:16px 20px">
+                <div class="wb-chart-label">
+                  <span class="wb-card__label" style="margin-bottom:0">Performance</span>
+                  <div style="display:flex;gap:2px">
+                    <span class="cp">1M</span><span class="cp">3M</span><span class="cp">6M</span><span class="cp cp--active">1Y</span><span class="cp">All</span>
+                  </div>
+                </div>
+                <svg viewBox="0 0 680 80" width="100%" style="display:block;margin-top:10px">
+                  <defs>
+                    <linearGradient id="wpg" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#7B2FBE" stop-opacity="0.18"/>
+                      <stop offset="100%" stop-color="#7B2FBE" stop-opacity="0"/>
+                    </linearGradient>
+                  </defs>
+                  <path d="M0,62 C30,63 46,59 76,57 C100,55 116,61 146,59 C176,57 196,50 226,48 C248,47 268,52 298,50 C328,48 348,43 376,41 C398,40 418,44 448,42 C476,40 500,34 528,31 C550,29 570,33 598,28 C620,24 648,17 680,12 L680,80 L0,80 Z" fill="url(#wpg)"/>
+                  <path d="M0,62 C30,63 46,59 76,57 C100,55 116,61 146,59 C176,57 196,50 226,48 C248,47 268,52 298,50 C328,48 348,43 376,41 C398,40 418,44 448,42 C476,40 500,34 528,31 C550,29 570,33 598,28 C620,24 648,17 680,12" fill="none" stroke="#7B2FBE" stroke-width="1.5" stroke-linecap="round"/>
+                  <circle cx="680" cy="12" r="3.5" fill="#7B2FBE"/>
+                  <circle cx="680" cy="12" r="7" fill="rgba(123,47,190,0.2)"/>
+                </svg>
+              </div>
+
+              <!-- Rebalancing action table -->
+              <div class="wb-card" style="padding:16px 20px">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+                  <span class="wb-card__label" style="margin-bottom:0">Rebalance Required</span>
+                  <span style="font-size:10px;font-family:var(--font-mono);padding:2px 7px;border-radius:4px;background:rgba(244,63,94,0.10);color:var(--loss);font-weight:600">4 assets</span>
+                </div>
+                <!-- Column headers -->
+                <div style="display:grid;grid-template-columns:1fr 100px 80px 90px;gap:0;padding-bottom:7px;border-bottom:1px solid rgba(255,255,255,0.05);margin-bottom:2px">
+                  <span style="font-size:9px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--text-ghost)">Asset</span>
+                  <span style="font-size:9px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--text-ghost);text-align:center">Allocation</span>
+                  <span style="font-size:9px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--text-ghost);text-align:right">Drift</span>
+                  <span style="font-size:9px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--text-ghost);text-align:right">Action</span>
+                </div>
+
+                <!-- Row: Nvidia — OW +2.3%, Sell ~€497 (most urgent) -->
+                <div style="display:grid;grid-template-columns:1fr 100px 80px 90px;gap:0;align-items:center;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.03)">
+                  <div style="display:flex;align-items:center;gap:7px">
+                    <div class="pos-av" style="background:rgba(16,185,129,0.10);color:#6EE7B7;width:22px;height:22px;font-size:10px;border-radius:6px">N</div>
+                    <div><div style="font-size:12px;font-weight:500;color:var(--text-primary)">Nvidia</div><div style="font-size:10px;color:var(--text-ghost)">NVD.DE</div></div>
+                  </div>
+                  <div style="text-align:center">
+                    <span style="font-size:11px;font-family:var(--font-mono);font-feature-settings:'tnum';color:var(--text-secondary)">7.3%</span>
+                    <span style="font-size:10px;color:var(--text-ghost);margin:0 3px">→</span>
+                    <span style="font-size:11px;font-family:var(--font-mono);font-feature-settings:'tnum';color:var(--text-muted)">5.0%</span>
+                  </div>
+                  <div style="text-align:right;font-size:11px;font-family:var(--font-mono);font-feature-settings:'tnum';color:var(--loss);font-weight:600">+2.3%</div>
+                  <div style="text-align:right"><span style="font-size:11px;font-family:var(--font-mono);font-feature-settings:'tnum';color:var(--loss);font-weight:600;background:rgba(244,63,94,0.08);padding:3px 7px;border-radius:5px">Sell €497</span></div>
+                </div>
+
+                <!-- Row: S&P 500 — UW −2.0%, Buy ~€497 -->
+                <div style="display:grid;grid-template-columns:1fr 100px 80px 90px;gap:0;align-items:center;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.03)">
+                  <div style="display:flex;align-items:center;gap:7px">
+                    <div class="pos-av" style="background:rgba(245,158,11,0.10);color:#FCD34D;width:22px;height:22px;font-size:10px;border-radius:6px">S</div>
+                    <div><div style="font-size:12px;font-weight:500;color:var(--text-primary)">S&amp;P 500</div><div style="font-size:10px;color:var(--text-ghost)">SPY5.DE</div></div>
+                  </div>
+                  <div style="text-align:center">
+                    <span style="font-size:11px;font-family:var(--font-mono);font-feature-settings:'tnum';color:var(--text-secondary)">13.0%</span>
+                    <span style="font-size:10px;color:var(--text-ghost);margin:0 3px">→</span>
+                    <span style="font-size:11px;font-family:var(--font-mono);font-feature-settings:'tnum';color:var(--text-muted)">15.0%</span>
+                  </div>
+                  <div style="text-align:right;font-size:11px;font-family:var(--font-mono);font-feature-settings:'tnum';color:#F59E0B;font-weight:600">−2.0%</div>
+                  <div style="text-align:right"><span style="font-size:11px;font-family:var(--font-mono);font-feature-settings:'tnum';color:var(--gain);font-weight:600;background:rgba(16,185,129,0.08);padding:3px 7px;border-radius:5px">Buy €497</span></div>
+                </div>
+
+                <!-- Row: Microsoft — OW +1.7%, Sell ~€1,240 -->
+                <div style="display:grid;grid-template-columns:1fr 100px 80px 90px;gap:0;align-items:center;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.03)">
+                  <div style="display:flex;align-items:center;gap:7px">
+                    <div class="pos-av" style="background:rgba(59,130,246,0.10);color:#93C5FD;width:22px;height:22px;font-size:10px;border-radius:6px">M</div>
+                    <div><div style="font-size:12px;font-weight:500;color:var(--text-primary)">Microsoft</div><div style="font-size:10px;color:var(--text-ghost)">MSF.DE</div></div>
+                  </div>
+                  <div style="text-align:center">
+                    <span style="font-size:11px;font-family:var(--font-mono);font-feature-settings:'tnum';color:var(--text-secondary)">9.7%</span>
+                    <span style="font-size:10px;color:var(--text-ghost);margin:0 3px">→</span>
+                    <span style="font-size:11px;font-family:var(--font-mono);font-feature-settings:'tnum';color:var(--text-muted)">8.0%</span>
+                  </div>
+                  <div style="text-align:right;font-size:11px;font-family:var(--font-mono);font-feature-settings:'tnum';color:var(--loss);font-weight:600">+1.7%</div>
+                  <div style="text-align:right"><span style="font-size:11px;font-family:var(--font-mono);font-feature-settings:'tnum';color:var(--loss);font-weight:600;background:rgba(244,63,94,0.08);padding:3px 7px;border-radius:5px">Sell €1,240</span></div>
+                </div>
+
+                <!-- Row: Apple — UW −1.2%, Buy ~€298 -->
+                <div style="display:grid;grid-template-columns:1fr 100px 80px 90px;gap:0;align-items:center;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.03)">
+                  <div style="display:flex;align-items:center;gap:7px">
+                    <div class="pos-av" style="background:rgba(156,163,175,0.10);color:#D1D5DB;width:22px;height:22px;font-size:10px;border-radius:6px">A</div>
+                    <div><div style="font-size:12px;font-weight:500;color:var(--text-primary)">Apple</div><div style="font-size:10px;color:var(--text-ghost)">APC.DE</div></div>
+                  </div>
+                  <div style="text-align:center">
+                    <span style="font-size:11px;font-family:var(--font-mono);font-feature-settings:'tnum';color:var(--text-secondary)">6.8%</span>
+                    <span style="font-size:10px;color:var(--text-ghost);margin:0 3px">→</span>
+                    <span style="font-size:11px;font-family:var(--font-mono);font-feature-settings:'tnum';color:var(--text-muted)">8.0%</span>
+                  </div>
+                  <div style="text-align:right;font-size:11px;font-family:var(--font-mono);font-feature-settings:'tnum';color:#F59E0B;font-weight:600">−1.2%</div>
+                  <div style="text-align:right"><span style="font-size:11px;font-family:var(--font-mono);font-feature-settings:'tnum';color:var(--gain);font-weight:600;background:rgba(16,185,129,0.08);padding:3px 7px;border-radius:5px">Buy €298</span></div>
+                </div>
+
+                <!-- Row: Tesla — UW −1.0%, Buy ~€249 -->
+                <div style="display:grid;grid-template-columns:1fr 100px 80px 90px;gap:0;align-items:center;padding:9px 0">
+                  <div style="display:flex;align-items:center;gap:7px">
+                    <div class="pos-av" style="background:rgba(244,63,94,0.10);color:#FCA5A5;width:22px;height:22px;font-size:10px;border-radius:6px">T</div>
+                    <div><div style="font-size:12px;font-weight:500;color:var(--text-primary)">Tesla</div><div style="font-size:10px;color:var(--text-ghost)">TL0.DE</div></div>
+                  </div>
+                  <div style="text-align:center">
+                    <span style="font-size:11px;font-family:var(--font-mono);font-feature-settings:'tnum';color:var(--text-secondary)">4.0%</span>
+                    <span style="font-size:10px;color:var(--text-ghost);margin:0 3px">→</span>
+                    <span style="font-size:11px;font-family:var(--font-mono);font-feature-settings:'tnum';color:var(--text-muted)">5.0%</span>
+                  </div>
+                  <div style="text-align:right;font-size:11px;font-family:var(--font-mono);font-feature-settings:'tnum';color:#F59E0B;font-weight:600">−1.0%</div>
+                  <div style="text-align:right"><span style="font-size:11px;font-family:var(--font-mono);font-feature-settings:'tnum';color:var(--gain);font-weight:600;background:rgba(16,185,129,0.08);padding:3px 7px;border-radius:5px">Buy €249</span></div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TAB: STOCK DETAIL ── -->
+    <div id="wb-stock" class="wb-panel">
+      <div class="webapp-frame">
+        <div class="webapp-titlebar">
+          <div class="tb-dot" style="background:#FF5F57"></div>
+          <div class="tb-dot" style="background:#FFBD2E"></div>
+          <div class="tb-dot" style="background:#28C840"></div>
+          <div class="webapp-titlebar__url">app.bebabylon.com/portfolio/MSFT</div>
+        </div>
+        <div class="webapp-body">
+          <div class="wb-sidebar">
+            <div class="wb-wordmark">Babylon</div>
+            <nav class="wb-nav">
+              <div class="wb-item" onclick="switchTab('wb-wealth',document.getElementById('tab-wealth'))"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M1 7h14" stroke="currentColor" stroke-width="1.2"/></svg>Wealth</div>
+              <div class="wb-item wb-item--active" onclick="switchTab('wb-portfolio',document.getElementById('tab-portfolio'))"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><rect x="1" y="9" width="4" height="6" rx="1" fill="currentColor"/><rect x="6" y="5" width="4" height="10" rx="1" fill="currentColor" opacity="0.6"/><rect x="11" y="2" width="4" height="13" rx="1" fill="currentColor" opacity="0.35"/></svg>Portfolio</div>
+              <!-- Sub-item: current stock detail context -->
+              <div class="wb-item--sub" onclick="switchTab('wb-stock',document.getElementById('tab-stock'))">Microsoft</div>
+              <div class="wb-item" onclick="switchTab('wb-txns',document.getElementById('tab-txns'))"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M5 7h6M5 9.5h4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>Transactions</div>
+              <div class="wb-item" onclick="switchTab('wb-analytics',document.getElementById('tab-analytics'))"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M2 12l4-4 3 3 5-6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Analytics</div>
+              <div class="wb-item" onclick="switchTab('wb-planning',document.getElementById('tab-planning'))"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M8 1.5L9.4 6.6L14.5 8L9.4 9.4L8 14.5L6.6 9.4L1.5 8L6.6 6.6Z" fill="currentColor"/></svg>Planning</div>
+            </nav>
+          </div>
+          <div class="wb-main">
+            <!-- Breadcrumb replaces the floating back link -->
+            <div class="wb-breadcrumb">
+              <span class="wb-breadcrumb__item" onclick="switchTab('wb-portfolio',document.getElementById('tab-portfolio'))">Portfolio</span>
+              <span class="wb-breadcrumb__sep">›</span>
+              <span class="wb-breadcrumb__item wb-breadcrumb__item--active">Microsoft</span>
+            </div>
+            <div class="wb-header">
+              <div class="wb-stock-header">
+                <div class="wb-stock-av" style="background:rgba(59,130,246,0.12);color:#93C5FD">M</div>
+                <div>
+                  <div class="wb-page-title">Microsoft</div>
+                  <div class="wb-page-sub">MSF.DE · 12 shares</div>
+                </div>
+              </div>
+              <div>
+                <div class="wb-value__amount">€24,180</div>
+                <div class="wb-value__delta">↑ +€2,648 · +12.4% all time</div>
+              </div>
+            </div>
+            <!-- DCA Chart — web -->
+            <div class="wb-card" style="padding:16px 20px">
+              <div class="wb-chart-label">
+                <span class="wb-card__label" style="margin-bottom:0">Price History</span>
+                <div style="display:flex;gap:2px">
+                  <span class="cp">1M</span><span class="cp">3M</span><span class="cp">6M</span><span class="cp cp--active">1Y</span><span class="cp">All</span>
+                </div>
+              </div>
+              <svg viewBox="0 0 680 100" width="100%" style="display:block;margin-top:10px">
+                <defs>
+                  <linearGradient id="wdg" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#7B2FBE" stop-opacity="0.18"/>
+                    <stop offset="100%" stop-color="#7B2FBE" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <!-- Fill -->
+                <path d="M0,68 C30,70 52,78 80,80 C102,81 122,72 148,68 C168,65 182,76 208,73 C232,70 252,60 278,58 C298,56 316,61 342,59 C368,57 388,50 414,47 C434,45 452,55 478,52 C504,49 528,37 558,33 C580,30 606,42 634,38 C652,35 668,28 680,22 L680,100 L0,100 Z" fill="url(#wdg)"/>
+                <!-- Price line -->
+                <path d="M0,68 C30,70 52,78 80,80 C102,81 122,72 148,68 C168,65 182,76 208,73 C232,70 252,60 278,58 C298,56 316,61 342,59 C368,57 388,50 414,47 C434,45 452,55 478,52 C504,49 528,37 558,33 C580,30 606,42 634,38 C652,35 668,28 680,22" fill="none" stroke="#7B2FBE" stroke-width="1.5" stroke-linecap="round"/>
+                <!-- Average cost basis -->
+                <line x1="0" y1="60" x2="680" y2="60" stroke="#525252" stroke-width="1" stroke-dasharray="4 4"/>
+                <text x="4" y="56" fill="#525252" font-family="JetBrains Mono,monospace" font-size="9">avg cost</text>
+                <!-- Buy markers (5) -->
+                <circle cx="80"  cy="80" r="6" fill="#080808" stroke="#7B2FBE" stroke-width="1.8"/>
+                <circle cx="80"  cy="80" r="2.5" fill="#7B2FBE"/>
+                <circle cx="208" cy="73" r="6" fill="#080808" stroke="#7B2FBE" stroke-width="1.8"/>
+                <circle cx="208" cy="73" r="2.5" fill="#7B2FBE"/>
+                <circle cx="342" cy="59" r="6" fill="#080808" stroke="#7B2FBE" stroke-width="1.8"/>
+                <circle cx="342" cy="59" r="2.5" fill="#7B2FBE"/>
+                <circle cx="478" cy="52" r="6" fill="#080808" stroke="#7B2FBE" stroke-width="1.8"/>
+                <circle cx="478" cy="52" r="2.5" fill="#7B2FBE"/>
+                <circle cx="634" cy="38" r="6" fill="#080808" stroke="#7B2FBE" stroke-width="1.8"/>
+                <circle cx="634" cy="38" r="2.5" fill="#7B2FBE"/>
+                <!-- Current price glow -->
+                <circle cx="680" cy="22" r="4" fill="#7B2FBE"/>
+                <circle cx="680" cy="22" r="9" fill="rgba(123,47,190,0.18)"/>
+              </svg>
+              <div class="wb-dca-legend">
+                <div class="wb-dca-item"><div style="width:12px;height:12px;border-radius:50%;background:#080808;border:1.8px solid #7B2FBE;display:flex;align-items:center;justify-content:center"><div style="width:4px;height:4px;border-radius:50%;background:#7B2FBE"></div></div>Buy order</div>
+                <div class="wb-dca-item"><div style="width:20px;height:1px;border-top:1px dashed #525252"></div>Average cost</div>
+                <div class="wb-dca-item"><div style="width:12px;height:12px;border-radius:50%;background:#7B2FBE"></div>Current price</div>
+              </div>
+            </div>
+            <div class="wb-grid">
+              <div class="wb-card">
+                <div class="wb-card__label">Holdings</div>
+                <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px">
+                  <div style="display:flex;justify-content:space-between"><span style="font-size:12px;color:var(--text-secondary)">Shares</span><span style="font-family:var(--font-mono);font-size:12px;font-weight:600;font-feature-settings:'tnum'">12</span></div>
+                  <div style="display:flex;justify-content:space-between"><span style="font-size:12px;color:var(--text-secondary)">Avg price</span><span style="font-family:var(--font-mono);font-size:12px;font-weight:600;font-feature-settings:'tnum'">€1,877.08</span></div>
+                  <div style="display:flex;justify-content:space-between"><span style="font-size:12px;color:var(--text-secondary)">Total invested</span><span style="font-family:var(--font-mono);font-size:12px;font-weight:600;font-feature-settings:'tnum'">€22,524.96</span></div>
+                  <div style="display:flex;justify-content:space-between"><span style="font-size:12px;color:var(--text-secondary)">Market value</span><span style="font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--gain);font-feature-settings:'tnum'">€24,180.00</span></div>
+                  <div style="display:flex;justify-content:space-between"><span style="font-size:12px;color:var(--text-secondary)">Unrealised P&L</span><span style="font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--gain);font-feature-settings:'tnum'">+€1,655.04</span></div>
+                </div>
+              </div>
+              <div class="wb-card">
+                <div class="wb-card__label">Buy History</div>
+                <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px">
+                  <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:11px;color:var(--text-muted)">Dec 15 2025</span><span style="font-family:var(--font-mono);font-size:11px;font-feature-settings:'tnum'">2 shares · €2,015</span></div>
+                  <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:11px;color:var(--text-muted)">Sep 15 2025</span><span style="font-family:var(--font-mono);font-size:11px;font-feature-settings:'tnum'">2 shares · €1,880</span></div>
+                  <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:11px;color:var(--text-muted)">Jun 10 2025</span><span style="font-family:var(--font-mono);font-size:11px;font-feature-settings:'tnum'">3 shares · €1,820</span></div>
+                  <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:11px;color:var(--text-muted)">Mar 5 2025</span><span style="font-family:var(--font-mono);font-size:11px;font-feature-settings:'tnum'">3 shares · €1,740</span></div>
+                  <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:11px;color:var(--text-muted)">Jan 8 2025</span><span style="font-family:var(--font-mono);font-size:11px;font-feature-settings:'tnum'">2 shares · €1,634</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TAB: TRANSACTIONS ── -->
+    <div id="wb-txns" class="wb-panel">
+      <div class="webapp-frame">
+        <div class="webapp-titlebar">
+          <div class="tb-dot" style="background:#FF5F57"></div>
+          <div class="tb-dot" style="background:#FFBD2E"></div>
+          <div class="tb-dot" style="background:#28C840"></div>
+          <div class="webapp-titlebar__url">app.bebabylon.com/transactions</div>
+        </div>
+        <div class="webapp-body">
+          <div class="wb-sidebar">
+            <div class="wb-wordmark">Babylon</div>
+            <nav class="wb-nav">
+              <div class="wb-item" onclick="switchTab('wb-wealth',document.getElementById('tab-wealth'))"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M1 7h14" stroke="currentColor" stroke-width="1.2"/></svg>Wealth</div>
+              <div class="wb-item" onclick="switchTab('wb-portfolio',document.getElementById('tab-portfolio'))"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><rect x="1" y="9" width="4" height="6" rx="1" fill="currentColor"/><rect x="6" y="5" width="4" height="10" rx="1" fill="currentColor" opacity="0.6"/><rect x="11" y="2" width="4" height="13" rx="1" fill="currentColor" opacity="0.35"/></svg>Portfolio</div>
+              <div class="wb-item wb-item--active" onclick="switchTab('wb-txns',document.getElementById('tab-txns'))"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M5 7h6M5 9.5h4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>Transactions</div>
+              <div class="wb-item" onclick="switchTab('wb-analytics',document.getElementById('tab-analytics'))"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M2 12l4-4 3 3 5-6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Analytics</div>
+              <div class="wb-item" onclick="switchTab('wb-planning',document.getElementById('tab-planning'))"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M8 1.5L9.4 6.6L14.5 8L9.4 9.4L8 14.5L6.6 9.4L1.5 8L6.6 6.6Z" fill="currentColor"/></svg>Planning</div>
+            </nav>
+          </div>
+          <div class="wb-main">
+            <div class="wb-header"><div><div class="wb-page-title">Transactions</div></div></div>
+            <div class="wb-txn-filters">
+              <span class="wtf wtf--active">All</span><span class="wtf">Buys</span><span class="wtf">Sells</span><span class="wtf">Dividends</span>
+            </div>
+            <div style="overflow-y:auto;flex:1">
+              <div class="wb-txn-group">December 2025</div>
+              <div class="wb-txn-row"><div class="wb-txn-icon" style="background:rgba(16,185,129,0.10)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 12V2M3 6l4-4 4 4" stroke="#10B981" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="wb-txn-name">Microsoft</div><div class="wb-txn-detail">Buy · 2 shares · Dec 15, 2025</div></div><div style="margin-left:auto;text-align:right"><div class="wb-txn-amount" style="color:var(--loss)">−€4,030.00</div><div class="wb-txn-shares">MSF.DE · €2,015 / share</div></div></div>
+              <div class="wb-txn-group">November 2025</div>
+              <div class="wb-txn-row"><div class="wb-txn-icon" style="background:rgba(16,185,129,0.10)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 12V2M3 6l4-4 4 4" stroke="#10B981" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="wb-txn-name">Nvidia</div><div class="wb-txn-detail">Buy · 3 shares · Nov 20, 2025</div></div><div style="margin-left:auto;text-align:right"><div class="wb-txn-amount" style="color:var(--loss)">−€6,690.00</div><div class="wb-txn-shares">NVD.DE · €2,230 / share</div></div></div>
+              <div class="wb-txn-group">October 2025</div>
+              <div class="wb-txn-row"><div class="wb-txn-icon" style="background:rgba(244,63,94,0.10)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2v10M11 8L7 12 3 8" stroke="#F43F5E" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="wb-txn-name">Tesla</div><div class="wb-txn-detail">Sell · 5 shares · Oct 8, 2025</div></div><div style="margin-left:auto;text-align:right"><div class="wb-txn-amount" style="color:var(--gain)">+€24,550.00</div><div class="wb-txn-shares">TL0.DE · €4,910 / share</div></div></div>
+              <div class="wb-txn-group">September 2025</div>
+              <div class="wb-txn-row"><div class="wb-txn-icon" style="background:rgba(16,185,129,0.10)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 12V2M3 6l4-4 4 4" stroke="#10B981" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="wb-txn-name">Microsoft</div><div class="wb-txn-detail">Buy · 2 shares · Sep 15, 2025</div></div><div style="margin-left:auto;text-align:right"><div class="wb-txn-amount" style="color:var(--loss)">−€3,760.00</div><div class="wb-txn-shares">MSF.DE · €1,880 / share</div></div></div>
+              <div class="wb-txn-row"><div class="wb-txn-icon" style="background:rgba(16,185,129,0.08)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="4.5" stroke="#10B981" stroke-width="1.2"/><path d="M7 5v2l1.5 1" stroke="#10B981" stroke-width="1.1" stroke-linecap="round"/></svg></div><div><div class="wb-txn-name">Apple</div><div class="wb-txn-detail">Dividend · Sep 1, 2025</div></div><div style="margin-left:auto;text-align:right"><div class="wb-txn-amount" style="color:var(--gain)">+€42.50</div><div class="wb-txn-shares">APC.DE</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TAB: ANALYTICS ── -->
+    <div id="wb-analytics" class="wb-panel">
+      <div class="webapp-frame">
+        <div class="webapp-titlebar">
+          <div class="tb-dot" style="background:#FF5F57"></div>
+          <div class="tb-dot" style="background:#FFBD2E"></div>
+          <div class="tb-dot" style="background:#28C840"></div>
+          <div class="webapp-titlebar__url">app.bebabylon.com/analytics</div>
+        </div>
+        <div class="webapp-body">
+          <div class="wb-sidebar">
+            <div class="wb-wordmark">Babylon</div>
+            <nav class="wb-nav">
+              <div class="wb-item" onclick="switchTab('wb-wealth',document.getElementById('tab-wealth'))"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M1 7h14" stroke="currentColor" stroke-width="1.2"/></svg>Wealth</div>
+              <div class="wb-item" onclick="switchTab('wb-portfolio',document.getElementById('tab-portfolio'))"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><rect x="1" y="9" width="4" height="6" rx="1" fill="currentColor"/><rect x="6" y="5" width="4" height="10" rx="1" fill="currentColor" opacity="0.6"/><rect x="11" y="2" width="4" height="13" rx="1" fill="currentColor" opacity="0.35"/></svg>Portfolio</div>
+              <div class="wb-item" onclick="switchTab('wb-txns',document.getElementById('tab-txns'))"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M5 7h6M5 9.5h4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>Transactions</div>
+              <div class="wb-item wb-item--active" onclick="switchTab('wb-analytics',document.getElementById('tab-analytics'))"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M2 12l4-4 3 3 5-6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Analytics</div>
+              <div class="wb-item" onclick="switchTab('wb-planning',document.getElementById('tab-planning'))"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M8 1.5L9.4 6.6L14.5 8L9.4 9.4L8 14.5L6.6 9.4L1.5 8L6.6 6.6Z" fill="currentColor"/></svg>Planning</div>
+            </nav>
+          </div>
+          <div class="wb-main">
+            <div class="wb-header" style="margin-bottom:16px">
+              <div><div class="wb-page-title">Analytics</div><div class="wb-page-sub">Monthly performance</div></div>
+            </div>
+            <!-- KPI strip -->
+            <div class="wb-anl-kpis" style="margin-bottom:16px">
+              <div class="wb-kpi"><div class="wb-kpi__label">Total Return</div><div class="wb-kpi__value" style="color:var(--gain)">+€28,430</div><div class="wb-kpi__sub">+12.9% all time</div></div>
+              <div class="wb-kpi"><div class="wb-kpi__label">YTD Return</div><div class="wb-kpi__value" style="color:var(--gain)">+€3,420</div><div class="wb-kpi__sub">+6.48% this year</div></div>
+              <div class="wb-kpi"><div class="wb-kpi__label">Best Month</div><div class="wb-kpi__value" style="color:var(--gain)">Apr</div><div class="wb-kpi__sub">+8.03%</div></div>
+              <div class="wb-kpi"><div class="wb-kpi__label">Worst Month</div><div class="wb-kpi__value" style="color:var(--loss)">Jan</div><div class="wb-kpi__sub wb-kpi__sub--l">−2.40%</div></div>
+            </div>
+            <!-- Performance card: waterfall chart + monthly table -->
+            <div class="wb-card" style="padding:20px 24px">
+              <div class="wb-card__label" style="margin-bottom:16px">Performance</div>
+              <!-- Waterfall bar chart — 2026 YTD -->
+              <svg viewBox="0 0 680 90" width="100%" style="display:block">
+                <!-- Axis reference lines -->
+                <line x1="0" y1="20" x2="680" y2="20" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                <line x1="0" y1="50" x2="680" y2="50" stroke="rgba(255,255,255,0.10)" stroke-width="1"/>
+                <line x1="0" y1="80" x2="680" y2="80" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                <!-- Axis labels (right side) -->
+                <text x="656" y="17" fill="#383838" font-family="JetBrains Mono,monospace" font-size="8" text-anchor="end">+10%</text>
+                <text x="656" y="47" fill="#383838" font-family="JetBrains Mono,monospace" font-size="8" text-anchor="end">0.00</text>
+                <text x="656" y="83" fill="#383838" font-family="JetBrains Mono,monospace" font-size="8" text-anchor="end">−10%</text>
+                <!-- Empty month column guides (May–Dec) -->
+                <rect x="241" y="14" width="38" height="63" rx="2" fill="rgba(255,255,255,0.025)"/>
+                <rect x="298" y="14" width="38" height="63" rx="2" fill="rgba(255,255,255,0.025)"/>
+                <rect x="355" y="14" width="38" height="63" rx="2" fill="rgba(255,255,255,0.025)"/>
+                <rect x="412" y="14" width="38" height="63" rx="2" fill="rgba(255,255,255,0.025)"/>
+                <rect x="469" y="14" width="38" height="63" rx="2" fill="rgba(255,255,255,0.025)"/>
+                <rect x="526" y="14" width="38" height="63" rx="2" fill="rgba(255,255,255,0.025)"/>
+                <rect x="583" y="14" width="38" height="63" rx="2" fill="rgba(255,255,255,0.025)"/>
+                <rect x="640" y="14" width="38" height="63" rx="2" fill="rgba(255,255,255,0.025)"/>
+                <!-- Jan: −2.40% → loss bar below zero -->
+                <rect x="14"  y="50" width="38" height="7"  rx="2" fill="#F43F5E" opacity="0.85"/>
+                <!-- Feb: −1.80% → loss bar below zero -->
+                <rect x="71"  y="50" width="38" height="5"  rx="2" fill="#F43F5E" opacity="0.85"/>
+                <!-- Mar: +3.20% → gain bar above zero -->
+                <rect x="128" y="40" width="38" height="10" rx="2" fill="#10B981" opacity="0.85"/>
+                <!-- Apr: +8.03% → gain bar above zero -->
+                <rect x="185" y="26" width="38" height="24" rx="2" fill="#10B981" opacity="0.85"/>
+                <!-- Month labels -->
+                <text x="33"  y="88" fill="#404040" font-family="JetBrains Mono,monospace" font-size="8" text-anchor="middle">Jan</text>
+                <text x="90"  y="88" fill="#404040" font-family="JetBrains Mono,monospace" font-size="8" text-anchor="middle">Feb</text>
+                <text x="147" y="88" fill="#404040" font-family="JetBrains Mono,monospace" font-size="8" text-anchor="middle">Mar</text>
+                <text x="204" y="88" fill="#404040" font-family="JetBrains Mono,monospace" font-size="8" text-anchor="middle">Apr</text>
+                <text x="260" y="88" fill="#303030" font-family="JetBrains Mono,monospace" font-size="8" text-anchor="middle">May</text>
+                <text x="317" y="88" fill="#303030" font-family="JetBrains Mono,monospace" font-size="8" text-anchor="middle">Jun</text>
+                <text x="374" y="88" fill="#303030" font-family="JetBrains Mono,monospace" font-size="8" text-anchor="middle">Jul</text>
+                <text x="431" y="88" fill="#303030" font-family="JetBrains Mono,monospace" font-size="8" text-anchor="middle">Aug</text>
+                <text x="488" y="88" fill="#303030" font-family="JetBrains Mono,monospace" font-size="8" text-anchor="middle">Sep</text>
+                <text x="545" y="88" fill="#303030" font-family="JetBrains Mono,monospace" font-size="8" text-anchor="middle">Oct</text>
+                <text x="602" y="88" fill="#303030" font-family="JetBrains Mono,monospace" font-size="8" text-anchor="middle">Nov</text>
+                <text x="659" y="88" fill="#303030" font-family="JetBrains Mono,monospace" font-size="8" text-anchor="middle">Dec</text>
+              </svg>
+              <!-- Monthly returns table -->
+              <div style="margin-top:20px;overflow-x:auto">
+                <table style="width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:11px;font-feature-settings:'tnum'">
+                  <thead>
+                    <tr>
+                      <th style="text-align:left;font-size:9px;font-weight:600;color:var(--text-ghost);letter-spacing:0.06em;padding:0 0 8px;width:40px">Year</th>
+                      <th style="text-align:center;font-size:9px;font-weight:600;color:var(--text-ghost);letter-spacing:0.06em;padding:0 0 8px">Jan</th>
+                      <th style="text-align:center;font-size:9px;font-weight:600;color:var(--text-ghost);letter-spacing:0.06em;padding:0 0 8px">Feb</th>
+                      <th style="text-align:center;font-size:9px;font-weight:600;color:var(--text-ghost);letter-spacing:0.06em;padding:0 0 8px">Mar</th>
+                      <th style="text-align:center;font-size:9px;font-weight:600;color:var(--text-ghost);letter-spacing:0.06em;padding:0 0 8px">Apr</th>
+                      <th style="text-align:center;font-size:9px;font-weight:600;color:var(--text-ghost);letter-spacing:0.06em;padding:0 0 8px">May</th>
+                      <th style="text-align:center;font-size:9px;font-weight:600;color:var(--text-ghost);letter-spacing:0.06em;padding:0 0 8px">Jun</th>
+                      <th style="text-align:center;font-size:9px;font-weight:600;color:var(--text-ghost);letter-spacing:0.06em;padding:0 0 8px">Jul</th>
+                      <th style="text-align:center;font-size:9px;font-weight:600;color:var(--text-ghost);letter-spacing:0.06em;padding:0 0 8px">Aug</th>
+                      <th style="text-align:center;font-size:9px;font-weight:600;color:var(--text-ghost);letter-spacing:0.06em;padding:0 0 8px">Sep</th>
+                      <th style="text-align:center;font-size:9px;font-weight:600;color:var(--text-ghost);letter-spacing:0.06em;padding:0 0 8px">Oct</th>
+                      <th style="text-align:center;font-size:9px;font-weight:600;color:var(--text-ghost);letter-spacing:0.06em;padding:0 0 8px">Nov</th>
+                      <th style="text-align:center;font-size:9px;font-weight:600;color:var(--text-ghost);letter-spacing:0.06em;padding:0 0 8px">Dec</th>
+                      <th style="text-align:right;font-size:9px;font-weight:600;color:var(--text-ghost);letter-spacing:0.06em;padding:0 0 8px">YTD</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- 2026 — current year, highlighted -->
+                    <tr style="background:rgba(255,255,255,0.025);border-radius:6px">
+                      <td style="padding:7px 4px 7px 8px;font-size:11px;color:var(--text-secondary);font-weight:600;border-radius:6px 0 0 6px">2026</td>
+                      <td style="padding:7px 4px;text-align:center;color:#F43F5E">−2.40%</td>
+                      <td style="padding:7px 4px;text-align:center;color:#F43F5E">−1.80%</td>
+                      <td style="padding:7px 4px;text-align:center;color:#10B981">+3.20%</td>
+                      <td style="padding:7px 4px;text-align:center;color:#10B981">+8.03%</td>
+                      <td style="padding:7px 4px;text-align:center;color:var(--text-ghost)">—</td>
+                      <td style="padding:7px 4px;text-align:center;color:var(--text-ghost)">—</td>
+                      <td style="padding:7px 4px;text-align:center;color:var(--text-ghost)">—</td>
+                      <td style="padding:7px 4px;text-align:center;color:var(--text-ghost)">—</td>
+                      <td style="padding:7px 4px;text-align:center;color:var(--text-ghost)">—</td>
+                      <td style="padding:7px 4px;text-align:center;color:var(--text-ghost)">—</td>
+                      <td style="padding:7px 4px;text-align:center;color:var(--text-ghost)">—</td>
+                      <td style="padding:7px 4px;text-align:center;color:var(--text-ghost)">—</td>
+                      <td style="padding:7px 8px 7px 4px;text-align:right;color:#10B981;font-weight:700;border-radius:0 6px 6px 0">+6.48%</td>
+                    </tr>
+                    <!-- 2025 -->
+                    <tr>
+                      <td style="padding:7px 4px 7px 8px;font-size:11px;color:var(--text-muted)">2025</td>
+                      <td style="padding:7px 4px;text-align:center;color:#10B981">+5.70%</td>
+                      <td style="padding:7px 4px;text-align:center;color:#F43F5E">−2.40%</td>
+                      <td style="padding:7px 4px;text-align:center;color:#10B981">+3.61%</td>
+                      <td style="padding:7px 4px;text-align:center;color:#10B981">+3.00%</td>
+                      <td style="padding:7px 4px;text-align:center;color:#10B981">+4.70%</td>
+                      <td style="padding:7px 4px;text-align:center;color:#10B981">+3.29%</td>
+                      <td style="padding:7px 4px;text-align:center;color:#10B981">+8.69%</td>
+                      <td style="padding:7px 4px;text-align:center;color:#10B981">+0.80%</td>
+                      <td style="padding:7px 4px;text-align:center;color:#10B981">+2.20%</td>
+                      <td style="padding:7px 4px;text-align:center;color:#F43F5E">−1.13%</td>
+                      <td style="padding:7px 4px;text-align:center;color:#F43F5E">−2.06%</td>
+                      <td style="padding:7px 4px;text-align:center;color:#10B981">+5.48%</td>
+                      <td style="padding:7px 8px 7px 4px;text-align:right;color:#10B981;font-weight:600">+37.5%</td>
+                    </tr>
+                    <!-- 2024 -->
+                    <tr>
+                      <td style="padding:7px 4px 7px 8px;font-size:11px;color:var(--text-muted)">2024</td>
+                      <td style="padding:7px 4px;text-align:center;color:#F43F5E">−0.10%</td>
+                      <td style="padding:7px 4px;text-align:center;color:#10B981">+0.66%</td>
+                      <td style="padding:7px 4px;text-align:center;color:#10B981">+2.82%</td>
+                      <td style="padding:7px 4px;text-align:center;color:#F43F5E">−2.63%</td>
+                      <td style="padding:7px 4px;text-align:center;color:#10B981">+1.96%</td>
+                      <td style="padding:7px 4px;text-align:center;color:#F43F5E">−0.57%</td>
+                      <td style="padding:7px 4px;text-align:center;color:#10B981">+0.81%</td>
+                      <td style="padding:7px 4px;text-align:center;color:#F43F5E">−2.00%</td>
+                      <td style="padding:7px 4px;text-align:center;color:#10B981">+3.67%</td>
+                      <td style="padding:7px 4px;text-align:center;color:#10B981">+0.50%</td>
+                      <td style="padding:7px 4px;text-align:center;color:#10B981">+12.9%</td>
+                      <td style="padding:7px 4px;text-align:center;color:#F43F5E">−2.76%</td>
+                      <td style="padding:7px 8px 7px 4px;text-align:right;color:#10B981;font-weight:600">+15.4%</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Planning / Onboarding panel ── -->
+    <div id="wb-planning" class="wb-panel">
+      <div class="webapp-frame">
+        <div class="webapp-titlebar">
+          <div class="tb-dot" style="background:#FF5F57"></div>
+          <div class="tb-dot" style="background:#FFBD2E"></div>
+          <div class="tb-dot" style="background:#28C840"></div>
+          <div class="webapp-titlebar__url">app.bebabylon.com/planning</div>
+        </div>
+        <div class="webapp-body">
+          <div class="wb-sidebar">
+            <div class="wb-wordmark">Babylon</div>
+            <nav class="wb-nav">
+              <div class="wb-item" onclick="switchTab('wb-wealth',document.getElementById('tab-wealth'))"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M1 7h14" stroke="currentColor" stroke-width="1.2"/></svg>Wealth</div>
+              <div class="wb-item" onclick="switchTab('wb-portfolio',document.getElementById('tab-portfolio'))"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><rect x="1" y="9" width="4" height="6" rx="1" fill="currentColor"/><rect x="6" y="5" width="4" height="10" rx="1" fill="currentColor" opacity="0.6"/><rect x="11" y="2" width="4" height="13" rx="1" fill="currentColor" opacity="0.35"/></svg>Portfolio</div>
+              <div class="wb-item" onclick="switchTab('wb-txns',document.getElementById('tab-txns'))"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M5 7h6M5 9.5h4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>Transactions</div>
+              <div class="wb-item" onclick="switchTab('wb-analytics',document.getElementById('tab-analytics'))"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M2 12l4-4 3 3 5-6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Analytics</div>
+              <div class="wb-item wb-item--active" onclick="switchTab('wb-planning',document.getElementById('tab-planning'))"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M8 1.5L9.4 6.6L14.5 8L9.4 9.4L8 14.5L6.6 9.4L1.5 8L6.6 6.6Z" fill="currentColor"/></svg>Planning</div>
+            </nav>
+          </div>
+          <div class="wb-main" style="align-items:stretch;justify-content:flex-start">
+            <!-- Wizard container -->
+            <div style="max-width:480px;width:100%;margin:0 auto;display:flex;flex-direction:column;gap:0;padding-top:8px">
+
+              <!-- AI badge + step indicator -->
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px">
+                <div style="display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--accent);letter-spacing:0.04em">
+                  <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M8 1.5L9.4 6.6L14.5 8L9.4 9.4L8 14.5L6.6 9.4L1.5 8L6.6 6.6Z" fill="currentColor"/></svg>
+                  Babylon AI
+                </div>
+                <!-- Step dots -->
+                <div style="display:flex;align-items:center;gap:5px">
+                  <div style="width:6px;height:6px;border-radius:50%;background:var(--accent);opacity:0.35"></div>
+                  <div style="width:6px;height:6px;border-radius:50%;background:var(--accent);opacity:0.35"></div>
+                  <div style="width:6px;height:6px;border-radius:50%;background:var(--accent)"></div>
+                  <div style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.12)"></div>
+                  <div style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.12)"></div>
+                  <span style="font-size:10px;color:var(--text-ghost);margin-left:6px;font-family:var(--font-mono)">3 / 5</span>
+                </div>
+              </div>
+
+              <!-- Previous answers summary -->
+              <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:24px">
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-radius:7px;background:var(--elevated)">
+                  <span style="font-size:11px;color:var(--text-ghost)">Investment goal</span>
+                  <span style="font-size:11px;color:var(--text-secondary);font-weight:500">Long-term wealth building</span>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-radius:7px;background:var(--elevated)">
+                  <span style="font-size:11px;color:var(--text-ghost)">Time horizon</span>
+                  <span style="font-size:11px;color:var(--text-secondary);font-weight:500">10+ years</span>
+                </div>
+              </div>
+
+              <!-- Current question -->
+              <div style="margin-bottom:20px">
+                <div style="font-size:17px;font-weight:600;color:var(--text-primary);line-height:1.35;letter-spacing:-0.02em;margin-bottom:4px">How do you feel when your portfolio drops 20%?</div>
+                <div style="font-size:12px;color:var(--text-ghost)">This helps us calibrate your ideal risk exposure.</div>
+              </div>
+
+              <!-- Answer options -->
+              <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:28px">
+                <!-- Option A -->
+                <div style="padding:13px 16px;border-radius:9px;border:1px solid rgba(255,255,255,0.06);background:var(--elevated);cursor:pointer;transition:border-color 200ms">
+                  <div style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:2px">I panic and want to sell</div>
+                  <div style="font-size:11px;color:var(--text-ghost)">Preservation is more important than growth</div>
+                </div>
+                <!-- Option B -->
+                <div style="padding:13px 16px;border-radius:9px;border:1px solid rgba(255,255,255,0.06);background:var(--elevated);cursor:pointer;transition:border-color 200ms">
+                  <div style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:2px">I feel anxious but hold</div>
+                  <div style="font-size:11px;color:var(--text-ghost)">I trust the long term but volatility is uncomfortable</div>
+                </div>
+                <!-- Option C — selected -->
+                <div style="padding:13px 16px;border-radius:9px;border:1px solid var(--accent);background:rgba(123,47,190,0.10);cursor:pointer">
+                  <div style="display:flex;align-items:center;justify-content:space-between">
+                    <div>
+                      <div style="font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:2px">I stay calm and consider buying more</div>
+                      <div style="font-size:11px;color:var(--text-muted)">Dips are opportunities — I think in decades</div>
+                    </div>
+                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;margin-left:12px"><circle cx="8" cy="8" r="7" stroke="#7B2FBE" stroke-width="1.5"/><circle cx="8" cy="8" r="3.5" fill="#7B2FBE"/></svg>
+                  </div>
+                </div>
+                <!-- Option D -->
+                <div style="padding:13px 16px;border-radius:9px;border:1px solid rgba(255,255,255,0.06);background:var(--elevated);cursor:pointer;transition:border-color 200ms">
+                  <div style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:2px">I actively seek high-risk, high-reward bets</div>
+                  <div style="font-size:11px;color:var(--text-ghost)">Maximum growth — I can stomach large swings</div>
+                </div>
+              </div>
+
+              <!-- Navigation -->
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <button style="font-size:12px;color:var(--text-ghost);background:none;border:none;cursor:pointer;padding:0;font-family:inherit">← Back</button>
+                <button style="font-size:12px;font-weight:600;color:#fff;background:var(--accent);border:none;cursor:pointer;padding:9px 22px;border-radius:7px;font-family:inherit;letter-spacing:-0.01em">Continue →</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /container -->
+</section>
+
+
+<!-- ════════════════════════════ HOW IT WORKS ════════════════════════════ -->
+<section class="opt-section">
+  <div class="container">
+    <div class="sec-header" data-reveal>
+      <span class="sec-label">A complete loop</span>
+      <h2 class="sec-heading">Built around<br />your plan.</h2>
+    </div>
+
+    <!-- pill nav -->
+    <div class="hiw-nav" style="margin-top:56px">
+      <div class="hiw-nav-inner">
+        <button class="hiw-tab hiw-tab--active" onclick="hiwGo(0)">
+          <span class="hiw-tab__num">01</span>
+          Planning
+          <span class="hiw-tab__bar" id="hiw-bar-0"></span>
+        </button>
+        <button class="hiw-tab" onclick="hiwGo(1)">
+          <span class="hiw-tab__num">02</span>
+          Broker Integration
+          <span class="hiw-tab__bar" id="hiw-bar-1"></span>
+        </button>
+        <button class="hiw-tab" onclick="hiwGo(2)">
+          <span class="hiw-tab__num">03</span>
+          Rebalancing
+          <span class="hiw-tab__bar" id="hiw-bar-2"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- step subtitle -->
+    <div class="hiw-sub-row">
+      <p class="hiw-sub hiw-sub--active" data-hiw-sub="0">An AI interview defines your goals, risk tolerance, and timeline — then generates your portfolio strategy.</p>
+      <p class="hiw-sub" data-hiw-sub="1">Connect your broker once. Transactions sync automatically and recurring investments execute without lifting a finger.</p>
+      <p class="hiw-sub" data-hiw-sub="2">Babylon detects allocation drift and proposes the most fee-efficient actions to keep you aligned with your strategy.</p>
+    </div>
+
+    <!-- stage -->
+    <div class="hiw-stage-outer">
+    <div class="hiw-stage"></div>
+    <div class="hiw-phones">
+
+        <!-- Phone 0 — Planning -->
+        <div class="hiw-phone-wrap hiw-phone-wrap--active" data-hiw-phone="0">
+          <div class="phone">
+            <div class="phone-status"><div class="phone-island"></div>
+              <span class="phone-status__time">9:41</span>
+              <div class="phone-status__icons">
+                <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><rect x="0" y="7" width="3" height="5" rx="0.6"/><rect x="4.5" y="4.5" width="3" height="7.5" rx="0.6"/><rect x="9" y="2" width="3" height="10" rx="0.6"/></svg>
+                <svg width="15" height="11" viewBox="0 0 16 12" fill="none"><path d="M8 10.5a1 1 0 100-2 1 1 0 000 2z" fill="currentColor"/><path d="M5.2 7.8a4 4 0 015.6 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/><path d="M2.4 5.1a7.5 7.5 0 0111.2 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/></svg>
+                <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3.5" stroke="currentColor" stroke-opacity="0.35"/><rect x="22" y="4" width="3" height="4" rx="1" fill="currentColor" fill-opacity="0.4"/><rect x="2" y="2" width="16" height="8" rx="2" fill="currentColor"/></svg>
+              </div>
+            </div>
+            <div class="app-topbar" style="padding:4px 20px 8px">
+              <span style="font-size:14px;font-weight:600;color:var(--text-primary)">Planning</span>
+            </div>
+            <div class="hiw-content" style="padding:12px 20px 16px;overflow:hidden">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+                <div style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:rgba(123,47,190,0.12);border:1px solid rgba(123,47,190,0.22);border-radius:20px">
+                  <svg width="9" height="9" viewBox="0 0 16 16" fill="none"><path d="M8 1.5L9.4 6.6L14.5 8L9.4 9.4L8 14.5L6.6 9.4L1.5 8L6.6 6.6Z" fill="#7B2FBE"/></svg>
+                  <span style="font-size:10px;font-weight:600;color:var(--accent);letter-spacing:0.04em">Babylon AI</span>
+                </div>
+                <div style="display:flex;gap:4px">
+                  <div style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.15)"></div>
+                  <div style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.15)"></div>
+                  <div style="width:6px;height:6px;border-radius:50%;background:var(--accent)"></div>
+                  <div style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.15)"></div>
+                  <div style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.15)"></div>
+                </div>
+              </div>
+              <!-- collapsed prev answers -->
+              <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border)">
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-radius:7px;background:rgba(255,255,255,0.02)">
+                  <span style="font-size:11px;color:var(--text-ghost)">Investment goal</span>
+                  <span style="font-size:11px;font-weight:500;color:var(--text-muted)">Long-term wealth</span>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-radius:7px;background:rgba(255,255,255,0.02)">
+                  <span style="font-size:11px;color:var(--text-ghost)">Time horizon</span>
+                  <span style="font-size:11px;font-weight:500;color:var(--text-muted)">10+ years</span>
+                </div>
+              </div>
+              <div style="font-size:13px;font-weight:600;color:var(--text-primary);line-height:1.4;margin-bottom:14px">How do you feel when your portfolio drops 20%?</div>
+              <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:20px">
+                <div style="padding:9px 11px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:var(--elevated)"><div style="font-size:10px;font-weight:600;color:var(--text-secondary)">I panic and want to sell</div><div style="font-size:9px;color:var(--text-ghost);margin-top:1px">Preservation matters most</div></div>
+                <div style="padding:9px 11px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:var(--elevated)"><div style="font-size:10px;font-weight:600;color:var(--text-secondary)">I feel uncomfortable but hold</div><div style="font-size:9px;color:var(--text-ghost);margin-top:1px">I trust the plan, mostly</div></div>
+                <div style="padding:9px 11px;border-radius:8px;border:1px solid var(--accent);background:rgba(123,47,190,0.10)"><div style="display:flex;align-items:center;justify-content:space-between"><div><div style="font-size:10px;font-weight:600;color:var(--text-primary)">I stay calm and buy more</div><div style="font-size:9px;color:var(--text-muted);margin-top:1px">Dips are opportunities</div></div><svg width="11" height="11" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#7B2FBE" stroke-width="1.5"/><circle cx="8" cy="8" r="3.5" fill="#7B2FBE"/></svg></div></div>
+                <div style="padding:9px 11px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:var(--elevated)"><div style="font-size:10px;font-weight:600;color:var(--text-secondary)">I seek high-risk, high-reward</div><div style="font-size:9px;color:var(--text-ghost);margin-top:1px">Maximum growth</div></div>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <span style="font-size:10px;color:var(--text-ghost)">← Back</span>
+                <button style="font-size:10px;font-weight:600;color:#fff;background:var(--accent);border:none;padding:7px 16px;border-radius:6px;font-family:inherit">Continue →</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phone 1 — Broker Integration -->
+        <div class="hiw-phone-wrap hiw-phone-wrap--next" data-hiw-phone="1">
+          <div class="phone">
+            <div class="phone-status"><div class="phone-island"></div>
+              <span class="phone-status__time">9:41</span>
+              <div class="phone-status__icons">
+                <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><rect x="0" y="7" width="3" height="5" rx="0.6"/><rect x="4.5" y="4.5" width="3" height="7.5" rx="0.6"/><rect x="9" y="2" width="3" height="10" rx="0.6"/></svg>
+                <svg width="15" height="11" viewBox="0 0 16 12" fill="none"><path d="M8 10.5a1 1 0 100-2 1 1 0 000 2z" fill="currentColor"/><path d="M5.2 7.8a4 4 0 015.6 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/><path d="M2.4 5.1a7.5 7.5 0 0111.2 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/></svg>
+                <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3.5" stroke="currentColor" stroke-opacity="0.35"/><rect x="22" y="4" width="3" height="4" rx="1" fill="currentColor" fill-opacity="0.4"/><rect x="2" y="2" width="16" height="8" rx="2" fill="currentColor"/></svg>
+              </div>
+            </div>
+            <div class="app-topbar" style="padding:4px 20px 8px">
+              <span style="font-size:14px;font-weight:600;color:var(--text-primary)">Connect Broker</span>
+            </div>
+            <div class="hiw-content" style="padding:12px 20px 16px">
+              <div style="font-size:11px;color:var(--text-muted);margin-bottom:20px;line-height:1.6">Choose your broker to sync transactions and enable recurring investments.</div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:9px;background:var(--elevated);border:1px solid rgba(16,185,129,0.18)">
+                  <div style="display:flex;align-items:center;gap:10px">
+                    <div style="width:30px;height:30px;border-radius:7px;background:rgba(16,185,129,0.10);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#10B981;font-family:var(--font-mono)">TR</div>
+                    <div><div style="font-size:11px;font-weight:600;color:var(--text-primary)">Trade Republic</div><div style="font-size:9px;color:var(--gain);margin-top:1px">● Connected</div></div>
+                  </div>
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8l4 4 6-7" stroke="#10B981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:9px;background:var(--elevated);border:1px solid var(--border)">
+                  <div style="display:flex;align-items:center;gap:10px">
+                    <div style="width:30px;height:30px;border-radius:7px;background:rgba(123,47,190,0.08);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--accent);font-family:var(--font-mono)">IB</div>
+                    <div><div style="font-size:11px;font-weight:600;color:var(--text-secondary)">Interactive Brokers</div><div style="font-size:9px;color:var(--text-ghost);margin-top:1px">Not connected</div></div>
+                  </div>
+                  <button style="font-size:9px;font-weight:600;color:var(--accent);background:none;border:1px solid rgba(123,47,190,0.35);padding:4px 10px;border-radius:5px;cursor:pointer;font-family:inherit">Connect</button>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:9px;background:var(--elevated);border:1px solid var(--border)">
+                  <div style="display:flex;align-items:center;gap:10px">
+                    <div style="width:30px;height:30px;border-radius:7px;background:rgba(123,47,190,0.08);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--accent);font-family:var(--font-mono)">DG</div>
+                    <div><div style="font-size:11px;font-weight:600;color:var(--text-secondary)">Degiro</div><div style="font-size:9px;color:var(--text-ghost);margin-top:1px">Not connected</div></div>
+                  </div>
+                  <button style="font-size:9px;font-weight:600;color:var(--accent);background:none;border:1px solid rgba(123,47,190,0.35);padding:4px 10px;border-radius:5px;cursor:pointer;font-family:inherit">Connect</button>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:9px;background:var(--elevated);border:1px solid var(--border)">
+                  <div style="display:flex;align-items:center;gap:10px">
+                    <div style="width:30px;height:30px;border-radius:7px;background:rgba(123,47,190,0.08);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--accent);font-family:var(--font-mono)">SC</div>
+                    <div><div style="font-size:11px;font-weight:600;color:var(--text-secondary)">Scalable Capital</div><div style="font-size:9px;color:var(--text-ghost);margin-top:1px">Not connected</div></div>
+                  </div>
+                  <button style="font-size:9px;font-weight:600;color:var(--accent);background:none;border:1px solid rgba(123,47,190,0.35);padding:4px 10px;border-radius:5px;cursor:pointer;font-family:inherit">Connect</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phone 2 — Rebalancing -->
+        <div class="hiw-phone-wrap hiw-phone-wrap--prev" data-hiw-phone="2">
+          <div class="phone">
+            <div class="phone-status"><div class="phone-island"></div>
+              <span class="phone-status__time">9:41</span>
+              <div class="phone-status__icons">
+                <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><rect x="0" y="7" width="3" height="5" rx="0.6"/><rect x="4.5" y="4.5" width="3" height="7.5" rx="0.6"/><rect x="9" y="2" width="3" height="10" rx="0.6"/></svg>
+                <svg width="15" height="11" viewBox="0 0 16 12" fill="none"><path d="M8 10.5a1 1 0 100-2 1 1 0 000 2z" fill="currentColor"/><path d="M5.2 7.8a4 4 0 015.6 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/><path d="M2.4 5.1a7.5 7.5 0 0111.2 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/></svg>
+                <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3.5" stroke="currentColor" stroke-opacity="0.35"/><rect x="22" y="4" width="3" height="4" rx="1" fill="currentColor" fill-opacity="0.4"/><rect x="2" y="2" width="16" height="8" rx="2" fill="currentColor"/></svg>
+              </div>
+            </div>
+            <div class="app-topbar" style="padding:4px 20px 8px">
+              <span style="font-size:14px;font-weight:600;color:var(--text-primary)">Portfolio</span>
+            </div>
+            <div class="hiw-content" style="padding:12px 20px 16px">
+              <div style="margin-bottom:18px">
+                <div style="font-size:9px;color:var(--text-ghost);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px">Total Value</div>
+                <div style="font-size:24px;font-weight:700;font-family:var(--font-mono);letter-spacing:-0.03em;color:var(--text-primary)">€42,817</div>
+                <div style="font-size:10px;color:var(--gain);font-family:var(--font-mono);margin-top:3px">▲ +€312 today</div>
+              </div>
+              <div style="font-size:9px;color:var(--text-ghost);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:8px">Holdings</div>
+              <div style="display:flex;flex-direction:column;gap:2px;margin-bottom:16px">
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:7px;background:var(--elevated)"><div style="display:flex;align-items:center;gap:7px"><div style="width:24px;height:24px;border-radius:50%;background:rgba(59,130,246,0.10);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#93C5FD;font-family:var(--font-mono)">M</div><div><div style="font-size:11px;font-weight:600;color:var(--text-primary)">Microsoft</div><div style="font-size:9px;color:var(--text-ghost);font-family:var(--font-mono)">9.7% / 8.0%</div></div></div><span style="font-size:9px;font-weight:700;color:var(--loss);font-family:var(--font-mono)">OW</span></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:7px;background:var(--elevated)"><div style="display:flex;align-items:center;gap:7px"><div style="width:24px;height:24px;border-radius:50%;background:rgba(16,185,129,0.10);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#6EE7B7;font-family:var(--font-mono)">N</div><div><div style="font-size:11px;font-weight:600;color:var(--text-primary)">Nvidia</div><div style="font-size:9px;color:var(--text-ghost);font-family:var(--font-mono)">14.2% / 12.0%</div></div></div><span style="font-size:9px;font-weight:700;color:var(--loss);font-family:var(--font-mono)">OW</span></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:7px;background:var(--elevated)"><div style="display:flex;align-items:center;gap:7px"><div style="width:24px;height:24px;border-radius:50%;background:rgba(245,158,11,0.10);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#FCD34D;font-family:var(--font-mono)">S</div><div><div style="font-size:11px;font-weight:600;color:var(--text-primary)">S&P 500</div><div style="font-size:9px;color:var(--text-ghost);font-family:var(--font-mono)">18.3% / 22.0%</div></div></div><span style="font-size:9px;font-weight:700;color:#F59E0B;font-family:var(--font-mono)">UW</span></div>
+              </div>
+              <div style="font-size:9px;color:var(--text-ghost);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:8px">Rebalancing Actions</div>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-radius:7px;background:rgba(244,63,94,0.07);border:1px solid rgba(244,63,94,0.12)"><div style="font-size:11px;font-weight:600;color:var(--text-primary)">Sell MSFT</div><span style="font-size:11px;font-weight:700;color:var(--loss);font-family:var(--font-mono)">−€497</span></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-radius:7px;background:rgba(16,185,129,0.07);border:1px solid rgba(16,185,129,0.12)"><div style="font-size:11px;font-weight:600;color:var(--text-primary)">Buy SPY5</div><span style="font-size:11px;font-weight:700;color:var(--gain);font-family:var(--font-mono)">+€497</span></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-radius:7px;background:rgba(244,63,94,0.07);border:1px solid rgba(244,63,94,0.12)"><div style="font-size:11px;font-weight:600;color:var(--text-primary)">Sell NVDA</div><span style="font-size:11px;font-weight:700;color:var(--loss);font-family:var(--font-mono)">−€619</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /hiw-phones -->
+    </div><!-- /hiw-stage-outer -->
+
+  </div>
+</section>
+
+
+
+
+<!-- ════════════════════════════ BLOG ════════════════════════════ -->
+<section class="blog-section">
+  <div class="container">
+    <div class="sec-header" data-reveal>
+      <span class="sec-label">Wealth education</span>
+      <h2 class="sec-heading">The money lessons<br />nobody taught you.</h2>
+    </div>
+    <div class="blog-grid" data-reveal style="transition-delay:80ms">
+      <a href="/blog/what-is-dca.html" class="blog-card">
+        <div class="blog-card__cover" style="background:linear-gradient(135deg,#0a0a0a 0%,#141414 55%,#1a1a1a 100%)"></div>
+        <div class="blog-card__fade"></div>
+        <div class="blog-card__body">
+          <span class="blog-card__tag">Investing Basics</span>
+          <div class="blog-card__title">What is DCA and why it works</div>
+          <div class="blog-card__meta">4 min read</div>
+        </div>
+      </a>
+      <a href="/blog/beat-inflation.html" class="blog-card">
+        <div class="blog-card__cover" style="background:linear-gradient(135deg,#0d0800 0%,#231500 55%,#3a2000 100%)"></div>
+        <div class="blog-card__fade"></div>
+        <div class="blog-card__body">
+          <span class="blog-card__tag">Strategy</span>
+          <div class="blog-card__title">How to beat inflation on a working salary</div>
+          <div class="blog-card__meta">6 min read</div>
+        </div>
+      </a>
+      <a href="/blog/first-portfolio.html" class="blog-card">
+        <div class="blog-card__cover" style="background:linear-gradient(135deg,#00100d 0%,#001e18 55%,#002e22 100%)"></div>
+        <div class="blog-card__fade"></div>
+        <div class="blog-card__body">
+          <span class="blog-card__tag">Getting Started</span>
+          <div class="blog-card__title">Building your first portfolio: where to start</div>
+          <div class="blog-card__meta">5 min read</div>
+        </div>
+      </a>
+      <a href="/blog/psychology-of-wealth.html" class="blog-card">
+        <div class="blog-card__cover" style="background:linear-gradient(135deg,#080808 0%,#111111 55%,#181818 100%)"></div>
+        <div class="blog-card__fade"></div>
+        <div class="blog-card__body">
+          <span class="blog-card__tag">Mindset</span>
+          <div class="blog-card__title">Why most people never build wealth — and how to be different</div>
+          <div class="blog-card__meta">5 min read</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════ FOOTER ════════════════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__inner">
+      <span class="footer__wordmark">Babylon</span>
+      <ul class="footer__links">
+        <li><a href="/blog">Blog</a></li>
+        <li><a href="https://app.bebabylon.com">Open App</a></li>
+        <li><a href="/privacy">Privacy</a></li>
+        <li><a href="/terms">Terms</a></li>
+      </ul>
+      <span class="footer__copy">© 2026 Babylon</span>
+    </div>
+  </div>
+</footer>
+
+
+<script>
+  // Scroll reveal
+  const io = new IntersectionObserver(
+    es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+    { threshold: 0.06 }
+  );
+  document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
+  setTimeout(() => document.querySelector('.hero [data-reveal]')?.classList.add('visible'), 100);
+
+  // Web app tabs — syncs both the external tab bar and the sidebar active state
+  function switchTab(id, btn) {
+    // Deactivate all panels and external tab buttons
+    document.querySelectorAll('.wb-panel').forEach(p => p.classList.remove('wb-panel--active'));
+    document.querySelectorAll('.wt').forEach(b => b.classList.remove('wt--active'));
+    // Activate target panel
+    document.getElementById(id).classList.add('wb-panel--active');
+    // Activate external tab button
+    if (btn) btn.classList.add('wt--active');
+  }
+
+  // HOW IT WORKS — stage carousel with auto-advance timer
+  (function() {
+    const DURATION = 6000;
+    const COUNT = 3;
+    let current = 0;
+    let timer = null;
+
+    const phones = document.querySelectorAll('[data-hiw-phone]');
+    const tabs   = document.querySelectorAll('.hiw-tab');
+    const subs   = document.querySelectorAll('[data-hiw-sub]');
+    const bars   = [
+      document.getElementById('hiw-bar-0'),
+      document.getElementById('hiw-bar-1'),
+      document.getElementById('hiw-bar-2'),
+    ];
+
+    function go(index) {
+      current = ((index % COUNT) + COUNT) % COUNT;
+
+      // update phones
+      phones.forEach(p => {
+        const i = parseInt(p.dataset.hiwPhone);
+        p.className = 'hiw-phone-wrap';
+        if (i === current)                        p.classList.add('hiw-phone-wrap--active');
+        else if (i === (current + 1) % COUNT)     p.classList.add('hiw-phone-wrap--next');
+        else                                       p.classList.add('hiw-phone-wrap--prev');
+      });
+
+      // update tabs + subtitles
+      tabs.forEach((t, i) => t.classList.toggle('hiw-tab--active', i === current));
+      subs.forEach((s, i) => s.classList.toggle('hiw-sub--active', i === current));
+
+      // restart progress bar on active tab
+      bars.forEach((b, i) => {
+        if (!b) return;
+        b.style.animation = 'none';
+        void b.offsetWidth; // force reflow
+        b.style.animation = i === current ? `hiwProgress ${DURATION}ms linear forwards` : 'none';
+      });
+
+      // restart auto-advance
+      clearInterval(timer);
+      timer = setInterval(() => go(current + 1), DURATION);
+    }
+
+    window.hiwGo = go;
+    go(0);
+  })();
+</script>
+
+</body>
+</html>

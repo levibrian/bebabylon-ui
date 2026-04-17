@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Babylon — Portfolio card</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" crossorigin />
+  <style>
+
+    /* ── Tokens ── */
+    :root {
+      --bg:             #080808;
+      --surface:        #101010;
+      --elevated:       #1A1A1A;
+      --text-primary:   #FFFFFF;
+      --text-secondary: #A3A3A3;
+      --text-muted:     #525252;
+      --gain:           #10B981;
+      --loss:           #F43F5E;
+      --accent:         #7B2FBE;
+
+      /* Categorical — allocation only, not semantic */
+      --cat-equities:   #7B2FBE;
+      --cat-bonds:      #6366F1;
+      --cat-alts:       #22D3EE;
+      --cat-realestate: #2DD4BF;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: 'Inter', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      min-height: 100vh;
+      padding: 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+
+    /* ════════════════════════════════════════
+       WORDMARK
+    ════════════════════════════════════════ */
+    .wordmark {
+      font-weight: 300;
+      font-size: 15px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      margin-bottom: 80px;
+    }
+
+
+    /* ════════════════════════════════════════
+       CARD
+    ════════════════════════════════════════ */
+    .card {
+      width: 460px;
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 40px;
+    }
+
+    /* Label — quiet infrastructure */
+    .card__label {
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+
+    /* Main value — the gravitational centre */
+    .portfolio-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 44px;
+      font-weight: 400;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.025em;
+      line-height: 1;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+
+    /* All-time P&L */
+    .pnl-alltime {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-variant-numeric: tabular-nums;
+      color: var(--gain);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .pnl-alltime__sep {
+      color: var(--text-muted);
+      font-size: 10px;
+    }
+
+    /* Today's change */
+    .pnl-today {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-variant-numeric: tabular-nums;
+      color: var(--gain);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .pnl-today__label {
+      color: var(--text-muted);
+    }
+
+
+    /* ── Allocation ── */
+    .allocation {
+      margin-top: 40px;
+    }
+
+    .allocation-bar {
+      display: flex;
+      gap: 2px;
+      height: 3px;
+      margin-bottom: 16px;
+    }
+
+    .allocation-bar__seg {
+      height: 100%;
+      border-radius: 2px;
+    }
+
+    .allocation-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .alloc-name {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .alloc-pct {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-variant-numeric: tabular-nums;
+    }
+
+
+    /* ════════════════════════════════════════
+       POSITIONS
+    ════════════════════════════════════════ */
+    .positions {
+      margin-top: 48px;
+      width: 460px;
+    }
+
+    .positions__label {
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .position-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+    }
+
+    .pos-name {
+      font-size: 13px;
+      color: var(--text-primary);
+      margin-bottom: 3px;
+    }
+
+    .pos-ticker {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .pos-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-variant-numeric: tabular-nums;
+      color: var(--text-primary);
+      text-align: right;
+      margin-bottom: 3px;
+    }
+
+    .pos-pnl {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="wordmark">Babylon</div>
+
+
+  <!-- ════════════════════════════════════════
+     PORTFOLIO CARD
+  ════════════════════════════════════════ -->
+  <div class="card">
+
+    <div class="card__label">Portfolio overview</div>
+
+    <div class="portfolio-value">€248,391.50</div>
+
+    <div class="pnl-alltime">
+      +€28,412
+      <span class="pnl-alltime__sep">·</span>
+      +12.4%
+      <span class="pnl-alltime__sep">all time</span>
+    </div>
+    <div class="pnl-today">
+      <span class="pnl-today__label">Today</span>
+      <span class="pnl-alltime__sep">·</span>
+      +€842
+      <span class="pnl-alltime__sep">·</span>
+      +0.34%
+    </div>
+
+    <div class="allocation">
+      <div class="allocation-bar">
+        <div class="allocation-bar__seg" style="width:42%; background:var(--cat-equities)"></div>
+        <div class="allocation-bar__seg" style="width:25%; background:var(--cat-bonds)"></div>
+        <div class="allocation-bar__seg" style="width:18%; background:var(--cat-alts)"></div>
+        <div class="allocation-bar__seg" style="width:15%; background:var(--cat-realestate)"></div>
+      </div>
+      <div class="allocation-grid">
+        <div>
+          <div class="alloc-name">Equities</div>
+          <div class="alloc-pct" style="color:var(--cat-equities)">42%</div>
+        </div>
+        <div>
+          <div class="alloc-name">Bonds</div>
+          <div class="alloc-pct" style="color:var(--cat-bonds)">25%</div>
+        </div>
+        <div>
+          <div class="alloc-name">Alternatives</div>
+          <div class="alloc-pct" style="color:var(--cat-alts)">18%</div>
+        </div>
+        <div>
+          <div class="alloc-name">Real estate</div>
+          <div class="alloc-pct" style="color:var(--cat-realestate)">15%</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- ════════════════════════════════════════
+     POSITIONS
+  ════════════════════════════════════════ -->
+  <div class="positions">
+
+    <div class="positions__label">Positions</div>
+
+    <div class="position-row">
+      <div>
+        <div class="pos-name">MSCI World</div>
+        <div class="pos-ticker">IWDA.AS</div>
+      </div>
+      <div>
+        <div class="pos-value">€52,441.00</div>
+        <div class="pos-pnl" style="color:var(--gain)">+€8,201 · +18.5%</div>
+      </div>
+    </div>
+
+    <div class="position-row">
+      <div>
+        <div class="pos-name">Microsoft</div>
+        <div class="pos-ticker">MSF.DE</div>
+      </div>
+      <div>
+        <div class="pos-value">€1,634.20</div>
+        <div class="pos-pnl" style="color:var(--gain)">+€184 · +12.7%</div>
+      </div>
+    </div>
+
+    <div class="position-row">
+      <div>
+        <div class="pos-name">Nvidia</div>
+        <div class="pos-ticker">NVD.DE</div>
+      </div>
+      <div>
+        <div class="pos-value">€707.50</div>
+        <div class="pos-pnl" style="color:var(--loss)">−€15 · −2.1%</div>
+      </div>
+    </div>
+
+    <div class="position-row">
+      <div>
+        <div class="pos-name">Apple</div>
+        <div class="pos-ticker">APC.DE</div>
+      </div>
+      <div>
+        <div class="pos-value">€698.00</div>
+        <div class="pos-pnl" style="color:var(--gain)">+€65 · +10.3%</div>
+      </div>
+    </div>
+
+    <div class="position-row">
+      <div>
+        <div class="pos-name">Novo Nordisk</div>
+        <div class="pos-ticker">NOVO-B.CO</div>
+      </div>
+      <div>
+        <div class="pos-value">€412.80</div>
+        <div class="pos-pnl" style="color:var(--loss)">−€38 · −8.4%</div>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

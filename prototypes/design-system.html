@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Babylon — Design System Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300;1,9..144,400&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" crossorigin />
+  <style>
+
+    /* ═══════════════════════════════════════════════
+       BASE TOKENS
+    ═══════════════════════════════════════════════ */
+    :root {
+      /* Backgrounds */
+      --bg:            #080808;
+      --surface:       #101010;
+      --elevated:      #1A1A1A;
+
+      /* Text */
+      --text-primary:   #FFFFFF;
+      --text-secondary: #A3A3A3;
+      --text-muted:     #525252;
+      --text-ghost:     #2E2E2E;
+
+      /* Borders */
+      --border:        rgba(255,255,255,0.08);
+      --border-strong: rgba(255,255,255,0.14);
+
+      /* Semantic */
+      --gain:    #10B981;
+      --loss:    #F43F5E;
+      --warning: #F59E0B;
+      --info:    #818CF8;
+
+      /* Accent — anchor + nearby candidates */
+      --accent:       #7B2FBE;
+      --accent-hover: #9D4EDD;
+
+      /* Typography */
+      --font-sans:       'Inter', system-ui, -apple-system, sans-serif;
+      --font-mono:       'JetBrains Mono', 'Courier New', monospace;
+      --font-fraunces:   'Fraunces', Georgia, serif;
+      --font-instrument: 'Instrument Serif', Georgia, serif;
+      --font-cormorant:  'Cormorant Garamond', Georgia, serif;
+
+      /* ── Scale A — Refined ── */
+      --sa-d1: 64px;
+      --sa-d2: 44px;
+      --sa-h1: 26px;
+      --sa-h2: 20px;
+      --sa-h3: 16px;
+
+      /* ── Scale B — Commanding ── */
+      --sb-d1: 80px;
+      --sb-d2: 52px;
+      --sb-h1: 28px;
+      --sb-h2: 22px;
+      --sb-h3: 16px;
+
+      /* Shared sizes */
+      --fs-body-lg: 16px;
+      --fs-body:    14px;
+      --fs-body-sm: 12px;
+      --fs-label:   11px;
+
+      /* Weights */
+      --fw-light:    300;
+      --fw-regular:  400;
+      --fw-medium:   500;
+      --fw-semibold: 600;
+      --fw-bold:     700;
+
+      /* Tracking */
+      --ls-d1:      -0.04em;
+      --ls-d2:      -0.03em;
+      --ls-h1:      -0.025em;
+      --ls-h2:      -0.02em;
+      --ls-h3:      -0.01em;
+      --ls-label:    0.10em;
+
+      /* Leading */
+      --lh-display: 1.05;
+      --lh-heading: 1.2;
+      --lh-body:    1.6;
+
+      /* Spacing — current */
+      --sp-1:  4px;
+      --sp-2:  8px;
+      --sp-3:  12px;
+      --sp-4:  16px;
+      --sp-6:  24px;
+      --sp-8:  32px;
+      --sp-12: 48px;
+      --sp-16: 64px;
+      /* Spacing — proposed additions */
+      --sp-20: 80px;
+      --sp-24: 96px;
+      --sp-32: 128px;
+      --sp-40: 160px;
+
+      /* Radii */
+      --r-xs:   2px;
+      --r-sm:   4px;
+      --r-md:   6px;
+      --r-lg:   10px;
+      --r-full: 9999px;
+
+      /* Motion */
+      --dur-fast: 200ms;
+      --dur-base: 400ms;
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+
+    /* ═══════════════════════════════════════════════
+       RESET & BASE
+    ═══════════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: var(--fs-body);
+      line-height: var(--lh-body);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    a { cursor: pointer; }
+
+
+    /* ═══════════════════════════════════════════════
+       PROTOTYPE NAV
+    ═══════════════════════════════════════════════ */
+    .proto-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(8,8,8,0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: var(--sp-3) var(--sp-8);
+      display: flex;
+      align-items: center;
+      gap: var(--sp-6);
+      overflow-x: auto;
+    }
+    .proto-nav__brand {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-3);
+      flex-shrink: 0;
+    }
+    .proto-nav__title {
+      font-size: 11px;
+      font-weight: var(--fw-semibold);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .proto-badge {
+      font-size: 9px;
+      font-weight: var(--fw-semibold);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: var(--r-full);
+      background: rgba(123,47,190,0.18);
+      color: #C084FC;
+      border: 1px solid rgba(123,47,190,0.3);
+    }
+    .proto-nav__links {
+      display: flex;
+      gap: var(--sp-6);
+      list-style: none;
+    }
+    .proto-nav__links a {
+      font-size: 13px;
+      color: var(--text-muted);
+      text-decoration: none;
+      white-space: nowrap;
+      transition: color var(--dur-fast) var(--ease-out);
+    }
+    .proto-nav__links a:hover { color: var(--text-primary); }
+
+
+    /* ═══════════════════════════════════════════════
+       LAYOUT
+    ═══════════════════════════════════════════════ */
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 var(--sp-8);
+    }
+    .proto-section {
+      padding: var(--sp-24) 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .proto-section:last-child { border-bottom: none; }
+
+    .section-heading {
+      display: flex;
+      align-items: baseline;
+      gap: var(--sp-4);
+      margin-bottom: var(--sp-12);
+      flex-wrap: wrap;
+    }
+    .section-heading__title {
+      font-size: 11px;
+      font-weight: var(--fw-semibold);
+      letter-spacing: var(--ls-label);
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .section-heading__desc {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .split-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--sp-6);
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+    }
+    .panel__header {
+      padding: var(--sp-3) var(--sp-6);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--sp-4);
+    }
+    .panel__label {
+      font-size: 11px;
+      font-weight: var(--fw-semibold);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .panel__tag {
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: var(--r-full);
+      background: var(--elevated);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .panel__body {
+      padding: var(--sp-8);
+    }
+
+    .sub-label {
+      font-size: 10px;
+      font-weight: var(--fw-semibold);
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--text-ghost);
+      margin: var(--sp-6) 0 var(--sp-3);
+    }
+    .sub-label:first-child { margin-top: 0; }
+
+
+    /* ═══════════════════════════════════════════════
+       01 — TYPOGRAPHY
+    ═══════════════════════════════════════════════ */
+    .type-row {
+      display: flex;
+      align-items: baseline;
+      gap: var(--sp-4);
+      padding: var(--sp-4) 0;
+    }
+
+    .type-row__meta {
+      width: 130px;
+      flex-shrink: 0;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--text-ghost);
+      line-height: 1.5;
+    }
+    .type-row__sample { flex: 1; min-width: 0; }
+
+    /* Scale A */
+    .sa-d1 { font-size:var(--sa-d1); font-weight:var(--fw-bold);     letter-spacing:var(--ls-d1); line-height:var(--lh-display); }
+    .sa-d2 { font-size:var(--sa-d2); font-weight:var(--fw-bold);     letter-spacing:var(--ls-d2); line-height:var(--lh-display); }
+    .sa-h1 { font-size:var(--sa-h1); font-weight:var(--fw-semibold); letter-spacing:var(--ls-h1); line-height:var(--lh-heading); }
+    .sa-h2 { font-size:var(--sa-h2); font-weight:var(--fw-semibold); letter-spacing:var(--ls-h2); line-height:var(--lh-heading); }
+    .sa-h3 { font-size:var(--sa-h3); font-weight:var(--fw-medium);   letter-spacing:var(--ls-h3); line-height:var(--lh-heading); }
+
+    /* Scale B */
+    .sb-d1 { font-size:var(--sb-d1); font-weight:var(--fw-bold);     letter-spacing:var(--ls-d1); line-height:var(--lh-display); }
+    .sb-d2 { font-size:var(--sb-d2); font-weight:var(--fw-bold);     letter-spacing:var(--ls-d2); line-height:var(--lh-display); }
+    .sb-h1 { font-size:var(--sb-h1); font-weight:var(--fw-semibold); letter-spacing:var(--ls-h1); line-height:var(--lh-heading); }
+    .sb-h2 { font-size:var(--sb-h2); font-weight:var(--fw-semibold); letter-spacing:var(--ls-h2); line-height:var(--lh-heading); }
+    .sb-h3 { font-size:var(--sb-h3); font-weight:var(--fw-medium);   letter-spacing:var(--ls-h3); line-height:var(--lh-heading); }
+
+    /* ── Serif display classes ── */
+    .sd-inter-d1      { font-family:var(--font-sans);       font-size:var(--sa-d1); font-weight:var(--fw-bold);    letter-spacing:var(--ls-d1); line-height:var(--lh-display); }
+    .sd-fraunces-d1   { font-family:var(--font-fraunces);   font-size:var(--sa-d1); font-style:italic; font-weight:300; letter-spacing:-0.01em; line-height:1.0; }
+    .sd-instrument-d1 { font-family:var(--font-instrument); font-size:var(--sa-d1); font-style:italic; font-weight:400; letter-spacing:-0.01em; line-height:1.0; }
+    .sd-cormorant-d1  { font-family:var(--font-cormorant);  font-size:var(--sa-d1); font-style:italic; font-weight:300; letter-spacing: 0.01em; line-height:1.0; }
+
+    /* Shared body styles */
+    .t-body-lg { font-size:var(--fs-body-lg); color:var(--text-secondary); line-height:var(--lh-body); }
+    .t-body     { font-size:var(--fs-body);    color:var(--text-secondary); line-height:var(--lh-body); }
+    .t-body-sm  { font-size:var(--fs-body-sm); color:var(--text-muted);     line-height:var(--lh-body); }
+    /* Label — quiet: sentence case, regular weight, muted. No uppercase, no tracking. */
+    .t-label    { font-size:12px; font-weight:var(--fw-regular); color:var(--text-muted); }
+    .t-mono     { font-family:var(--font-mono); font-variant-numeric:tabular-nums; }
+
+
+    /* In-context hero preview */
+    .hero-preview {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: var(--sp-16) var(--sp-12);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    /* No background effects — pure #080808 only per SPEC-001 */
+    .hero-preview__label {
+      font-size: var(--fs-label);
+      font-weight: var(--fw-semibold);
+      letter-spacing: var(--ls-label);
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: var(--sp-6);
+    }
+    .hero-preview__body {
+      margin-top: var(--sp-8);
+      max-width: 48ch;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: var(--fs-body-lg);
+      color: var(--text-secondary);
+      line-height: var(--lh-body);
+    }
+
+
+    /* ═══════════════════════════════════════════════
+       02 — WORDMARK
+    ═══════════════════════════════════════════════ */
+    .logo-row {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-6);
+      padding: var(--sp-4) var(--sp-6);
+      background: var(--elevated);
+      border-radius: var(--r-md);
+      margin-bottom: var(--sp-2);
+    }
+    .logo-row:last-child { margin-bottom: 0; }
+
+    .logo-row__meta {
+      width: 160px;
+      flex-shrink: 0;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--text-ghost);
+      line-height: 1.5;
+    }
+
+    /* Direction A — variants */
+    .wa-600-015 { font-family:var(--font-sans); font-weight:var(--fw-semibold); letter-spacing:0.15em; text-transform:uppercase; color:var(--text-primary); }
+    .wa-500-022 { font-family:var(--font-sans); font-weight:var(--fw-medium);   letter-spacing:0.22em; text-transform:uppercase; color:var(--text-primary); }
+    .wa-700-008 { font-family:var(--font-sans); font-weight:var(--fw-bold);     letter-spacing:0.08em; text-transform:uppercase; color:var(--text-primary); }
+    .wa-300-028 { font-family:var(--font-sans); font-weight:var(--fw-light);    letter-spacing:0.28em; text-transform:uppercase; color:var(--text-primary); }
+
+    /* Direction B — mark containers */
+    .mark {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background: var(--accent);
+    }
+    .mark--sq   { border-radius: var(--r-md); }
+    .mark--circ { border-radius: var(--r-full); }
+    .mark--line { background: transparent; border: 1.5px solid var(--accent); border-radius: var(--r-md); }
+
+    .mark--24 { width:24px; height:24px; }
+    .mark--32 { width:32px; height:32px; }
+    .mark--40 { width:40px; height:40px; }
+    .mark--56 { width:56px; height:56px; }
+
+    .wb-text {
+      font-family: var(--font-sans);
+      font-weight: var(--fw-semibold);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+    }
+
+    .wordmark-b { display:flex; align-items:center; gap:var(--sp-3); }
+
+
+    /* ═══════════════════════════════════════════════
+       03 — COLOR
+    ═══════════════════════════════════════════════ */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: var(--sp-3);
+      margin-bottom: var(--sp-4);
+    }
+    .color-chip {
+      border-radius: var(--r-md);
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .color-chip__swatch { height: 52px; }
+    .color-chip__info {
+      padding: var(--sp-2) var(--sp-3);
+      background: var(--surface);
+    }
+    .color-chip__name { font-family:var(--font-mono); font-size:10px; color:var(--text-secondary); margin-bottom:1px; }
+    .color-chip__hex  { font-family:var(--font-mono); font-size:9px;  color:var(--text-muted); }
+    .color-chip__use  { font-size:10px; color:var(--text-muted); margin-top:2px; }
+
+    .accent-row {
+      display: flex;
+      gap: var(--sp-4);
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
+    .accent-swatch { display:flex; flex-direction:column; align-items:center; gap:var(--sp-2); }
+    .accent-swatch__dot {
+      width:44px; height:44px;
+      border-radius: var(--r-md);
+      border: 2px solid transparent;
+      transition: border-color var(--dur-fast);
+    }
+    .accent-swatch--active .accent-swatch__dot { border-color: rgba(255,255,255,0.35); }
+    .accent-swatch__hex   { font-family:var(--font-mono); font-size:9px; color:var(--text-muted); }
+    .accent-swatch__note  { font-size:9px; color:var(--text-ghost); }
+
+
+    /* ═══════════════════════════════════════════════
+       04 — SPACING
+    ═══════════════════════════════════════════════ */
+    .spacing-row {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-4);
+      padding: 5px 0;
+    }
+    .spacing-row__name {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-muted);
+      width: 68px;
+      flex-shrink: 0;
+    }
+    .spacing-row__bar {
+      height: 4px;
+      background: var(--accent);
+      border-radius: 2px;
+      opacity: 0.65;
+      flex-shrink: 0;
+    }
+    .spacing-row__val {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-ghost);
+      white-space: nowrap;
+    }
+
+
+    /* ═══════════════════════════════════════════════
+       05 — MOTION & COMPONENTS
+    ═══════════════════════════════════════════════ */
+    .motion-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--sp-4);
+    }
+    .motion-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: var(--sp-6);
+    }
+    .motion-card__label {
+      font-size: 10px;
+      font-weight: var(--fw-semibold);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: var(--sp-4);
+    }
+
+    /* Button */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--sp-2);
+      padding: 10px 20px;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: var(--fw-medium);
+      border: none;
+      border-radius: var(--r-lg);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background var(--dur-fast) var(--ease-out);
+    }
+    .btn-primary:hover { background: var(--accent-hover); }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--sp-2);
+      padding: 10px 20px;
+      background: transparent;
+      color: var(--text-secondary);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: var(--fw-medium);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--r-lg);
+      cursor: pointer;
+      text-decoration: none;
+      transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+    }
+    .btn-ghost:hover {
+      color: var(--text-primary);
+      border-color: rgba(255,255,255,0.28);
+    }
+
+    /* Badge — quiet: no pill, no background. Inter for text, mono for numbers. */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: var(--fw-medium);
+    }
+    /* Gain/loss always contain numbers — mono + tabular-nums */
+    .badge--gain    { color: #10B981; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+    .badge--loss    { color: #F43F5E; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+    /* Text badges stay Inter */
+    .badge--neutral { color: var(--text-muted); }
+    .badge--accent  { color: #C084FC; }
+
+    /* Shimmer */
+    @keyframes shimmer {
+      0%   { background-position: -600px 0; }
+      100% { background-position:  600px 0; }
+    }
+    .skeleton {
+      border-radius: var(--r-sm);
+      background: linear-gradient(90deg,
+        var(--surface) 20%,
+        var(--elevated) 50%,
+        var(--surface) 80%
+      );
+      background-size: 1200px 100%;
+      animation: shimmer 1.5s ease-in-out infinite;
+    }
+    .skel-line { height:12px; margin-bottom:var(--sp-2); }
+    .skel-line:last-child { width:65%; margin-bottom:0; }
+
+    /* Data row */
+    .data-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--sp-3) 0;
+    }
+    .data-row__name   { font-size:13px; color:var(--text-primary); }
+    .data-row__ticker { font-family:var(--font-mono); font-size:11px; color:var(--text-muted); margin-top:2px; }
+    .data-row__value  { font-family:var(--font-mono); font-size:13px; font-variant-numeric:tabular-nums; text-align:right; }
+
+    /* Motion token list */
+    .token-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--sp-2) 0;
+    }
+    .token-row__name { font-family:var(--font-mono); font-size:11px; color:var(--text-secondary); }
+    .token-row__val  { font-family:var(--font-mono); font-size:11px; color:var(--text-muted); text-align:right; }
+
+    /* Note callout */
+    .note {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: var(--sp-4);
+      line-height: 1.5;
+    }
+
+
+    /* ═══════════════════════════════════════════════
+       UTILITY
+    ═══════════════════════════════════════════════ */
+    .mt-4  { margin-top: var(--sp-4); }
+    .mt-6  { margin-top: var(--sp-6); }
+    .mt-8  { margin-top: var(--sp-8); }
+    .mt-12 { margin-top: var(--sp-12); }
+
+    .flex         { display: flex; }
+    .items-center { align-items: center; }
+    .gap-2 { gap: var(--sp-2); }
+    .gap-3 { gap: var(--sp-3); }
+    .gap-4 { gap: var(--sp-4); }
+    .flex-col { flex-direction: column; }
+    .flex-wrap { flex-wrap: wrap; }
+
+    @media (max-width: 860px) {
+      .split-grid  { grid-template-columns: 1fr; }
+      .motion-grid { grid-template-columns: 1fr; }
+      .container   { padding: 0 var(--sp-4); }
+    }
+
+  </style>
+</head>
+<body>
+
+
+<!-- ════════════════════════════════════════════════════
+   PROTOTYPE NAV
+════════════════════════════════════════════════════ -->
+<nav class="proto-nav">
+  <div class="proto-nav__brand">
+    <span class="proto-nav__title">Babylon DS</span>
+    <span class="proto-badge">SPEC-001 Prototype</span>
+  </div>
+  <ul class="proto-nav__links">
+    <li><a href="#typography">01 Typography</a></li>
+    <li><a href="#wordmark">02 Wordmark</a></li>
+    <li><a href="#color">03 Color</a></li>
+    <li><a href="#spacing">04 Spacing</a></li>
+    <li><a href="#motion">05 Motion &amp; Components</a></li>
+  </ul>
+</nav>
+
+
+<!-- ════════════════════════════════════════════════════
+   01 — TYPOGRAPHY SCALE
+════════════════════════════════════════════════════ -->
+<section id="typography" class="proto-section">
+  <div class="container">
+    <div class="section-heading">
+      <span class="section-heading__title">01 — Typography Scale</span>
+      <span class="section-heading__desc">Scale A (64px) is refined. Scale B (80px) is commanding.</span>
+    </div>
+
+    <div class="split-grid">
+
+      <!-- Scale A -->
+      <div class="panel">
+        <div class="panel__header">
+          <span class="panel__label">Scale A — Refined</span>
+          <span class="panel__tag">64 / 44 / 26 / 20 / 16px</span>
+        </div>
+        <div class="panel__body">
+          <div class="type-row">
+            <div class="type-row__meta">display-1<br/>64px · −0.04em</div>
+            <div class="type-row__sample sa-d1">Wealth.</div>
+          </div>
+          <div class="type-row">
+            <div class="type-row__meta">display-2<br/>44px · −0.03em</div>
+            <div class="type-row__sample sa-d2">Your portfolio.</div>
+          </div>
+          <div class="type-row">
+            <div class="type-row__meta">heading-1<br/>26px · −0.025em</div>
+            <div class="type-row__sample sa-h1">Total Portfolio Value</div>
+          </div>
+          <div class="type-row">
+            <div class="type-row__meta">heading-2<br/>20px · −0.02em</div>
+            <div class="type-row__sample sa-h2">Allocation Breakdown</div>
+          </div>
+          <div class="type-row">
+            <div class="type-row__meta">heading-3<br/>16px · −0.01em</div>
+            <div class="type-row__sample sa-h3">Top Positions</div>
+          </div>
+          <div class="type-row">
+            <div class="type-row__meta">body-lg<br/>16px</div>
+            <div class="type-row__sample t-body-lg">Build long-term wealth with institutional-grade tools, tailored to you.</div>
+          </div>
+          <div class="type-row">
+            <div class="type-row__meta">body<br/>14px</div>
+            <div class="type-row__sample t-body">Your portfolio is tracking 2.3% above target. Rebalancing recommended.</div>
+          </div>
+          <div class="type-row">
+            <div class="type-row__meta">label<br/>11px · +0.10em</div>
+            <div class="type-row__sample t-label">Portfolio Overview</div>
+          </div>
+          <div class="type-row">
+            <div class="type-row__meta">mono (data)<br/>JetBrains Mono</div>
+            <div class="type-row__sample t-mono" style="font-size:15px;color:var(--text-secondary)">
+              €248,391.50 <span style="color:var(--gain)">+12.4%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scale B -->
+      <div class="panel">
+        <div class="panel__header">
+          <span class="panel__label">Scale B — Commanding</span>
+          <span class="panel__tag">80 / 52 / 28 / 22 / 16px</span>
+        </div>
+        <div class="panel__body">
+          <div class="type-row">
+            <div class="type-row__meta">display-1<br/>80px · −0.04em</div>
+            <div class="type-row__sample sb-d1">Wealth.</div>
+          </div>
+          <div class="type-row">
+            <div class="type-row__meta">display-2<br/>52px · −0.03em</div>
+            <div class="type-row__sample sb-d2">Your portfolio.</div>
+          </div>
+          <div class="type-row">
+            <div class="type-row__meta">heading-1<br/>28px · −0.025em</div>
+            <div class="type-row__sample sb-h1">Total Portfolio Value</div>
+          </div>
+          <div class="type-row">
+            <div class="type-row__meta">heading-2<br/>22px · −0.02em</div>
+            <div class="type-row__sample sb-h2">Allocation Breakdown</div>
+          </div>
+          <div class="type-row">
+            <div class="type-row__meta">heading-3<br/>16px · −0.01em</div>
+            <div class="type-row__sample sb-h3">Top Positions</div>
+          </div>
+          <div class="type-row">
+            <div class="type-row__meta">body-lg<br/>16px</div>
+            <div class="type-row__sample t-body-lg">Build long-term wealth with institutional-grade tools, tailored to you.</div>
+          </div>
+          <div class="type-row">
+            <div class="type-row__meta">body<br/>14px</div>
+            <div class="type-row__sample t-body">Your portfolio is tracking 2.3% above target. Rebalancing recommended.</div>
+          </div>
+          <div class="type-row">
+            <div class="type-row__meta">label<br/>11px · +0.10em</div>
+            <div class="type-row__sample t-label">Portfolio Overview</div>
+          </div>
+          <div class="type-row">
+            <div class="type-row__meta">mono (data)<br/>JetBrains Mono</div>
+            <div class="type-row__sample t-mono" style="font-size:15px;color:var(--text-secondary)">
+              €248,391.50 <span style="color:var(--gain)">+12.4%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- In-context hero preview -->
+    <div class="mt-8">
+      <div class="section-heading">
+        <span class="section-heading__title">In context — declaration headline</span>
+        <span class="section-heading__desc">How each scale reads as a Babylon hero statement</span>
+      </div>
+      <div class="split-grid">
+        <div class="hero-preview">
+          <div class="hero-preview__label">Scale A — 64px</div>
+          <div class="sa-d1" style="text-align:center">Wealth management,<br/>without the institution.</div>
+          <p class="hero-preview__body">For people who take their money seriously. Babylon gives you the tools of institutional wealth management — precise, private, and entirely yours.</p>
+        </div>
+        <div class="hero-preview">
+          <div class="hero-preview__label">Scale B — 80px</div>
+          <div class="sb-d1" style="text-align:center">Wealth management,<br/>without the institution.</div>
+          <p class="hero-preview__body">For people who take their money seriously. Babylon gives you the tools of institutional wealth management — precise, private, and entirely yours.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Display type options — serif comparison -->
+    <div class="mt-12">
+      <div class="section-heading">
+        <span class="section-heading__title">Display type — four options</span>
+        <span class="section-heading__desc">A: Inter Bold (current). B: Fraunces italic. C: Instrument Serif italic. D: Cormorant Garamond italic.</span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-6)">
+
+        <!-- Option A — Inter Bold -->
+        <div class="hero-preview">
+          <div class="hero-preview__label">A — Inter Bold (current baseline)</div>
+          <div class="sd-inter-d1" style="text-align:center">Wealth management,<br/>without the institution.</div>
+          <p class="hero-preview__body">Precise. Private. Yours.</p>
+        </div>
+
+        <!-- Option B — Fraunces italic -->
+        <div class="hero-preview">
+          <div class="hero-preview__label">B — Fraunces · italic · 300</div>
+          <div class="sd-fraunces-d1" style="text-align:center">Wealth management,<br/>without the institution.</div>
+          <p class="hero-preview__body">Precise. Private. Yours.</p>
+        </div>
+
+        <!-- Option C — Instrument Serif italic -->
+        <div class="hero-preview" style="margin-top:var(--sp-6)">
+          <div class="hero-preview__label">C — Instrument Serif · italic · 400</div>
+          <div class="sd-instrument-d1" style="text-align:center">Wealth management,<br/>without the institution.</div>
+          <p class="hero-preview__body">Precise. Private. Yours.</p>
+        </div>
+
+        <!-- Option D — Cormorant Garamond italic -->
+        <div class="hero-preview" style="margin-top:var(--sp-6)">
+          <div class="hero-preview__label">D — Cormorant Garamond · italic · 300</div>
+          <div class="sd-cormorant-d1" style="text-align:center">Wealth management,<br/>without the institution.</div>
+          <p class="hero-preview__body">Precise. Private. Yours.</p>
+        </div>
+
+      </div>
+
+      <!-- Label comparison -->
+      <div class="mt-12">
+        <div class="section-heading">
+          <span class="section-heading__title">Label treatment</span>
+          <span class="section-heading__desc">Old: uppercase + tracking. New: sentence case, regular, muted. Quiet infrastructure.</span>
+        </div>
+        <div class="split-grid">
+          <div class="panel">
+            <div class="panel__header"><span class="panel__label">Before — loud</span></div>
+            <div class="panel__body" style="display:flex;flex-direction:column;gap:var(--sp-4)">
+              <span style="font-size:11px;font-weight:600;letter-spacing:0.10em;text-transform:uppercase;color:var(--text-muted)">Portfolio overview</span>
+              <span style="font-size:11px;font-weight:600;letter-spacing:0.10em;text-transform:uppercase;color:var(--text-muted)">Allocation breakdown</span>
+              <span style="font-size:11px;font-weight:600;letter-spacing:0.10em;text-transform:uppercase;color:var(--text-muted)">Top positions</span>
+              <span style="font-size:11px;font-weight:600;letter-spacing:0.10em;text-transform:uppercase;color:var(--text-muted)">All-time P&amp;L</span>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel__header"><span class="panel__label">After — quiet</span></div>
+            <div class="panel__body" style="display:flex;flex-direction:column;gap:var(--sp-4)">
+              <span class="t-label">Portfolio overview</span>
+              <span class="t-label">Allocation breakdown</span>
+              <span class="t-label">Top positions</span>
+              <span class="t-label">All-time P&amp;L</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════
+   02 — WORDMARK
+════════════════════════════════════════════════════ -->
+<section id="wordmark" class="proto-section">
+  <div class="container">
+    <div class="section-heading">
+      <span class="section-heading__title">02 — Wordmark</span>
+      <span class="section-heading__desc">Direction A: pure typographic wordmark. Direction B: geometric B mark + wordmark.</span>
+    </div>
+
+    <div class="split-grid">
+
+      <!-- DIRECTION A -->
+      <div class="panel">
+        <div class="panel__header">
+          <span class="panel__label">Direction A — Pure Wordmark</span>
+        </div>
+        <div class="panel__body">
+
+          <div class="sub-label">Option 1 — 500 weight · 0.22em tracking</div>
+          <div class="logo-row">
+            <div class="logo-row__meta">navbar · 17px</div>
+            <span class="wa-500-022" style="font-size:17px">BABYLON</span>
+          </div>
+          <div class="logo-row">
+            <div class="logo-row__meta">default · 20px</div>
+            <span class="wa-500-022" style="font-size:20px">BABYLON</span>
+          </div>
+          <div class="logo-row">
+            <div class="logo-row__meta">large · 32px</div>
+            <span class="wa-500-022" style="font-size:32px">BABYLON</span>
+          </div>
+
+          <div class="sub-label">Option 2 — 300 weight · 0.28em tracking · ultra-light</div>
+          <div class="logo-row">
+            <div class="logo-row__meta">navbar · 17px</div>
+            <span class="wa-300-028" style="font-size:17px">BABYLON</span>
+          </div>
+          <div class="logo-row">
+            <div class="logo-row__meta">default · 20px</div>
+            <span class="wa-300-028" style="font-size:20px">BABYLON</span>
+          </div>
+          <div class="logo-row">
+            <div class="logo-row__meta">large · 32px</div>
+            <span class="wa-300-028" style="font-size:32px">BABYLON</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- DIRECTION B -->
+      <div class="panel">
+        <div class="panel__header">
+          <span class="panel__label">Direction B — Monogram + Wordmark</span>
+        </div>
+        <div class="panel__body">
+
+          <!-- The B mark -->
+          <div class="sub-label">Square mark · filled · semibold wordmark</div>
+          <div class="logo-row">
+            <div class="logo-row__meta">small · 24px mark</div>
+            <div class="wordmark-b">
+              <div class="mark mark--sq mark--24">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <path d="M3 2L3 12 M3 2Q9.5 2 9.5 5.25Q9.5 7 3 7 M3 7Q10.5 7 10.5 9.5Q10.5 12 3 12" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <span class="wb-text" style="font-size:15px">BABYLON</span>
+            </div>
+          </div>
+          <div class="logo-row">
+            <div class="logo-row__meta">navbar · 32px mark</div>
+            <div class="wordmark-b">
+              <div class="mark mark--sq mark--32">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                  <path d="M4 2.5L4 15.5 M4 2.5Q12 2.5 12 6.75Q12 9 4 9 M4 9Q13.5 9 13.5 12.25Q13.5 15.5 4 15.5" stroke="white" stroke-width="1.9" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <span class="wb-text" style="font-size:18px">BABYLON</span>
+            </div>
+          </div>
+          <div class="logo-row">
+            <div class="logo-row__meta">large · 40px mark</div>
+            <div class="wordmark-b">
+              <div class="mark mark--sq mark--40">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M5.5 3.5L5.5 20.5 M5.5 3.5Q16 3.5 16 9Q16 12 5.5 12 M5.5 12Q18 12 18 16Q18 20.5 5.5 20.5" stroke="white" stroke-width="2.1" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <span class="wb-text" style="font-size:24px">BABYLON</span>
+            </div>
+          </div>
+
+          <div class="sub-label">Circle mark · filled</div>
+          <div class="logo-row">
+            <div class="logo-row__meta">navbar · 32px mark</div>
+            <div class="wordmark-b">
+              <div class="mark mark--circ mark--32">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                  <path d="M4 2.5L4 15.5 M4 2.5Q12 2.5 12 6.75Q12 9 4 9 M4 9Q13.5 9 13.5 12.25Q13.5 15.5 4 15.5" stroke="white" stroke-width="1.9" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <span class="wb-text" style="font-size:18px">BABYLON</span>
+            </div>
+          </div>
+          <div class="logo-row">
+            <div class="logo-row__meta">large · 40px mark</div>
+            <div class="wordmark-b">
+              <div class="mark mark--circ mark--40">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M5.5 3.5L5.5 20.5 M5.5 3.5Q16 3.5 16 9Q16 12 5.5 12 M5.5 12Q18 12 18 16Q18 20.5 5.5 20.5" stroke="white" stroke-width="2.1" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <span class="wb-text" style="font-size:24px">BABYLON</span>
+            </div>
+          </div>
+
+          <div class="sub-label">Square mark · outline only</div>
+          <div class="logo-row">
+            <div class="logo-row__meta">navbar · 32px mark</div>
+            <div class="wordmark-b">
+              <div class="mark mark--line mark--32">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                  <path d="M4 2.5L4 15.5 M4 2.5Q12 2.5 12 6.75Q12 9 4 9 M4 9Q13.5 9 13.5 12.25Q13.5 15.5 4 15.5" stroke="#7B2FBE" stroke-width="1.9" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <span class="wb-text" style="font-size:18px">BABYLON</span>
+            </div>
+          </div>
+
+          <div class="sub-label">Mark standalone — scalability check</div>
+          <div class="logo-row">
+            <div class="logo-row__meta">all sizes</div>
+            <div style="display:flex;align-items:center;gap:var(--sp-4)">
+              <!-- 16px favicon approximation -->
+              <div style="width:16px;height:16px;border-radius:3px;background:var(--accent);display:flex;align-items:center;justify-content:center">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                  <path d="M2.5 1.5L2.5 8.5 M2.5 1.5Q7 1.5 7 4Q7 5 2.5 5 M2.5 5Q7.5 5 7.5 6.75Q7.5 8.5 2.5 8.5" stroke="white" stroke-width="1.3" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <!-- 24px -->
+              <div class="mark mark--sq mark--24">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <path d="M3 2L3 12 M3 2Q9.5 2 9.5 5.25Q9.5 7 3 7 M3 7Q10.5 7 10.5 9.5Q10.5 12 3 12" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <!-- 32px -->
+              <div class="mark mark--sq mark--32">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <path d="M4 2.5L4 15.5 M4 2.5Q12 2.5 12 6.75Q12 9 4 9 M4 9Q13.5 9 13.5 12.25Q13.5 15.5 4 15.5" stroke="white" stroke-width="1.9" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <!-- 40px -->
+              <div class="mark mark--sq mark--40">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M5.5 3.5L5.5 20.5 M5.5 3.5Q16 3.5 16 9Q16 12 5.5 12 M5.5 12Q18 12 18 16Q18 20.5 5.5 20.5" stroke="white" stroke-width="2.1" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <!-- 56px app icon -->
+              <div class="mark mark--sq mark--56">
+                <svg width="34" height="34" viewBox="0 0 34 34" fill="none">
+                  <path d="M8 4.5L8 29.5 M8 4.5Q23 4.5 23 12.5Q23 17 8 17 M8 17Q25.5 17 25.5 23Q25.5 29.5 8 29.5" stroke="white" stroke-width="2.8" stroke-linecap="round"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════
+   03 — COLOR SYSTEM
+════════════════════════════════════════════════════ -->
+<section id="color" class="proto-section">
+  <div class="container">
+    <div class="section-heading">
+      <span class="section-heading__title">03 — Color System</span>
+      <span class="section-heading__desc">Dark mode primary. Gain/loss semantic only — never decorative.</span>
+    </div>
+
+    <div class="sub-label" style="margin-top:0">Backgrounds — three-layer depth</div>
+    <div class="color-grid">
+      <div class="color-chip">
+        <div class="color-chip__swatch" style="background:#080808;outline:1px solid rgba(255,255,255,0.05)"></div>
+        <div class="color-chip__info">
+          <div class="color-chip__name">bg-base</div>
+          <div class="color-chip__hex">#080808</div>
+          <div class="color-chip__use">Page background</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-chip__swatch" style="background:#101010"></div>
+        <div class="color-chip__info">
+          <div class="color-chip__name">bg-surface</div>
+          <div class="color-chip__hex">#101010</div>
+          <div class="color-chip__use">Cards, panels, sidebars</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-chip__swatch" style="background:#1A1A1A"></div>
+        <div class="color-chip__info">
+          <div class="color-chip__name">bg-elevated</div>
+          <div class="color-chip__hex">#1A1A1A</div>
+          <div class="color-chip__use">Hover, inputs, tooltips</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-label">Text — four-level hierarchy</div>
+    <div class="color-grid">
+      <div class="color-chip">
+        <div class="color-chip__swatch" style="background:#FFFFFF"></div>
+        <div class="color-chip__info">
+          <div class="color-chip__name">text-primary</div>
+          <div class="color-chip__hex">#FFFFFF</div>
+          <div class="color-chip__use">Headlines, values, emphasis</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-chip__swatch" style="background:#A3A3A3"></div>
+        <div class="color-chip__info">
+          <div class="color-chip__name">text-secondary</div>
+          <div class="color-chip__hex">#A3A3A3</div>
+          <div class="color-chip__use">Body copy, descriptions</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-chip__swatch" style="background:#525252"></div>
+        <div class="color-chip__info">
+          <div class="color-chip__name">text-muted</div>
+          <div class="color-chip__hex">#525252</div>
+          <div class="color-chip__use">Labels, timestamps, captions</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-chip__swatch" style="background:#2E2E2E"></div>
+        <div class="color-chip__info">
+          <div class="color-chip__name">text-ghost</div>
+          <div class="color-chip__hex">#2E2E2E</div>
+          <div class="color-chip__use">Placeholders, disabled</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-label">Interactive — Accent (interactive only, never decorative)</div>
+    <div class="panel">
+      <div class="panel__body">
+        <p style="font-size:12px;color:var(--text-muted);margin-bottom:var(--sp-6)">
+          Anchor is <span style="font-family:var(--font-mono);color:var(--text-secondary)">#7B2FBE</span>.
+          Four nearby candidates shown — confirm the final value after this prototype review.
+        </p>
+        <div class="accent-row">
+          <div class="accent-swatch">
+            <div class="accent-swatch__dot" style="background:#6D28D9"></div>
+            <div class="accent-swatch__hex">#6D28D9</div>
+            <div class="accent-swatch__note">Deeper</div>
+          </div>
+          <div class="accent-swatch accent-swatch--active">
+            <div class="accent-swatch__dot" style="background:#7B2FBE"></div>
+            <div class="accent-swatch__hex">#7B2FBE</div>
+            <div class="accent-swatch__note">Current anchor</div>
+          </div>
+          <div class="accent-swatch">
+            <div class="accent-swatch__dot" style="background:#7C3AED"></div>
+            <div class="accent-swatch__hex">#7C3AED</div>
+            <div class="accent-swatch__note">Brighter</div>
+          </div>
+          <div class="accent-swatch">
+            <div class="accent-swatch__dot" style="background:#8B5CF6"></div>
+            <div class="accent-swatch__hex">#8B5CF6</div>
+            <div class="accent-swatch__note">Lighter</div>
+          </div>
+          <div class="accent-swatch">
+            <div class="accent-swatch__dot" style="background:#9D4EDD"></div>
+            <div class="accent-swatch__hex">#9D4EDD</div>
+            <div class="accent-swatch__note">Hover state</div>
+          </div>
+        </div>
+        <div style="margin-top:var(--sp-6);display:flex;gap:var(--sp-3);flex-wrap:wrap;align-items:center">
+          <a class="btn-primary">Open App</a>
+          <a class="btn-primary" style="background:#6D28D9">Open App</a>
+          <a class="btn-primary" style="background:#7C3AED">Open App</a>
+          <a class="btn-primary" style="background:#8B5CF6">Open App</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-label">Semantic — gain / loss / warning / info</div>
+    <div class="color-grid">
+      <div class="color-chip">
+        <div class="color-chip__swatch" style="background:#10B981"></div>
+        <div class="color-chip__info">
+          <div class="color-chip__name">gain</div>
+          <div class="color-chip__hex">#10B981</div>
+          <div class="color-chip__use">Positive returns only</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-chip__swatch" style="background:#F43F5E"></div>
+        <div class="color-chip__info">
+          <div class="color-chip__name">loss</div>
+          <div class="color-chip__hex">#F43F5E</div>
+          <div class="color-chip__use">Negative returns only</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-chip__swatch" style="background:#F59E0B"></div>
+        <div class="color-chip__info">
+          <div class="color-chip__name">warning</div>
+          <div class="color-chip__hex">#F59E0B</div>
+          <div class="color-chip__use">Rebalancing alerts, drift</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-chip__swatch" style="background:#818CF8"></div>
+        <div class="color-chip__info">
+          <div class="color-chip__name">info</div>
+          <div class="color-chip__hex">#818CF8</div>
+          <div class="color-chip__use">Neutral info states</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════
+   04 — SPACING SCALE
+════════════════════════════════════════════════════ -->
+<section id="spacing" class="proto-section">
+  <div class="container">
+    <div class="section-heading">
+      <span class="section-heading__title">04 — Spacing Scale</span>
+      <span class="section-heading__desc">4px base grid. Extended scale adds section-level whitespace.</span>
+    </div>
+
+    <div class="split-grid">
+      <div class="panel">
+        <div class="panel__header">
+          <span class="panel__label">Current tokens</span>
+          <span class="panel__tag">max 64px</span>
+        </div>
+        <div class="panel__body">
+          <div class="spacing-row"><div class="spacing-row__name">space-1</div><div class="spacing-row__bar" style="width:4px"></div><div class="spacing-row__val">4px · icon gap</div></div>
+          <div class="spacing-row"><div class="spacing-row__name">space-2</div><div class="spacing-row__bar" style="width:8px"></div><div class="spacing-row__val">8px · tight inline</div></div>
+          <div class="spacing-row"><div class="spacing-row__name">space-3</div><div class="spacing-row__bar" style="width:12px"></div><div class="spacing-row__val">12px · row padding</div></div>
+          <div class="spacing-row"><div class="spacing-row__name">space-4</div><div class="spacing-row__bar" style="width:16px"></div><div class="spacing-row__val">16px · component gap</div></div>
+          <div class="spacing-row"><div class="spacing-row__name">space-6</div><div class="spacing-row__bar" style="width:24px"></div><div class="spacing-row__val">24px · card padding</div></div>
+          <div class="spacing-row"><div class="spacing-row__name">space-8</div><div class="spacing-row__bar" style="width:32px"></div><div class="spacing-row__val">32px · section inner</div></div>
+          <div class="spacing-row"><div class="spacing-row__name">space-12</div><div class="spacing-row__bar" style="width:48px"></div><div class="spacing-row__val">48px · block gap</div></div>
+          <div class="spacing-row"><div class="spacing-row__name">space-16</div><div class="spacing-row__bar" style="width:64px"></div><div class="spacing-row__val">64px · current maximum</div></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel__header">
+          <span class="panel__label">Extended scale — new tokens</span>
+          <span class="panel__tag">addition</span>
+        </div>
+        <div class="panel__body">
+          <div class="spacing-row"><div class="spacing-row__name">space-20</div><div class="spacing-row__bar" style="width:80px"></div><div class="spacing-row__val">80px · section gap</div></div>
+          <div class="spacing-row"><div class="spacing-row__name">space-24</div><div class="spacing-row__bar" style="width:96px"></div><div class="spacing-row__val">96px · section padding</div></div>
+          <div class="spacing-row"><div class="spacing-row__name">space-32</div><div class="spacing-row__bar" style="width:128px"></div><div class="spacing-row__val">128px · hero breathing</div></div>
+          <div class="spacing-row"><div class="spacing-row__name">space-40</div><div class="spacing-row__bar" style="width:160px"></div><div class="spacing-row__val">160px · max section pad</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════
+   05 — MOTION & COMPONENTS
+════════════════════════════════════════════════════ -->
+<section id="motion" class="proto-section">
+  <div class="container">
+    <div class="section-heading">
+      <span class="section-heading__title">05 — Motion &amp; Components</span>
+      <span class="section-heading__desc">200ms ease-out for transitions. Hover snaps instantly. Hover all interactive elements below.</span>
+    </div>
+
+    <div class="motion-grid">
+
+      <!-- Buttons -->
+      <div class="motion-card">
+        <div class="motion-card__label">Buttons</div>
+        <div class="flex flex-col gap-3">
+          <a class="btn-primary">Open App</a>
+          <a class="btn-ghost">View portfolio</a>
+        </div>
+        <p class="note">Primary transitions background at 200ms. Ghost transitions border + text colour. Hover is instantaneous (0ms) per SPEC-001.</p>
+      </div>
+
+      <!-- Badges -->
+      <div class="motion-card">
+        <div class="motion-card__label">Semantic Badges</div>
+        <div class="flex flex-wrap gap-2">
+          <span class="badge badge--gain">+12.4%</span>
+          <span class="badge badge--loss">−3.2%</span>
+          <span class="badge badge--neutral">Rebalancing</span>
+          <span class="badge badge--accent">AI insight</span>
+        </div>
+        <p class="note">Gain/loss: semantic colour only, never decorative. Always paired with +/− sign for accessibility. Mono font, tabular-nums.</p>
+      </div>
+
+      <!-- Shimmer skeleton -->
+      <div class="motion-card">
+        <div class="motion-card__label">Skeleton → content</div>
+        <div>
+          <div class="skeleton skel-line" style="width:100%"></div>
+          <div class="skeleton skel-line" style="width:85%"></div>
+          <div class="skeleton skel-line"></div>
+        </div>
+        <p class="note">Shimmer ghost while loading data. Fade in on arrival (200ms). No spinners for data-heavy views.</p>
+      </div>
+
+      <!-- Data rows -->
+      <div class="motion-card">
+        <div class="motion-card__label">Data rows — no visible dividers</div>
+        <div>
+          <div class="data-row">
+            <div><div class="data-row__name">Microsoft</div><div class="data-row__ticker">MSF.DE</div></div>
+            <div class="data-row__value"><div>€1,634.20</div><span class="badge badge--gain" style="margin-top:3px;display:flex">+12.7%</span></div>
+          </div>
+          <div class="data-row">
+            <div><div class="data-row__name">Nvidia</div><div class="data-row__ticker">NVD.DE</div></div>
+            <div class="data-row__value"><div>€707.50</div><span class="badge badge--loss" style="margin-top:3px;display:flex">−2.1%</span></div>
+          </div>
+          <div class="data-row">
+            <div><div class="data-row__name">Apple</div><div class="data-row__ticker">APC.DE</div></div>
+            <div class="data-row__value"><div>€698.00</div><span class="badge badge--gain" style="margin-top:3px;display:flex">+10.3%</span></div>
+          </div>
+        </div>
+        <p class="note">Row separation through spacing alone. Border between rows is <code style="font-family:var(--font-mono);font-size:10px">rgba(255,255,255,0.08)</code> — barely visible, never a design element.</p>
+      </div>
+
+      <!-- Motion tokens -->
+      <div class="motion-card">
+        <div class="motion-card__label">Motion tokens — new additions to system</div>
+        <div>
+          <div class="token-row"><span class="token-row__name">--duration-fast</span><span class="token-row__val">200ms</span></div>
+          <div class="token-row"><span class="token-row__name">--duration-base</span><span class="token-row__val">400ms</span></div>
+          <div class="token-row"><span class="token-row__name">--ease-out</span><span class="token-row__val">cubic-bezier(0.16,1,0.3,1)</span></div>
+          <div class="token-row"><span class="token-row__name">hover snap</span><span class="token-row__val">0ms (instant)</span></div>
+          <div class="token-row"><span class="token-row__name">count-up (financial)</span><span class="token-row__val">custom, ~2s</span></div>
+          <div class="token-row"><span class="token-row__name">fade-in (desktop modal)</span><span class="token-row__val">200ms ease-out</span></div>
+          <div class="token-row"><span class="token-row__name">slide-up (mobile drawer)</span><span class="token-row__val">200ms ease-out</span></div>
+        </div>
+      </div>
+
+      <!-- Modal preview -->
+      <div class="motion-card">
+        <div class="motion-card__label">Modal — fade in at 200ms</div>
+        <div style="background:var(--elevated);border:1px solid var(--border-strong);border-radius:var(--r-lg);padding:var(--sp-6)">
+          <div style="font-size:15px;font-weight:var(--fw-semibold);letter-spacing:var(--ls-h3);margin-bottom:var(--sp-2)">Add Transaction</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-bottom:var(--sp-6)">Enter trade details to record this position.</div>
+          <div class="flex gap-3">
+            <a class="btn-primary" style="font-size:12px;padding:8px 16px">Confirm</a>
+            <a class="btn-ghost"   style="font-size:12px;padding:8px 16px">Cancel</a>
+          </div>
+        </div>
+        <p class="note">No scale transform. No slide on desktop. Fade only — 200ms ease-out. Background overlay at 60% black.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+</body>
+</html>
