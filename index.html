@@ -297,7 +297,8 @@
     @media(max-width:540px){.blog-grid{grid-template-columns:1fr}}
     .blog-card{position:relative;border-radius:var(--r-lg);overflow:hidden;aspect-ratio:3/4;display:flex;flex-direction:column;justify-content:flex-end;text-decoration:none;transition:transform 300ms var(--ease)}
     .blog-card:hover{transform:translateY(-5px)}
-    .blog-card__cover{position:absolute;inset:0}
+    .blog-card__cover{position:absolute;inset:0;background:#0D0D28}
+    .blog-card__cover img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
     .blog-card__fade{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 25%,rgba(0,0,0,0.82) 100%)}
     .blog-card__body{position:relative;z-index:1;padding:20px}
     .blog-card__tag{display:block;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.10em;color:rgba(255,255,255,0.50);margin-bottom:7px}
@@ -350,6 +351,32 @@
     /* ── REVEAL ── */
     [data-reveal]{opacity:0;transform:translateY(18px);transition:opacity 600ms var(--ease),transform 600ms var(--ease)}
     [data-reveal].visible{opacity:1;transform:none}
+
+    /* ── MOBILE RESPONSIVE ── */
+    @media(max-width:640px){
+      /* Phone stage: scroll-snap carousel */
+      .mobile-section{padding:80px 0 0}
+      .phone-stage{overflow-x:scroll;overflow-y:hidden;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:0;padding:20px 0 40px;align-items:center}
+      .phone-stage::-webkit-scrollbar{display:none}
+      .phone-col{display:flex!important;flex:0 0 100%;flex-shrink:0;justify-content:center;align-items:center;scroll-snap-align:start;transform:none!important}
+      .phone-sm-outer{width:248px;height:520px;overflow:visible}
+      .phone--sm{transform:none}
+
+      /* Dot indicators */
+      .phone-dots{display:flex;justify-content:center;gap:7px;padding:16px 0 60px}
+      .phone-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.18);cursor:pointer;border:none;transition:background 200ms,transform 200ms}
+      .phone-dot--active{background:var(--accent);transform:scale(1.35)}
+
+      /* Hide web app section — desktop-only prototype */
+      .webapp-section{display:none}
+
+      /* HIW: clip side phones, fix tab nav overflow */
+      .hiw-stage-outer{overflow:hidden}
+      .hiw-nav{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;justify-content:flex-start}
+      .hiw-nav::-webkit-scrollbar{display:none}
+      .hiw-nav-inner{flex-shrink:0}
+      .hiw-tab{padding:8px 14px;font-size:12px}
+    }
   </style>
 </head>
 <body>
@@ -358,7 +385,7 @@
 <nav class="nav">
   <div class="container">
     <span class="nav__wordmark">Babylon</span>
-    <a href="https://app.bebabylon.com" class="nav__cta">Open App</a>
+    <a href="/wip" class="nav__cta">Open App</a>
   </div>
 </nav>
 
@@ -831,6 +858,15 @@
     </div>
 
   </div><!-- /phone-stage -->
+
+  <!-- Dot indicators — visible on mobile only -->
+  <div class="phone-dots" id="phone-dots" aria-hidden="true">
+    <button class="phone-dot phone-dot--active" data-phone-dot="0"></button>
+    <button class="phone-dot" data-phone-dot="1"></button>
+    <button class="phone-dot" data-phone-dot="2"></button>
+    <button class="phone-dot" data-phone-dot="3"></button>
+    <button class="phone-dot" data-phone-dot="4"></button>
+  </div>
 </section>
 
 
@@ -1776,7 +1812,7 @@
     </div>
     <div class="blog-grid" data-reveal style="transition-delay:80ms">
       <a href="/blog/what-is-dca.html" class="blog-card">
-        <div class="blog-card__cover" style="background:linear-gradient(135deg,#0a0a0a 0%,#141414 55%,#1a1a1a 100%)"></div>
+        <div class="blog-card__cover"><img src="/blog/img/illus-coin.svg" alt="" loading="lazy" /></div>
         <div class="blog-card__fade"></div>
         <div class="blog-card__body">
           <span class="blog-card__tag">Investing Basics</span>
@@ -1785,7 +1821,7 @@
         </div>
       </a>
       <a href="/blog/beat-inflation.html" class="blog-card">
-        <div class="blog-card__cover" style="background:linear-gradient(135deg,#0d0800 0%,#231500 55%,#3a2000 100%)"></div>
+        <div class="blog-card__cover"><img src="/blog/img/illus-grocery.svg" alt="" loading="lazy" /></div>
         <div class="blog-card__fade"></div>
         <div class="blog-card__body">
           <span class="blog-card__tag">Strategy</span>
@@ -1794,7 +1830,7 @@
         </div>
       </a>
       <a href="/blog/first-portfolio.html" class="blog-card">
-        <div class="blog-card__cover" style="background:linear-gradient(135deg,#00100d 0%,#001e18 55%,#002e22 100%)"></div>
+        <div class="blog-card__cover"><img src="/blog/img/illus-forest.svg" alt="" loading="lazy" /></div>
         <div class="blog-card__fade"></div>
         <div class="blog-card__body">
           <span class="blog-card__tag">Getting Started</span>
@@ -1814,7 +1850,7 @@
       <span class="footer__wordmark">Babylon</span>
       <ul class="footer__links">
         <li><a href="/blog">Blog</a></li>
-        <li><a href="https://app.bebabylon.com">Open App</a></li>
+        <li><a href="/wip">Open App</a></li>
         <li><a href="/privacy">Privacy</a></li>
         <li><a href="/terms">Terms</a></li>
       </ul>
@@ -1832,6 +1868,38 @@
   );
   document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
   setTimeout(() => document.querySelector('.hero [data-reveal]')?.classList.add('visible'), 100);
+
+  // Phone stage carousel (mobile only)
+  (function() {
+    if (!window.matchMedia('(max-width:640px)').matches) return;
+
+    const stage = document.querySelector('.phone-stage');
+    const dots  = document.querySelectorAll('[data-phone-dot]');
+    if (!stage || !dots.length) return;
+
+    // Pre-reveal all phone cols so they're visible when swiped into view
+    stage.querySelectorAll('[data-reveal]').forEach(el => el.classList.add('visible'));
+
+    // Force start at first slide (Wealth) — prevents browsers snapping mid-way on load
+    stage.scrollLeft = 0;
+
+    function setActiveDot(idx) {
+      dots.forEach((d, i) => d.classList.toggle('phone-dot--active', i === idx));
+    }
+
+    // Update dot on scroll
+    stage.addEventListener('scroll', () => {
+      const idx = Math.round(stage.scrollLeft / stage.clientWidth);
+      setActiveDot(idx);
+    }, { passive: true });
+
+    // Tap dot to scroll to slide
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => {
+        stage.scrollTo({ left: i * stage.clientWidth, behavior: 'smooth' });
+      });
+    });
+  })();
 
   // Web app tabs — syncs both the external tab bar and the sidebar active state
   function switchTab(id, btn) {

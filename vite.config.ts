@@ -11,6 +11,7 @@ export default defineConfig({
         'blog-inflation': resolve(__dirname, 'blog/beat-inflation.html'),
         'blog-first-portfolio': resolve(__dirname, 'blog/first-portfolio.html'),
         brand: resolve(__dirname, 'brand.html'),
+        wip: resolve(__dirname, 'wip.html'),
       },
     },
   },
